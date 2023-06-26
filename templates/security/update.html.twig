@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier profil{% endblock %}
+
+{% block body %}
+    <h1>MODIFIER {{ user.username }}</h1>
+    <h2>Connexion</h2>
+    <p>username : {{ user.username }}</p>
+
+    <h2>Données utilisateur</h2>
+    <p>Prénom : {{ user.profile.firstName }}</p>
+    <p>Nom : {{user.profile.lastName }}</p>
+    <p>No téléphone : {{ user.profile.phoneNumber }}</p>
+    <p>Adresse mail : {{ user.profile.emailAdress }}</p>
+
+
+    <button>Valider</button>
+
+
+{% endblock %}
