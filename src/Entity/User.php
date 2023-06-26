@@ -36,8 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isActive = null;
 
-    #[ORM\OneToOne(inversedBy: 'userLinked', cascade: ['persist', 'remove'])]
-    private ?UserProfile $userProfile = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?UserProfile $profile = null;
 
     public function getId(): ?int
     {
@@ -131,14 +132,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserProfile(): ?UserProfile
+
+    public function getProfile(): ?UserProfile
     {
-        return $this->userProfile;
+        return $this->profile;
     }
 
-    public function setUserProfile(?UserProfile $userProfile): static
+    public function setProfile(?UserProfile $profile): static
     {
-        $this->userProfile = $userProfile;
+        $this->profile = $profile;
 
         return $this;
     }

@@ -25,8 +25,6 @@ class UserProfile
     #[ORM\Column(length: 50)]
     private ?string $emailAdress = null;
 
-    #[ORM\OneToOne(mappedBy: 'userProfile', cascade: ['persist', 'remove'])]
-    private ?User $linkedUser = null;
 
     public function getId(): ?int
     {
@@ -86,20 +84,5 @@ class UserProfile
         return $this->linkedUser;
     }
 
-    public function setLinkedUser(?User $linkedUser): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($linkedUser === null && $this->linkedUser !== null) {
-            $this->linkedUser->setUserProfile(null);
-        }
 
-        // set the owning side of the relation if necessary
-        if ($linkedUser !== null && $linkedUser->getUserProfile() !== $this) {
-            $linkedUser->setUserProfile($this);
-        }
-
-        $this->linkedUser = $linkedUser;
-
-        return $this;
-    }
 }
