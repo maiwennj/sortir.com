@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}activitie details{% endblock %}
+
+{% block body %}
+    <h1>Afficher les sorties</h1>
+    {% for activitie in activities %}
+        <p>{{ activitie.id }} {{ activitie.name }}</p>
+    {% endfor %}
+{% endblock %}
