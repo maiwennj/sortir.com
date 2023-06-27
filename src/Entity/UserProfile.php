@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserProfileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserProfileRepository::class)]
@@ -24,6 +26,24 @@ class UserProfile
 
     #[ORM\Column(length: 50)]
     private ?string $emailAdress = null;
+
+    #[ORM\OneToMany(mappedBy: 'organiser', targetEntity: Activity::class, orphanRemoval: true)]
+    private Collection $organisedActivities;
+
+
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Site $site = null;
+
+    #[ORM\OneToMany(mappedBy: 'participant', targetEntity: Registration::class, orphanRemoval: true)]
+    private Collection $registrations;
+
+    public function __construct()
+    {
+        $this->organisedActivities = new ArrayCollection();
+        $this->registrations = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -79,9 +99,78 @@ class UserProfile
         return $this;
     }
 
-    public function getLinkedUser(): ?User
+
+    /**
+     * @return Collection<int, Activity>
+     */
+    public function getOrganisedActivities(): Collection
     {
-        return $this->linkedUser;
+        return $this->organisedActivities;
+    }
+
+    public function addActivity(Activity $activity): static
+    {
+        if (!$this->organisedActivities->contains($activity)) {
+            $this->organisedActivities->add($activity);
+            $activity->setOrganiser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): static
+    {
+        if ($this->organisedActivities->removeElement($activity)) {
+            // set the owning side to null (unless already changed)
+            if ($activity->getOrganiser() === $this) {
+                $activity->setOrganiser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): static
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Registration>
+     */
+    public function getRegistrations(): Collection
+    {
+        return $this->registrations;
+    }
+
+    public function addRegistration(Registration $registration): static
+    {
+        if (!$this->registrations->contains($registration)) {
+            $this->registrations->add($registration);
+            $registration->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration): static
+    {
+        if ($this->registrations->removeElement($registration)) {
+            // set the owning side to null (unless already changed)
+            if ($registration->getParticipant() === $this) {
+                $registration->setParticipant(null);
+            }
+        }
+
+        return $this;
     }
 
 
