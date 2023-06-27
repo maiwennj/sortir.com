@@ -25,12 +25,12 @@
                 <td>{{ activity.activityName }}</td>
                 <td>{{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</td>
                 <td>{{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</td>
-{#                <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>#}
-                <td>{{ activity.state.label }}
+
+                <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>
+                <td>{{ activity.state.label }}</td>
                 <td></td>
                 <td>{{ activity.organiser.user.username}}</td>
                 <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
-                <td><a href="{{ path("activity_register", {'id': activity.id}) }}">S'inscrire</a></td>
             </tr>
 
         {% endfor %}

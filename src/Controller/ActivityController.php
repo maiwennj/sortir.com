@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Activity;
 
+
 use App\Entity\Registration;
+
 use App\Entity\State;
 use App\Entity\UserProfile;
 use App\Form\ActivityType;
@@ -17,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\Clock\now;
+
 
 
 #[Route('/activity', name: 'activity_')]
