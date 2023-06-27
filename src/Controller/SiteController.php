@@ -15,7 +15,7 @@ class SiteController extends AbstractController
     public function create(EntityManagerInterface $entityManager): Response
     {
         $site = new Site();
-        $site->setNameSite("la Roche sur yon");
+        $site->setSiteName("la Roche sur yon");
         $entityManager->persist($site);
         $entityManager->flush();
 

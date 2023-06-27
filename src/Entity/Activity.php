@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ActivityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,7 +17,7 @@ class Activity
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $name = null;
+    private ?string $activityName = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startDate = null;
@@ -33,25 +35,46 @@ class Activity
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $state = null;
-
-    #[ORM\Column(length: 250)]
+       #[ORM\Column(length: 250, nullable: true)]
     private ?string $pictureUrl = null;
+
+       #[ORM\ManyToOne(inversedBy: 'activities')]
+       #[ORM\JoinColumn(nullable: false)]
+       private ?Location $location = null;
+
+       #[ORM\ManyToOne(inversedBy: 'activities')]
+       #[ORM\JoinColumn(nullable: false)]
+       private ?State $state = null;
+
+       #[ORM\ManyToOne(inversedBy: 'activities')]
+       #[ORM\JoinColumn(nullable: false)]
+       private ?Site $site = null;
+
+       #[ORM\ManyToOne(inversedBy: 'activities')]
+       #[ORM\JoinColumn(nullable: false)]
+       private ?UserProfile $organiser = null;
+
+       #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Registration::class, orphanRemoval: true)]
+       private Collection $registrations;
+
+       public function __construct()
+       {
+           $this->registrations = new ArrayCollection();
+       }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getActivityName(): ?string
     {
-        return $this->name;
+        return $this->activityName;
     }
 
-    public function setName(string $name): static
+    public function setActivityName(string $activityName): static
     {
-        $this->name = $name;
+        $this->activityName = $activityName;
 
         return $this;
     }
@@ -116,17 +139,6 @@ class Activity
         return $this;
     }
 
-    public function getState(): ?int
-    {
-        return $this->state;
-    }
-
-    public function setState(?int $state): static
-    {
-        $this->state = $state;
-
-        return $this;
-    }
 
     public function getPictureUrl(): ?string
     {
@@ -139,5 +151,85 @@ class Activity
 
         return $this;
     }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): static
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    public function getOrganiser(): ?UserProfile
+    {
+        return $this->organiser;
+    }
+
+    public function setOrganiser(?UserProfile $organiser): static
+    {
+        $this->organiser = $organiser;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Registration>
+     */
+    public function getRegistrations(): Collection
+    {
+        return $this->registrations;
+    }
+
+    public function addRegistration(Registration $registration): static
+    {
+        if (!$this->registrations->contains($registration)) {
+            $this->registrations->add($registration);
+            $registration->setActivity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration): static
+    {
+        if ($this->registrations->removeElement($registration)) {
+            // set the owning side to null (unless already changed)
+            if ($registration->getActivity() === $this) {
+                $registration->setActivity(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 }

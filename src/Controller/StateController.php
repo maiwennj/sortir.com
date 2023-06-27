@@ -27,7 +27,7 @@ class StateController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->render('state/createState.html.twig', [
+        return $this->render('state/create.html.twig', [
             'StateController' => 'StateController',
         ]);
     }
