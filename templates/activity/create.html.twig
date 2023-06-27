@@ -3,5 +3,65 @@
 {% block title %}create activitie{% endblock %}
 
 {% block body %}
-    <h1> test create</h1>
+    <h1>Créer une sortie</h1>
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.activityName) }}
+            {{ form_widget(form.activityName) }}
+            {{ form_errors(form.activityName) }}
+        </div>
+
+        <div>
+            {{ form_label(form.startDate) }}
+            {{ form_widget(form.startDate) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.closingDate) }}
+            {{ form_widget(form.closingDate) }}
+            {{ form_errors(form.closingDate) }}
+        </div>
+
+        <div>
+            {{ form_label(form.maxRegistration) }}
+            {{ form_widget(form.maxRegistration) }}
+            {{ form_errors(form.maxRegistration) }}
+        </div>
+
+        <div>
+            {{ form_label(form.duration) }}
+            {{ form_widget(form.duration) }}
+            {{ form_errors(form.duration) }}
+        </div>
+        <div>
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+{#        <div>#}
+{#            {{ form_label(form.pictureUrl) }}#}
+{#            {{ form_widget(form.pictureUrl) }}#}
+{#            {{ form_errors(form.pictureUrl) }}#}
+{#        </div>#}
+
+        <div>
+            {{ form_label(form.site) }}
+            {{ form_widget(form.site) }}
+            {{ form_errors(form.site) }}
+        </div>
+
+        <div>
+            {{ form_label(form.location) }}
+            {{ form_widget(form.location) }}
+            {{ form_errors(form.location) }}
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-info">Enregistrer</button>
+            <button type="submit" class="btn btn-success">Publier la sortie</button>
+            <button type="button" class="btn btn-danger">Annuler</button>
+        </div>
+    {{ form_end(form) }}
 {% endblock %}
