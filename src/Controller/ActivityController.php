@@ -69,6 +69,5 @@ class ActivityController extends AbstractController
     public function cancel()
     {
 
-    }
+    }}
 
-}
