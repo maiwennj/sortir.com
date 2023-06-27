@@ -6,13 +6,13 @@
                 <a class="nav-link" href="{{ path("activity_list") }}">Accueil <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Mon profil</a>
+                <a class="nav-link" href="{{path('user_my_profile')}}">Mon profil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Se déconnecter</a>
+                <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Se connecter</a>
+                <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
             </li>
         </ul>
     </div>

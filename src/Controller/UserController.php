@@ -37,7 +37,7 @@ class UserController extends AbstractController{
         }
 
 
-        return $this->render('security/update.html.twig',[
+        return $this->render('user/update.html.twig',[
             'formUser' => $formUser,
             'formUserProfile'=>$formUserProfile,
         ]);
@@ -47,7 +47,14 @@ class UserController extends AbstractController{
     public function profile(UserRepository $userRepository, $id): Response
     {
         $user = $userRepository->find($id);
-        return $this->render('security/details.html.twig',
+        return $this->render('user/details.html.twig',
+            ['user' => $user]);
+    }
+    #[Route(path: '/my_profile', name: 'my_profile')]
+    public function myProfile(UserRepository $userRepository, ): Response
+    {
+        $user = $userRepository->find($this->getUser()->getId());
+        return $this->render('user/my-profile.html.twig',
             ['user' => $user]);
     }
 
