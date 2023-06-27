@@ -1,20 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier profil{% endblock %}
+{% block title %}Modifier mon profil{% endblock %}
 
 {% block body %}
-    <h1>MODIFIER {{ user.username }}</h1>
+    <h1>Modifier mon profil </h1>
     <h2>Connexion</h2>
-    <p>username : {{ user.username }}</p>
+    {{ form_start(formUser) }}
 
-    <h2>Données utilisateur</h2>
-    <p>Prénom : {{ user.profile.firstName }}</p>
-    <p>Nom : {{user.profile.lastName }}</p>
-    <p>No téléphone : {{ user.profile.phoneNumber }}</p>
-    <p>Adresse mail : {{ user.profile.emailAdress }}</p>
+    {{ form_label(formUser.username) }}
+    {{ form_widget(formUser.username) }}
+    {{ form_errors(formUser.username) }}
+
+    {{ form_label(formUser.password) }}
+    {{ form_widget(formUser.password) }}
+    {{ form_errors(formUser.password) }}
+
+    {{ form_label(formUser.profile) }}
+        {{ form_label(formUser.profile.lastName) }}
+        {{ form_widget(formUser.profile.lastName) }}
+        {{ form_errors(formUser.profile.lastName) }}
+
+        {{ form_label(formUser.profile.firstName) }}
+        {{ form_widget(formUser.profile.firstName) }}
+        {{ form_errors(formUser.profile.firstName) }}
+
+        {{ form_label(formUser.profile.phoneNumber) }}
+        {{ form_widget(formUser.profile.phoneNumber) }}
+        {{ form_errors(formUser.profile.phoneNumber) }}
+
+        {{ form_label(formUser.profile.emailAdress) }}
+        {{ form_widget(formUser.profile.emailAdress) }}
+        {{ form_errors(formUser.profile.emailAdress) }}
+
+        {{ form_label(formUser.profile.site) }}
+        {{ form_widget(formUser.profile.site) }}
+        {{ form_errors(formUser.profile.site) }}
 
 
-    <button>Valider</button>
 
+    <button type="submit">Enregistrer</button>
+    {{ form_end(formUser) }}
 
 {% endblock %}
