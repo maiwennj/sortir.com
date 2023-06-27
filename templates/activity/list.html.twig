@@ -25,7 +25,7 @@
                 <td>{{ activity.activityName }}</td>
                 <td>{{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</td>
                 <td>{{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</td>
-{#                <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>#}
+                <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>
                 <td>{{ activity.state.label }}</td>
                 <td></td>
                 <td>{{ activity.organiser.user.username}}</td>
