@@ -4,7 +4,34 @@
 
 {% block body %}
     <h1>Afficher les sorties</h1>
-    {% for activitie in activities %}
-        <p>{{ activitie.id }} {{ activitie.name }}</p>
-    {% endfor %}
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">inscrits/places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for activity in activities %}
+            <tr>
+                <td>{{ activity.activityName }}</td>
+                <td>{{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</td>
+                <td>{{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</td>
+{#                <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>#}
+                <td>{{ activity.state.label }}</td>
+                <td></td>
+                <td>{{ activity.organiser.user.username}}</td>
+                <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

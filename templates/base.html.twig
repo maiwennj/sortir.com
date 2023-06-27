@@ -15,9 +15,16 @@
     <body>
 
         {% include('common/navigation/navigation.html.twig')  %}
-        {% if app.user %}
-        <h2>connecté : {{ app.user.id }} - {{ app.user.username }}</h2>
-        {% endif %}
+
+        {% for label,messages in app.flashes %}
+            {% for message in messages %}
+                <div>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+
         {% block body %}{% endblock %}
     </body>
 </html>

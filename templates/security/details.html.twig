@@ -1,28 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails profil{% endblock %}
+{% block title %}Profil de {{ user.username }}{% endblock %}
 
 {% block body %}
-    <h1>Détails de l'utilisateur {{ user.username }}</h1>
-    <h2>Connexion</h2>
-    <h3>id</h3>
-    <p>{{ user.id }}</p>
-    <h3>username</h3>
-    <p>{{ user.username }}</p>
+    <h1>Profil de {{ user.username }}</h1>
+    <p>Identifiant de connexion : {{ user.username }}</p>
+    <p>Prénom : {{ user.profile.firstName }}</p>
+    <p>Nom : {{user.profile.lastName }}</p>
+    <p>Téléphone : {{ user.profile.phoneNumber }}</p>
+    <p>Adresse email : {{ user.profile.emailAdress }}</p>
 
-    <h2>Données utilisateur</h2>
-    <h3>Prénom</h3>
-    <p>{{ user.profile.firstName }}</p>
-    <h3>Nom</h3>
-    <p>{{user.profile.lastName }}</p>
-    <h3>No téléphone</h3>
-    <p>{{ user.profile.phoneNumber }}</p>
-    <h3>Adresse mail</h3>
-    <p>{{ user.profile.emailAdress }}</p>
-
-    {% if app.user.id == user.id %}
+{#    à supprimer après les test #}
         <p>ID de l'utilisateur affiché : {{ user.id }}</p>
         <p>ID de l'utilisateur connecté : {{ app.user.id }}</p>
+
+    {% if app.user and app.user.id == user.id %}
         <a class="btn btn-secondary" href="{{ path('user_update') }}">Update profile</a>
     {% endif %}
 
