@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230627115035 extends AbstractMigration
+final class Version20230627135755 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,11 +31,11 @@ final class Version20230627115035 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE `user` ADD profile_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE `user` ADD CONSTRAINT FK_8D93D649CCFA12B8 FOREIGN KEY (profile_id) REFERENCES user_profile (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649CCFA12B8 ON `user` (profile_id)');
         $this->addSql('ALTER TABLE user_profile DROP FOREIGN KEY FK_D95AB405A76ED395');
         $this->addSql('DROP INDEX UNIQ_D95AB405A76ED395 ON user_profile');
         $this->addSql('ALTER TABLE user_profile DROP user_id');
+        $this->addSql('ALTER TABLE `user` ADD profile_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE `user` ADD CONSTRAINT FK_8D93D649CCFA12B8 FOREIGN KEY (profile_id) REFERENCES user_profile (id) ON UPDATE NO ACTION ON DELETE NO ACTION');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649CCFA12B8 ON `user` (profile_id)');
     }
 }
