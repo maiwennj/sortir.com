@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Activity;
 use App\Entity\Registration;
 use App\Form\ActivityType;
+use App\Form\FilterType;
+use App\Model\Filter;
 use App\Repository\ActivityRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\StateRepository;
@@ -12,6 +14,7 @@ use App\Repository\UserProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,6 +32,7 @@ class ActivityController extends AbstractController
         UserProfileRepository $userProfileRepository
     ): Response
     {
+
         $activity = new Activity();
         $activityForm = $this->createForm(ActivityType::class, $activity);
 
@@ -60,14 +64,25 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/',name:'list')]
-    public function list(ActivityRepository $activityRepository, RegistrationRepository $registrationRepository):Response
+    public function list(
+        ActivityRepository $activityRepository,
+        RegistrationRepository $registrationRepository,
+        Request $request,
+        FormFactoryInterface $formFactory
+    ):Response
     {
-        $activities = $activityRepository->findAll();
-//        $registrations = $registrationRepository->findAll();
+        $filter = new Filter();
+
+        $form = $formFactory->create(FilterType::class, $filter);
+        $form->handleRequest($request);
+
+        $activities = $activityRepository->getFilteredActivities($filter);
+
 
         return $this->render('activity/list.html.twig',[
             'activities'=>$activities,
-//            'registrations'=>$registrations
+            "form"=>$form->createView()
+
         ]);
     }
 
