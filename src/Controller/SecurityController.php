@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Repository\UserProfileRepository;
-use App\Repository\UserRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +14,7 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils,EntityManagerInterface $entityManager): Response
     {
-        // if the user is already logged  in, redirect them to the app main page
+        // if the user is already logged in, redirect them to the app main page
          if ($this->getUser()) {
              return $this->redirectToRoute('app_main');
          }
@@ -27,23 +25,6 @@ class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]); // login.html.twig avant
-    }
-
-    #[Route(path: '/user/update', name: 'user_update')]
-    public function update( EntityManagerInterface $entityManager,UserRepository $userRepository): Response
-    {
-        $user = $this->getUser();
-
-        return $this->render('security/update.html.twig',
-            ['user' => $user]);
-    }
-
-    #[Route(path: '/user/{id}', name: 'user_profile',requirements: ['id'=>'\d+'])]
-    public function profile(UserRepository $userRepository, $id): Response
-    {
-        $user = $userRepository->find($id);
-        return $this->render('security/details.html.twig',
-            ['user' => $user]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
