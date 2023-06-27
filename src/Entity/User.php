@@ -37,8 +37,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $isActive = null;
 
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?UserProfile $profile = null;
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserProfile::class,cascade: ['persist', 'remove'])]
+    private ?UserProfile $userProfile = null;
 
     public function getId(): ?int
     {
@@ -133,14 +133,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getProfile(): ?UserProfile
+    public function getUserProfile(): ?UserProfile
     {
-        return $this->profile;
+        return $this->userProfile;
     }
 
-    public function setProfile(?UserProfile $profile): static
+    public function setUserProfile(?UserProfile $userProfile): static
     {
-        $this->profile = $profile;
+        $this->userProfile = $userProfile;
 
         return $this;
     }
