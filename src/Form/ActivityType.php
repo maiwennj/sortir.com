@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Activity;
+
 use App\Entity\City;
+
 use App\Entity\Location;
 use App\Entity\Site;
 use phpDocumentor\Reflection\Types\String_;
@@ -17,9 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ActivityType extends AbstractType
 {
-    public function buildForm(
-        FormBuilderInterface $builder,
-        array $options): void
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+
     {
         $builder
             ->add(
@@ -73,6 +75,7 @@ class ActivityType extends AbstractType
                     'label'=>'Campus :',
                     'class'=>Site::class,
                     'choice_label'=>'siteName'
+
                 ])
             ->add(
                 'city',
@@ -83,6 +86,7 @@ class ActivityType extends AbstractType
                     'choice_label'=>'cityName',
                     'mapped'=>false
                 ])
+
         ;
     }
 

@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Activity;
 
+
+use App\Entity\Registration;
+
 use App\Entity\State;
 use App\Entity\UserProfile;
 use App\Form\ActivityType;
@@ -16,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 
 #[Route('/activity', name: 'activity_')]
@@ -96,5 +100,31 @@ class ActivityController extends AbstractController
     {
 
     }
+    #[Route('/register/{id}',name:'register')]
+    public function register(
+        EntityManagerInterface $entityManager,
+        Request $request,
+        int $id): Response
+    {
+
+        $activity = $entityManager->getRepository(Activity::class)->find($id);
+//            dd($activity);
+        $registration = new Registration();
+
+        $registration->setParticipant($this->getUser()->getUserProfile());
+//        dd($registration);
+        $registration->setActivity($activity);
+        $registration->setRegistrationDate(now());
+        dd($registration);
+        $activity->addRegistration($registration);
+//il faut l'ajouter à l'activité
+
+        $entityManager->persist($registration);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('list.html.twig');
+
+    }
 
 }
+
