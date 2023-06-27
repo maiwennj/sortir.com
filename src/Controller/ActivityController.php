@@ -18,7 +18,7 @@ class ActivityController extends AbstractController
     public function create(EntityManagerInterface $entityManager): Response
     {
         $activity = new Activity();
-        $activity->setName("test 1");
+        $activity->setActivityName("test 1");
         $activity->setStartDate(now());
         $activity->setDuration(180);
         $activity->setClosingDate( now());

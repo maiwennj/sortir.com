@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230626133822 extends AbstractMigration
+final class Version20230627075908 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,15 @@ final class Version20230626133822 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE activity (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(30) NOT NULL, start_date DATETIME NOT NULL, duration INT DEFAULT NULL, closing_date DATETIME NOT NULL, max_registration INT NOT NULL, description LONGTEXT DEFAULT NULL, state INT DEFAULT NULL, picture_url VARCHAR(250) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE registration MODIFY id INT NOT NULL');
+        $this->addSql('DROP INDEX `primary` ON registration');
+        $this->addSql('ALTER TABLE registration DROP id');
+        $this->addSql('ALTER TABLE registration ADD PRIMARY KEY (registration_date, activity_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE activity');
+        $this->addSql('ALTER TABLE registration ADD id INT AUTO_INCREMENT NOT NULL, DROP PRIMARY KEY, ADD PRIMARY KEY (id)');
     }
 }
