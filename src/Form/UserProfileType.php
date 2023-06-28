@@ -14,11 +14,11 @@ class UserProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('lastName')
-            ->add('firstName')
-            ->add('phoneNumber')
-            ->add('emailAdress')
-            ->add('site',EntityType::class,['label'=>'Site : ','class'=>Site::class,'choice_label'=>'siteName'])
+            ->add('lastName',null,['label'=>'Nom : '])
+            ->add('firstName',null,['label'=>'Prénom : '])
+            ->add('phoneNumber',null,['label'=>'Téléphone : '])
+            ->add('emailAdress',null,['label'=>'Email : '])
+            ->add('site',EntityType::class,['label'=>'Site de rattachement : ','class'=>Site::class,'choice_label'=>'siteName'])
         ;
     }
 

@@ -18,9 +18,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use function Symfony\Component\Clock\now;
 
-
+#[IsGranted('ROLE_USER')]
 #[Route('/activity', name: 'activity_')]
 class ActivityController extends AbstractController
 {
@@ -76,7 +77,7 @@ class ActivityController extends AbstractController
         $form = $formFactory->create(FilterType::class, $filter);
         $form->handleRequest($request);
 
-        $activities = $activityRepository->getFilteredActivities($filter);
+        $activities = $activityRepository->getFilteredActivities($filter,$this->getUser()->getUserProfile());
 
 
         return $this->render('activity/list.html.twig',[
