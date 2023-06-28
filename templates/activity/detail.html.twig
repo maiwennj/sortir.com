@@ -28,12 +28,12 @@
         </thead>
 
         <tbody>
-{#        {% for participant in activity.registrations %}#}
-{#            <tr>#}
-{#                <td>{{ participant.user.username }}</td>#}
-{#                <td>{{ participant.firstname }} {{ participant.lastname|upper }}</td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
+        {% for registration in activity.registrations %}
+            <tr>
+                <td></td>
+                <td>{{ registration.participant.firstName }} {{ registration.participant.lastName|upper }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
