@@ -133,9 +133,33 @@ class ActivityController extends AbstractController
             $this->addFlash('danger',"Nous n'avons pas pu vous inscrire à cette activité.");
             return $this->redirectToRoute('activity_list');
         }
-
-
     }
+    #[Route('/quit/{id}',name:'quit')]
+    public function quit(EntityManagerInterface $entityManager, Request $request, int $id): Response
+    {
+        try {
+            $activity = $entityManager->getRepository(Activity::class)->find($id);
+            $userProfile = $this->getUser()->getUserProfile();
 
+            $registration = $entityManager->getRepository(Registration::class)->findOneBy([
+                'activity' => $activity,
+                'participant' => $userProfile,
+            ]);
+
+            if ($registration) {
+                $activity->removeRegistration($registration);
+                $entityManager->remove($registration);
+                $entityManager->flush();
+                $this->addFlash('success', "Vous avez été désinscrit de cette activité avec succès.");
+            } else {
+                $this->addFlash('danger', "Vous n'êtes pas inscrit à cette activité.");
+            }
+        } catch (\Exception $exception) {
+            $this->addFlash('danger', "Nous n'avons pas pu vous désinscrire de cette activité : " . $exception->getMessage());
+        }
+
+        return $this->redirectToRoute('activity_list');
+    }
 }
+
 
