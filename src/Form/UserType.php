@@ -14,13 +14,13 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void{
         $builder
-            ->add('username')
+            ->add('username',null,['label'=>'Pseudo : '])
             ->add('password',RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options'  => ['label' => 'Password', 'hash_property_path' => 'password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => ['label' => 'Mot de passe : ', 'hash_property_path' => 'password'],
+                'second_options' => ['label' => 'Confirmation : '],
                 'mapped' => false])
-            ->add('profile',UserProfileType::class,array('label'=>'Données utilisateur'));
+            ->add('userProfile',UserProfileType::class,array('label'=>'Données utilisateur'));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

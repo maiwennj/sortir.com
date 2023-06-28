@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block h2 %}Créer un site{% endblock %}
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+    {{ form_end(form) }}
+
+{% endblock %}
