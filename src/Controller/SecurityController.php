@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
     {
         // if the user is already logged in, redirect them to the app main page
          if ($this->getUser()) {
-             return $this->redirectToRoute('app_main');
+             return $this->redirectToRoute('activity_list');
          }
 
         // get the login error if there is one

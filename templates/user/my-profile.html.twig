@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil de {{ user.username }}{% endblock %}
-
+{% block title %}Mon profil{% endblock %}
+{% block h2 %}Mon profil{% endblock %}
 {% block body %}
-    <h1>Profil de {{ user.username }}</h1>
-    <p>Identifiant : {{ user.username }}</p>
+    <p>Pseudo : {{ user.username }}</p>
     <p>Prénom : {{ user.userProfile.firstName }}</p>
     <p>Nom : {{user.userProfile.lastName }}</p>
     <p>Téléphone : {{ user.userProfile.phoneNumber }}</p>
     <p>Adresse email : {{ user.userProfile.emailAdress }}</p>
+    <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
 
-        <a class="btn btn-secondary" href="{{ path('user_update') }}">Update profile</a>
+        <a class="btn btn-secondary" href="{{ path('user_my_profile_update') }}">Update profile</a>
 
 
 {% endblock %}

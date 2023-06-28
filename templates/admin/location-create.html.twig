@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block h2 %}Créer un lieu{% endblock %}
 {% block body %}
-    <h1>Créer un lieu </h1>
 
     {{ form_start(locationForm) }}
     {{ form_widget(locationForm) }}
 
     <button type="submit" class="btn btn-primary">Ajouter</button>
     {{ form_end(locationForm) }}
+
 {% endblock %}

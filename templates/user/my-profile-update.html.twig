@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{{ app.user.username }}{% endblock %}
+
+{% block body %}
+    {% block h2 %}Mon profil{% endblock %}
+    {{ form_start(formUser) }}
+
+    {{ form_label(formUser.username) }}
+    {{ form_widget(formUser.username) }}<br>
+    {{ form_errors(formUser.username) }}
+
+    {{ form_widget(formUser.password) }}
+    {{ form_errors(formUser.password) }}
+
+    {{ form_label(formUser.userProfile) }}<br>
+        {{ form_label(formUser.userProfile.lastName) }}
+        {{ form_widget(formUser.userProfile.lastName) }}<br>
+        {{ form_errors(formUser.userProfile.lastName) }}
+
+        {{ form_label(formUser.userProfile.firstName) }}
+        {{ form_widget(formUser.userProfile.firstName) }}<br>
+        {{ form_errors(formUser.userProfile.firstName) }}
+
+        {{ form_label(formUser.userProfile.phoneNumber) }}
+        {{ form_widget(formUser.userProfile.phoneNumber) }}<br>
+        {{ form_errors(formUser.userProfile.phoneNumber) }}
+
+        {{ form_label(formUser.userProfile.emailAdress) }}
+        {{ form_widget(formUser.userProfile.emailAdress) }}<br>
+        {{ form_errors(formUser.userProfile.emailAdress) }}
+
+        {{ form_label(formUser.userProfile.site) }}
+        {{ form_widget(formUser.userProfile.site) }}<br>
+        {{ form_errors(formUser.userProfile.site) }}
+
+    <button type="submit">Enregistrer</button>
+    {{ form_end(formUser) }}
+
+
+{% endblock %}
