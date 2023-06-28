@@ -33,7 +33,20 @@
                 <td></td>
                 <td>{{ activity.organiser.user.username}}</td>
                 <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
-            </tr>
+
+                {% if activity.getState() is not null and activity.getState().getLabel() == "Ouverte" %}
+                    {% set isRegistered = false %}
+                    {% for registration in activity.getRegistrations() %}
+                        {% if registration.getParticipant() == app.user.userProfile %}
+                            {% set isRegistered = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if isRegistered %}
+                        <td><a href="{{ path("activity_quit",{'id': activity.id})}}">Désister</a></td>
+                    {% else %}
+                        <td><a href="{{ path("activity_register",{'id': activity.id})}}">S'inscrire</a></td>
+                    {% endif %}
+                {% endif %}
 
         {% endfor %}
         </tbody>

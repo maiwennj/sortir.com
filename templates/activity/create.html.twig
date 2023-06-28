@@ -3,6 +3,7 @@
 {% block title %}create activitie{% endblock %}
 
 {% block body %}
+
     <h1>Créer une sortie</h1>
     {{ form_start(form) }}
         <div>
@@ -53,7 +54,6 @@
         </div>
 
         <div>
-
             {{ form_label(form.city) }}
             {{ form_widget(form.city,{'attr': {'id': 'select-city'}}) }}
             {{ form_errors(form.city) }}
@@ -71,6 +71,7 @@
             <button type="button" class="btn btn-danger">Annuler</button>
         </div>
     {{ form_end(form) }}
+
 
     <script src="{{asset('assets/js/script.js')}}"></script>
 
