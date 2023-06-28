@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230627173239 extends AbstractMigration
+final class Version20230628070325 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,7 +23,7 @@ final class Version20230627173239 extends AbstractMigration
         $this->addSql('CREATE TABLE activity (id INT AUTO_INCREMENT NOT NULL, location_id INT NOT NULL, state_id INT NOT NULL, site_id INT NOT NULL, organiser_id INT NOT NULL, activity_name VARCHAR(30) NOT NULL, start_date DATETIME NOT NULL, duration INT DEFAULT NULL, closing_date DATETIME NOT NULL, max_registration INT NOT NULL, description LONGTEXT DEFAULT NULL, picture_url VARCHAR(250) DEFAULT NULL, INDEX IDX_AC74095A64D218E (location_id), INDEX IDX_AC74095A5D83CC1 (state_id), INDEX IDX_AC74095AF6BD1646 (site_id), INDEX IDX_AC74095AA0631C12 (organiser_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE city (id INT AUTO_INCREMENT NOT NULL, city_name VARCHAR(30) NOT NULL, post_code VARCHAR(10) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE location (id INT AUTO_INCREMENT NOT NULL, city_id INT NOT NULL, location_name VARCHAR(30) NOT NULL, street VARCHAR(30) DEFAULT NULL, latitude DOUBLE PRECISION DEFAULT NULL, longitude DOUBLE PRECISION DEFAULT NULL, INDEX IDX_5E9E89CB8BAC62AF (city_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE registration (registration_date DATETIME NOT NULL, activity_id INT NOT NULL, participant_id INT NOT NULL, INDEX IDX_62A8A7A781C06096 (activity_id), INDEX IDX_62A8A7A79D1C3019 (participant_id), PRIMARY KEY(registration_date, activity_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE registration (activity_id INT NOT NULL, participant_id INT NOT NULL, registration_date DATETIME NOT NULL, INDEX IDX_62A8A7A781C06096 (activity_id), INDEX IDX_62A8A7A79D1C3019 (participant_id), PRIMARY KEY(activity_id, participant_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE site (id INT AUTO_INCREMENT NOT NULL, site_name VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE state (id INT AUTO_INCREMENT NOT NULL, label VARCHAR(30) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE `user` (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, is_admin TINYINT(1) NOT NULL, is_active TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_8D93D649F85E0677 (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
