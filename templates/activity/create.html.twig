@@ -45,6 +45,7 @@
 {#            {{ form_widget(form.pictureUrl) }}#}
 {#            {{ form_errors(form.pictureUrl) }}#}
 {#        </div>#}
+
         <div>
             {{ form_label(form.site) }}
             {{ form_widget(form.site, {'attr': {'default': app.user.userProfile.site.id}})}}
@@ -52,6 +53,7 @@
         </div>
 
         <div>
+
             {{ form_label(form.city) }}
             {{ form_widget(form.city,{'attr': {'id': 'select-city'}}) }}
             {{ form_errors(form.city) }}
@@ -63,12 +65,13 @@
             {{ form_errors(form.location) }}
         </div>
 
-
         <div>
             <button type="button" class="btn btn-info">Enregistrer</button>
             <button type="submit" class="btn btn-success">Publier la sortie</button>
             <button type="button" class="btn btn-danger">Annuler</button>
         </div>
     {{ form_end(form) }}
+
     <script src="{{asset('assets/js/script.js')}}"></script>
+
 {% endblock %}

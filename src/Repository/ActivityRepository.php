@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Activity;
+use App\Model\Filter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +40,23 @@ class ActivityRepository extends ServiceEntityRepository
         }
     }
 
+    public function getFilteredActivities(Filter $filter)
+    {
+        $querybuilder = $this->createQueryBuilder("a");
+
+        if($filter->getSite()!== null){
+            $querybuilder
+                ->where("a.site = :site")
+                ->setParameter("site",$filter->getSite());
+
+        }
+        if($filter->getKeyWord()!== null){
+            $querybuilder
+                ->andWhere("a.activityName LIKE :keyword")
+                ->setParameter("keyword",'%'.$filter->getKeyWord().'%');
+        }
+        return $querybuilder->getQuery()->getResult();
+    }
 //    /**
 //     * @return Activity[] Returns an array of Activity objects
 //     */

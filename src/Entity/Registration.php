@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RegistrationRepository::class)]
 class Registration
 {
-    #[ORM\Id]
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $registrationDate = null;
 
@@ -18,6 +18,8 @@ class Registration
     #[ORM\JoinColumn(nullable: false)]
     private ?Activity $activity = null;
 
+
+    #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'registrations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserProfile $participant = null;
@@ -30,7 +32,6 @@ class Registration
     public function setRegistrationDate(\DateTimeInterface $registrationDate): static
     {
         $this->registrationDate = $registrationDate;
-
         return $this;
     }
 

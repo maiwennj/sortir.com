@@ -1,18 +1,18 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ path("activity_list") }}"><img src="{{asset('assets/img/logo_ENI_global_BLANC.png')}}" width="100px"></a>
+    <a class="navbar-brand" href="{{ path("activity_list") }}"><img src="{{asset('assets/img/logo_sortir.svg')}}" width="150px"></a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="{{ path("activity_list") }}">Accueil <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Mon profil</a>
+                <a class="nav-link" href="{{path('user_my_profile')}}">Mon profil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Se déconnecter</a>
+                <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Se connecter</a>
+                <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
             </li>
         </ul>
     </div>
