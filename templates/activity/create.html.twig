@@ -48,13 +48,20 @@
 
         <div>
             {{ form_label(form.site) }}
-            {{ form_widget(form.site) }}
+            {{ form_widget(form.site, {'attr': {'default': app.user.userProfile.site.id}})}}
             {{ form_errors(form.site) }}
         </div>
 
         <div>
+
+            {{ form_label(form.city) }}
+            {{ form_widget(form.city,{'attr': {'id': 'select-city'}}) }}
+            {{ form_errors(form.city) }}
+        </div>
+        <div id="testjs"></div>
+        <div>
             {{ form_label(form.location) }}
-            {{ form_widget(form.location) }}
+            {{ form_widget(form.location,{'attr': {'id': 'select-location'}}) }}
             {{ form_errors(form.location) }}
         </div>
 
@@ -64,4 +71,7 @@
             <button type="button" class="btn btn-danger">Annuler</button>
         </div>
     {{ form_end(form) }}
+
+    <script src="{{asset('assets/js/script.js')}}"></script>
+
 {% endblock %}

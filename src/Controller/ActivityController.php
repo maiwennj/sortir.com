@@ -3,17 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
-
 use App\Entity\Registration;
-use App\Entity\State;
-use App\Entity\UserProfile;
 use App\Form\ActivityType;
+use App\Form\FilterType;
+use App\Model\Filter;
 use App\Repository\ActivityRepository;
+use App\Repository\RegistrationRepository;
 use App\Repository\StateRepository;
 use App\Repository\UserProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,6 +32,7 @@ class ActivityController extends AbstractController
         UserProfileRepository $userProfileRepository
     ): Response
     {
+
         $activity = new Activity();
         $activityForm = $this->createForm(ActivityType::class, $activity);
 
@@ -62,12 +64,25 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/',name:'list')]
-    public function list(ActivityRepository $activityRepository):Response
+    public function list(
+        ActivityRepository $activityRepository,
+        RegistrationRepository $registrationRepository,
+        Request $request,
+        FormFactoryInterface $formFactory
+    ):Response
     {
-        $activities = $activityRepository->findAll();
+        $filter = new Filter();
+
+        $form = $formFactory->create(FilterType::class, $filter);
+        $form->handleRequest($request);
+
+        $activities = $activityRepository->getFilteredActivities($filter);
+
 
         return $this->render('activity/list.html.twig',[
-            'activities'=>$activities
+            'activities'=>$activities,
+            "form"=>$form->createView()
+
         ]);
     }
 
@@ -99,28 +114,26 @@ class ActivityController extends AbstractController
 
     }
     #[Route('/register/{id}',name:'register')]
-    public function register(
-        EntityManagerInterface $entityManager,
-        Request $request,
-        int $id): Response
-    {
+    public function register(EntityManagerInterface $entityManager,Request $request,int $id): Response{
+        try {
+            $activity = $entityManager->getRepository(Activity::class)->find($id);
+            $registration = new Registration();
 
-        $activity = $entityManager->getRepository(Activity::class)->find($id);
-//            dd($activity);
-        $registration = new Registration();
+            $registration->setParticipant($this->getUser()->getUserProfile());
+            $registration->setActivity($activity);
+            $registration->setRegistrationDate(now());
+            $activity->addRegistration($registration);
 
-        $registration->setParticipant($this->getUser()->getUserProfile());
-//        dd($registration);
-        $registration->setActivity($activity);
-        $registration->setRegistrationDate(now());
-        dd($registration);
-        $activity->addRegistration($registration);
-//il faut l'ajouter à l'activité
+            $entityManager->persist($registration);
+            $entityManager->persist($activity);
+            $entityManager->flush();
 
-        $entityManager->persist($registration);
-        $entityManager->flush();
+            return $this->redirectToRoute('activity_list');
+        }catch (\Exception $exception){
+            $this->addFlash('danger',"Nous n'avons pas pu vous inscrire à cette activité.");
+            return $this->redirectToRoute('activity_list');
+        }
 
-        return $this->redirectToRoute('list.html.twig');
 
     }
 
