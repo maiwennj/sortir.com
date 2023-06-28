@@ -40,10 +40,14 @@ class ActivityController extends AbstractController
         $activityForm = $this->createForm(ActivityType::class, $activity);
 
         $activityForm->handleRequest($request);
+
         if ($activityForm->isSubmitted() && $activityForm->isValid()) {
             try {
-               //dd($request->request->get('activity[activityName]'));
                 //à modifier pour fonctionner avec le changement de stade et la bdd
+
+        if($activityForm->isSubmitted() && $activityForm->isValid()){
+            try{
+
                 $state = $stateRepository->find(1);
 
                 $activity->setState($state);
