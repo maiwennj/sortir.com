@@ -4,10 +4,52 @@
 
 {% block body %}
     <h1>Afficher les sorties</h1>
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.keyWord) }}
+            {{ form_widget(form.keyWord) }}
+            {{ form_errors(form.keyWord) }}
+        </div>
+        <div>
+            {{ form_label(form.site) }}
+            {{ form_widget(form.site) }}
+            {{ form_errors(form.site) }}
+        </div>
+        <div>
+            {{ form_label(form.startDate) }}
+            {{ form_widget(form.startDate) }}
+            {{ form_errors(form.startDate) }}
+        </div>
+        <div>
+            {{ form_label(form.endDate) }}
+            {{ form_widget(form.endDate) }}
+            {{ form_errors(form.endDate) }}
+        </div>
+        <div>
+            {{ form_widget(form.submit) }}
+        </div>
+    {{ form_end(form) }}
 
-    {{ form(form) }}
+    <div>
+        <div>
+            <input type="checkbox" id="isTheOrganiser" class="">
+            <label for="isTheOrganiser">Sorties dont je suis l'organisteur/trice</label>
+        </div>
+        <div>
+            <input type="checkbox" id="isRegistered" class="">
+            <label for="isRegistered">Sorties auxquelles je suis inscrit/e</label>
+        </div>
+        <div>
+            <input type="checkbox" id="isNotRegistered" class="">
+            <label for="isNotRegistered">Sorties auxquelles je ne suis pas inscrit/e</label>
+        </div>
+        <div>
+            <input type="checkbox" id="isFinished" class="">
+            <label for="isFinished">Sorties passées</label>
+        </div>
+    </div>
 
-    <table class="table table-hover">
+    <table class="table table-hover" id="activity-table">
         <thead>
             <tr>
                 <th scope="col">Nom de la sortie</th>
@@ -25,12 +67,18 @@
         {% for activity in activities %}
             <tr>
                 <td>{{ activity.activityName }}</td>
-                <td>{{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</td>
-                <td>{{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</td>
+                <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
+                <td>{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
 
                 <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>
                 <td>{{ activity.state.label }}</td>
-                <td></td>
+                <td>
+                    {% for registration in activity.registrations %}
+                        {% if registration.participant.id == app.user.id %}
+                        x
+                        {% endif %}
+                    {% endfor %}
+                </td>
                 <td>{{ activity.organiser.user.username}}</td>
                 <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
 
@@ -51,4 +99,6 @@
         {% endfor %}
         </tbody>
     </table>
+    <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}
+
