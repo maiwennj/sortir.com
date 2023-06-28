@@ -12,8 +12,10 @@ use App\Repository\RegistrationRepository;
 use App\Repository\StateRepository;
 use App\Repository\UserProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\This;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +30,9 @@ class ActivityController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(
         EntityManagerInterface $entityManager,
-        Request $request,
-        StateRepository $stateRepository,
-        UserProfileRepository $userProfileRepository
+        Request                $request,
+        StateRepository        $stateRepository,
+        UserProfileRepository  $userProfileRepository
     ): Response
     {
 
@@ -38,9 +40,9 @@ class ActivityController extends AbstractController
         $activityForm = $this->createForm(ActivityType::class, $activity);
 
         $activityForm->handleRequest($request);
-        if($activityForm->isSubmitted() && $activityForm->isValid()){
-            try{
-
+        if ($activityForm->isSubmitted() && $activityForm->isValid()) {
+            try {
+               //dd($request->request->get('activity[activityName]'));
                 //à modifier pour fonctionner avec le changement de stade et la bdd
                 $state = $stateRepository->find(1);
 
@@ -50,70 +52,89 @@ class ActivityController extends AbstractController
 
                 $entityManager->persist($activity);
                 $entityManager->flush();
-                $this->addFlash('success',"L'activité a bien été créée");
-                $this->redirectToRoute('activity_details',["id"=>$activity->getId()]);
-            }catch (Exception $exception){
-                $this->addFlash('danger',"Le souhait n'a pas été ajouté.");
-                return  $this->redirectToRoute('activity_create');
+                $this->addFlash('success', "L'activité a bien été créée");
+                $this->redirectToRoute('activity_details', ["id" => $activity->getId()]);
+            } catch (Exception $exception) {
+                $this->addFlash('danger', "Le souhait n'a pas été ajouté.");
+                return $this->redirectToRoute('activity_create');
             }
 
         }
 
-        return $this->render('activity/create.html.twig',[
-            'form'=>$activityForm->createView()
-            ]);
+        return $this->render('activity/create.html.twig', [
+            'form' => $activityForm->createView()
+        ]);
     }
 
-    #[Route('/',name:'list')]
+    #[Route('/', name: 'list')]
     public function list(
-        ActivityRepository $activityRepository,
+        ActivityRepository     $activityRepository,
         RegistrationRepository $registrationRepository,
-        Request $request,
-        FormFactoryInterface $formFactory
-    ):Response
+        Request                $request,
+        FormFactoryInterface   $formFactory
+    ): Response
     {
         $filter = new Filter();
 
         $form = $formFactory->create(FilterType::class, $filter);
         $form->handleRequest($request);
 
-        $activities = $activityRepository->getFilteredActivities($filter,$this->getUser()->getUserProfile());
+        $activities = $activityRepository->getFilteredActivities($filter, $this->getUser()->getUserProfile());
 
 
-        return $this->render('activity/list.html.twig',[
-            'activities'=>$activities,
-            "form"=>$form->createView()
+        return $this->render('activity/list.html.twig', [
+            'activities' => $activities,
+            "form" => $form->createView()
 
         ]);
     }
 
 
     #[Route('/{id}',
-        name:'details',
+        name: 'details',
         requirements: ["id" => "\d+"]
     )]
-    public function details($id, ActivityRepository $activityRepository):Response
+    public function details($id, ActivityRepository $activityRepository): Response
     {
         $activity = $activityRepository->find($id);
-        if(!$activity){
+        if (!$activity) {
             return $this->redirectToRoute('activity_list');
         }
-        return $this->render('activity/detail.html.twig',[
-            'activity'=>$activity
+        return $this->render('activity/detail.html.twig', [
+            'activity' => $activity
         ]);
     }
 
-    #[Route('/update',name:'update')]
+    #[Route('/update', name: 'update')]
     public function update()
     {
 
     }
 
-    #[Route('/cancel',name:'cancel')]
-    public function cancel()
-    {
+    #[Route('/cancel/{id}', name: 'cancel',requirements: ['id'=>'\d+'])]
 
+    public function cancel( EntityManagerInterface $entityManager, int $id,ActivityRepository $activityRepository,Request $request): Response
+    {
+        $activity = $activityRepository->find($id);
+        $reason = $request->request->get('reason');
+       // dd($request->request->get('reason'));
+        if ($reason){
+            try {
+        $entityManager->remove($activity);
+        $entityManager->flush();
+
+        $this->addFlash('success', "L'activité a été annulée avec succès.");
+
+         }catch (\Exception $exception){
+            $this->addFlash('danger',"Erreur d'annulation");
+            return $this->redirectToRoute("activity_cancel",['id'=>$activity->getId()]);
+        }
+        }
+
+        return $this->render('activity/cancel.html.twig',["activity"=>$activity]);
     }
+
+
     #[Route('/register/{id}',name:'register')]
     public function register(EntityManagerInterface $entityManager,Request $request,int $id): Response{
         try {
