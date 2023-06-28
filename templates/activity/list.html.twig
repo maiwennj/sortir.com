@@ -30,7 +30,9 @@
         </div>
     {{ form_end(form) }}
 
-    <div>
+    <div class="js-user"
+         data-user="{{ app.user.username|serialize(format = 'json') }}"
+    >
         <div>
             <input type="checkbox" id="isTheOrganiser" class="">
             <label for="isTheOrganiser">Sorties dont je suis l'organisteur/trice</label>
