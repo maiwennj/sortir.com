@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}create activitie{% endblock %}
-
+{%  block h2 %}Créer une sortie{% endblock %}
 {% block body %}
 
-    <h1>Créer une sortie</h1>
+
     {{ form_start(form) }}
         <div>
             {{ form_label(form.activityName) }}
@@ -63,12 +63,13 @@
             {{ form_label(form.location) }}
             {{ form_widget(form.location,{'attr': {'id': 'select-location'}}) }}
             {{ form_errors(form.location) }}
+            <a href="{{ path("activity_location_create")}}" class="btn btn-primary">+</a>
         </div>
 
         <div>
-            <button type="button" class="btn btn-info">Enregistrer</button>
-            <button type="submit" class="btn btn-success">Publier la sortie</button>
-            <button type="button" class="btn btn-danger">Annuler</button>
+            <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer</button>
+            <button type="submit" class="btn btn-success" name="btnActivity" value="add">Publier la sortie</button>
+            <a href="{{ path("activity_list") }}" class="btn btn-danger">Annuler</a>
         </div>
     {{ form_end(form) }}
 {% endblock %}

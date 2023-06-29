@@ -46,10 +46,12 @@ class ActivityRepository extends ServiceEntityRepository
     public function getFilteredActivities(Filter $filter, UserProfile $userProfile, array $activitiesIds)
     {
         $querybuilder = $this->createQueryBuilder("a");
-
+        $querybuilder
+            ->join("a.state",'s')
+            ->Where('s.id != 7');
         if($filter->getSite()!== null){
             $querybuilder
-                ->where("a.site = :site")
+                ->andwhere("a.site = :site")
                 ->setParameter("site",$filter->getSite());
 
         }
@@ -77,9 +79,6 @@ class ActivityRepository extends ServiceEntityRepository
         }
         if($filter->getIsRegistered()==1){
             $querybuilder
-//                ->join("a.registrations",'r')
-//                ->andWhere("r.participant = :user")
-//                ->setParameter("user",$userProfile);
                 ->andWhere('a.id IN (:activitiesIds)')
                 ->setParameter('activitiesIds', $activitiesIds);
         }
@@ -90,8 +89,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
         if($filter->getIsFinished()==1){
             $querybuilder
-                ->andWhere("a.startDate < :now")
-                ->setParameter("now",new \DateTime());
+                ->andWhere('s.id = 5');
         }
 
 

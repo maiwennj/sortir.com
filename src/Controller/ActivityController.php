@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Entity\Location;
 use App\Entity\Registration;
 use App\Form\ActivityType;
 use App\Form\FilterType;
+use App\Form\LocationFormType;
 use App\Model\Filter;
 use App\Repository\ActivityRepository;
 use App\Repository\RegistrationRepository;
@@ -25,6 +27,31 @@ use function Symfony\Component\Clock\now;
 #[Route('/activity', name: 'activity_')]
 class ActivityController extends AbstractController
 {
+
+    /**---------------Location--------------**/
+    #[Route('/location/create', name: 'location_create')]
+    public function createLocation(EntityManagerInterface $entityManager,Request $request): Response
+    {
+        $location = new Location();
+        $locationForm=$this->createForm(LocationFormType::class,$location);
+        $locationForm->handleRequest($request);
+
+        if ($locationForm->isSubmitted() && $locationForm->isValid()) {
+            try {
+                $entityManager->persist($location);
+                $entityManager->flush();
+                $this->addFlash('success', 'Lieu ajouté avec succès.');
+                return $this->redirectToRoute('activity_create');
+            }catch (\Exception $exception){
+                $this->addFlash('danger','Ajout impossible');
+            }
+        }
+        return $this->render('activity/location-create.html.twig', [
+            'locationForm'=>$locationForm->createView()
+        ]);
+
+    }
+    /**---------------Activity--------------**/
     #[Route('/create', name: 'create')]
     public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository): Response{
 
@@ -34,16 +61,29 @@ class ActivityController extends AbstractController
 
         if($activityForm->isSubmitted() && $activityForm->isValid()){
             try{
-                $state = $stateRepository->find(1);
+                $btn = $request->get('btnActivity');
+                if($btn == 'save'){
+                    //save if save btn
+                    $state = $stateRepository->find(1);
+                    $flashMessage = "L'activité a bien été enregistrée";
+
+                }elseif($btn == 'add'){
+                    //add if add btn
+                    $state = $stateRepository->find(2);
+                    $flashMessage = "L'activité a bien été créée";
+                }else{
+                    //redirect if problem
+                    $this->addFlash('danger',"Un problème est survenu");
+                    return $this->redirectToRoute('activity_create',);
+                }
                 $activity->setState($state);
                 $activity->setOrganiser($this->getUser()->getUserProfile());
-
                 $entityManager->persist($activity);
                 $entityManager->flush();
-                $this->addFlash('success', "L'activité a bien été créée");
-                $this->redirectToRoute('activity_details', ["id" => $activity->getId()]);
+                $this->addFlash('success', $flashMessage );
+                return $this->redirectToRoute('activity_details', ["id" => $activity->getId()]);
             } catch (Exception $exception) {
-                $this->addFlash('danger', "Le souhait n'a pas été ajouté.");
+                $this->addFlash('danger', "L'activité n'a pas été ajouté.");
                 return $this->redirectToRoute('activity_create');
             }
         }
@@ -85,10 +125,7 @@ class ActivityController extends AbstractController
     }
 
 
-    #[Route('/{id}',
-        name: 'details',
-        requirements: ["id" => "\d+"]
-    )]
+    #[Route('/{id}', name: 'details', requirements: ["id" => "\d+"])]
     public function details($id, ActivityRepository $activityRepository): Response
     {
         $activity = $activityRepository->find($id);
@@ -100,9 +137,63 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    #[Route('/update', name: 'update')]
-    public function update()
+    #[Route('/update/{id}', name: 'update',requirements: ['id'=>'\d+'])]
+    public function update( EntityManagerInterface $entityManager, int $id,ActivityRepository $activityRepository,StateRepository $stateRepository, Request $request)
     {
+        $activity = $activityRepository->find($id);
+        $user = $this->getUser()->getUserProfile();
+
+        /**
+         * check if user is the organiser
+         */
+        if($activity->getOrganiser()==$user){
+
+            $activityForm = $this->createForm(ActivityType::class, $activity);
+            $activityForm->handleRequest($request);
+
+            if($activityForm->isSubmitted() && $activityForm->isValid()){
+                try{
+                    $btn = $request->get('btnActivity');
+                    if($btn == 'save'){
+                        //save if save btn
+                        $state = $stateRepository->find(1);
+                        $flashMessage = "L'activité a bien été enregistrée et mis à jour";
+
+                    }elseif($btn == 'add'){
+                        //add if add btn
+                        $state = $stateRepository->find(2);
+                        $flashMessage = "L'activité a bien été validé et mis à jour";
+                    }else{
+                        //redirect if problem
+                        $this->addFlash('danger',"Un problème est survenu");
+                        return $this->redirectToRoute('activity_update',["id" => $activity->getId()]);
+                    }
+                    $activity->setState($state);
+                    $activity->setOrganiser($this->getUser()->getUserProfile());
+                    $entityManager->persist($activity);
+                    $entityManager->flush();
+                    $this->addFlash('success', $flashMessage );
+                    if($btn == 'save'){
+                        return $this->redirectToRoute('activity_update',["id" => $activity->getId()]);
+                    }else{
+                        return $this->redirectToRoute('activity_details',["id" => $activity->getId()]);
+                    }
+
+                } catch (Exception $exception) {
+                    $this->addFlash('danger', "L'activité n'a pas été modifiée.");
+                    return $this->redirectToRoute('activity_update',["id" => $activity->getId()]);
+                }
+            }
+
+            return $this->render('activity/create.html.twig', [
+                'form' => $activityForm->createView(),
+            ]);
+
+        }else{
+            $this->addFlash('danger', "Vous ne pouvez pas modifier cette activité");
+            return $this->redirectToRoute('activity_list');
+        }
+
 
     }
 

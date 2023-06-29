@@ -49,9 +49,6 @@
         <div>
             {{ form_widget(form.submit) }}
         </div>
-        <div>
-            {{ form_widget(form.reset) }}
-        </div>
     {{ form_end(form) }}
 {# ------------------------------ version JS ------------------------------ #}
 {#    <div class="js-user"#}
@@ -106,24 +103,30 @@
                     {% endfor %}
                 </td>
                 <td>{{ activity.organiser.user.username}}</td>
-                <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
-
-                {% if activity.organiser.user == app.user %}
-                    <td><a href="{{ path("activity_cancel",{'id': activity.id}) }}">Annuler</a></td>
-                {% endif %}
-                {% if activity.state is not null and activity.state.id == 2 %}
-                    {% set isRegistered = false %}
-                    {% for registration in activity.registrations %}
-                        {% if registration.participant == app.user.userProfile %}
-                            {% set isRegistered = true %}
-                        {% endif %}
-                    {% endfor %}
-                    {% if isRegistered and activity.startDate > date('now') %}
-                        <td><a href="{{ path("activity_quit",{'id': activity.id})}}">Désister</a></td>
-                    {% elseif not isRegistered %}
-                        <td><a href="{{ path("activity_register",{'id': activity.id})}}">S'inscrire</a></td>
+                <td>
+                    {#  #}
+                    {% if activity.organiser.user == app.user and activity.state.id == 1 %}
+                        <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
+                    {% else %}
+                        <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
                     {% endif %}
-                {% endif %}
+                    {% if activity.organiser.user == app.user %}
+                        <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
+                    {% endif %}
+                    {% if activity.state is not null and activity.state.id == 2 %}
+                        {% set isRegistered = false %}
+                        {% for registration in activity.registrations %}
+                            {% if registration.participant == app.user.userProfile %}
+                                {% set isRegistered = true %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if isRegistered and activity.startDate > date('now') %}
+                            <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                        {% elseif not isRegistered %}
+                            <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
         {% endfor %}
 
 

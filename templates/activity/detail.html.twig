@@ -30,7 +30,7 @@
         <tbody>
         {% for registration in activity.registrations %}
             <tr>
-                <td></td>
+                <td>{{ registration.participant.user.username }}</td>
                 <td>{{ registration.participant.firstName }} {{ registration.participant.lastName|upper }}</td>
             </tr>
         {% endfor %}
