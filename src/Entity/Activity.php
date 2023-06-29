@@ -57,6 +57,9 @@ class Activity
        #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Registration::class, orphanRemoval: true)]
        private Collection $registrations;
 
+       #[ORM\Column(type: Types::TEXT, nullable: true)]
+       private ?string $cancellationReason = null;
+
        public function __construct()
        {
            $this->registrations = new ArrayCollection();
@@ -226,6 +229,18 @@ class Activity
                 $registration->setActivity(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCancellationReason(): ?string
+    {
+        return $this->cancellationReason;
+    }
+
+    public function setCancellationReason(?string $cancellationReason): static
+    {
+        $this->cancellationReason = $cancellationReason;
 
         return $this;
     }

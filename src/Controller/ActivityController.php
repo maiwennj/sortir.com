@@ -12,10 +12,8 @@ use App\Repository\RegistrationRepository;
 use App\Repository\StateRepository;
 use App\Repository\UserProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\This;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,28 +26,20 @@ use function Symfony\Component\Clock\now;
 class ActivityController extends AbstractController
 {
     #[Route('/create', name: 'create')]
-    public function create(
-        EntityManagerInterface $entityManager,
-        Request                $request,
-        StateRepository        $stateRepository,
-        UserProfileRepository  $userProfileRepository
-    ): Response
-    {
+    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository): Response{
 
         $activity = new Activity();
         $activityForm = $this->createForm(ActivityType::class, $activity);
-
         $activityForm->handleRequest($request);
+
 
 
 
         if($activityForm->isSubmitted() && $activityForm->isValid()){
             try{
-//à modifier pour fonctionner avec le changement de stade et la bdd
+                //à modifier pour fonctionner avec le changement de stade et la bdd
                 $state = $stateRepository->find(1);
-
                 $activity->setState($state);
-
                 $activity->setOrganiser($this->getUser()->getUserProfile());
 
                 $entityManager->persist($activity);
@@ -60,13 +50,13 @@ class ActivityController extends AbstractController
                 $this->addFlash('danger', "Le souhait n'a pas été ajouté.");
                 return $this->redirectToRoute('activity_create');
             }
-
         }
 
         return $this->render('activity/create.html.twig', [
             'form' => $activityForm->createView()
         ]);
     }
+
 
     #[Route('/', name: 'list')]
     public function list(
