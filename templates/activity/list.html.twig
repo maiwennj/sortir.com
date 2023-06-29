@@ -108,21 +108,25 @@
                 <td>{{ activity.organiser.user.username}}</td>
                 <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
 
-                {% if activity.getState() is not null and activity.getState().getLabel() == "Ouverte" %}
+                {% if activity.organiser.user == app.user %}
+                    <td><a href="{{ path("activity_cancel",{'id': activity.id}) }}">Annuler</a></td>
+                {% endif %}
+                {% if activity.state is not null and activity.state.id == 2 %}
                     {% set isRegistered = false %}
-                    {% for registration in activity.getRegistrations() %}
-                        {% if registration.getParticipant() == app.user.userProfile %}
+                    {% for registration in activity.registrations %}
+                        {% if registration.participant == app.user.userProfile %}
                             {% set isRegistered = true %}
                         {% endif %}
                     {% endfor %}
-                    {% if isRegistered %}
+                    {% if isRegistered and activity.startDate > date('now') %}
                         <td><a href="{{ path("activity_quit",{'id': activity.id})}}">Désister</a></td>
-                    {% else %}
+                    {% elseif not isRegistered %}
                         <td><a href="{{ path("activity_register",{'id': activity.id})}}">S'inscrire</a></td>
                     {% endif %}
                 {% endif %}
-
         {% endfor %}
+
+
         </tbody>
     </table>
     <script src="{{asset('assets/js/script.js')}}"></script>
