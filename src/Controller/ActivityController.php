@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Activity;
 use App\Entity\Registration;
+use App\Entity\State;
 use App\Form\ActivityType;
 use App\Form\FilterType;
 use App\Model\Filter;
@@ -99,50 +100,87 @@ class ActivityController extends AbstractController
 
     }
 
-    #[Route('/cancel/{id}', name: 'cancel',requirements: ['id'=>'\d+'])]
 
+
+
+
+
+    #[Route('/cancel/{id}', name: 'cancel',requirements: ['id'=>'\d+'])]
     public function cancel( EntityManagerInterface $entityManager, int $id,ActivityRepository $activityRepository,Request $request): Response
     {
         $activity = $activityRepository->find($id);
-        $reason = $request->request->get('reason');
-       // dd($request->request->get('reason'));
-        if ($reason){
-            try {
-        $entityManager->remove($activity);
-        $entityManager->flush();
+        $currentUser = $this->getUser()->getUserProfile();
+        $organiser = $activity->getOrganiser();
+        $currentState = $activity->getState()->getId();
 
-        $this->addFlash('success', "L'activité a été annulée avec succès.");
+        if ($currentUser === $organiser ) {
+            if($currentState === 2 || $currentState === 3) {
 
-         }catch (\Exception $exception){
-            $this->addFlash('danger',"Erreur d'annulation");
-            return $this->redirectToRoute("activity_cancel",['id'=>$activity->getId()]);
+                $activityForm = $this->createForm(ActivityType::class, $activity, ['cancel_mode' => true]);
+                $activityForm->handleRequest($request);
+                $cancelStateId = 6;
+
+                if ($activityForm->isSubmitted() && $activityForm->isValid()) {
+
+                    try {
+                        $cancelState = $entityManager->getReference(State::class, $cancelStateId);
+                        $activity->setState($cancelState);
+                        $cancelState = $entityManager->getReference(State::class, $cancelStateId);
+                        $activity->setState($cancelState);
+                        $entityManager->persist($activity);
+                        $entityManager->flush();
+
+                        $this->addFlash('success', "L'activité a été annulée avec succès.");
+                        return $this->redirectToRoute("activity_list");
+                    } catch
+                    (\Exception $exception) {
+                        $this->addFlash('danger', "Erreur d'annulation");
+                        return $this->redirectToRoute("activity_cancel", ['id' => $activity->getId()]);
+                    }
+
+                }
+
+                return $this->render('activity/cancel.html.twig', ["activity" => $activity, "form" => $activityForm->createView()]);
+            }else{
+                $this->addFlash('danger','erreur état');
+            }
+        } else {
+            $this->addFlash('danger', "Vous n'êtes pas autorisé à annuler cette activité.");
+            return $this->redirectToRoute("activity_list");
         }
-        }
-
-        return $this->render('activity/cancel.html.twig',["activity"=>$activity]);
+        return $this->redirectToRoute("activity_list");
     }
 
+    #[Route('/register/{id}', name: 'register')]
+    public function register(EntityManagerInterface $entityManager, Request $request, int $id): Response
+    {
+        $activity = $entityManager->getRepository(Activity::class)->find($id);
+        $currentState = $activity->getState()->getId();
 
-    #[Route('/register/{id}',name:'register')]
-    public function register(EntityManagerInterface $entityManager,Request $request,int $id): Response{
-        try {
-            $activity = $entityManager->getRepository(Activity::class)->find($id);
-            $registration = new Registration();
+        if ($currentState === 2) {
+            try {
+                $registration = new Registration();
+                $registration->setParticipant($this->getUser()->getUserProfile());
+                $registration->setActivity($activity);
+                $registration->setRegistrationDate(now());
+                $activity->addRegistration($registration);
 
-            $registration->setParticipant($this->getUser()->getUserProfile());
-            $registration->setActivity($activity);
-            $registration->setRegistrationDate(now());
-            $activity->addRegistration($registration);
+                $entityManager->persist($registration);
+                $entityManager->persist($activity);
+                $entityManager->flush();
 
-            $entityManager->persist($registration);
-            $entityManager->persist($activity);
-            $entityManager->flush();
+                $this->addFlash('success', "Vous avez été inscrit à cette activité avec succès.");
+                return $this->redirectToRoute('activity_list');
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
+            }
 
             return $this->redirectToRoute('activity_list');
-        }catch (\Exception $exception){
-            $this->addFlash('danger',"Nous n'avons pas pu vous inscrire à cette activité.");
-            return $this->redirectToRoute('activity_list');
+        } else {
+            $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
         }
+
+        return $this->redirectToRoute('activity_list');
     }
     #[Route('/quit/{id}',name:'quit')]
     public function quit(EntityManagerInterface $entityManager, Request $request, int $id): Response

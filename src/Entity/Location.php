@@ -6,7 +6,7 @@ use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location
 {
@@ -16,15 +16,22 @@ class Location
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message: "Le nom du lieu ne peut pas être vide.")]
+    #[Assert\Length(min :5,max: 30,minMessage:"Le nom de lieu doit être à 5 caractéres minimum.", maxMessage: "Le nom de lieu ne peut pas dépasser 30 caractères.")]
+
     private ?string $locationName = null;
 
     #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\NotBlank(message: "La rue ne doit pas être vide.")]
+    #[Assert\Length(min :10,max: 30,minMessage:"La rue doit être à 10 caractéres minimum.", maxMessage: "La rue ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $street = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Type(type: 'float', message: "La latitude doit être une valeur décimale.")]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Type(type: 'float', message: "La longitude doit être une valeur décimale.")]
     private ?float $longitude = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
