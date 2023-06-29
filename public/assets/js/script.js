@@ -1,19 +1,19 @@
-window.onload = init
-
-function init(){
-    document.getElementById('isTheOrganiser').addEventListener('change',hidenLinesByCheckbox)
-}
-function hidenLinesByCheckbox() {
-   let userRating = document.querySelector('.js-user');
-   let user = JSON.parse(userRating.dataset.user);
-   let check = document.getElementById("isTheOrganiser");
-   let table = document.getElementById('activity-table');
-    console.log(check.checked)
-
-    let lignes = table.getElementsByTagName('tr');
-        // console.log(lignes)
-    for (let i = 1; i < lignes.length; i++){
-        if(lignes[i].getElementsByTagName('td')[6].textContent!==user){
+// window.onload = init
+//
+// function init(){
+//     document.getElementById('isTheOrganiser').addEventListener('change',hidenLinesByCheckbox)
+// }
+// function hidenLinesByCheckbox() {
+//    let userRating = document.querySelector('.js-user');
+//    let user = JSON.parse(userRating.dataset.user);
+//    let check = document.getElementById("isTheOrganiser");
+//    let table = document.getElementById('activity-table');
+//     console.log(check.checked)
+//
+//     let lignes = table.getElementsByTagName('tr');
+//         // console.log(lignes)
+//     for (let i = 1; i < lignes.length; i++){
+//         if(lignes[i].getElementsByTagName('td')[6].textContent!==user){
             // if(check){
             //     lignes[i].style.display = 'none';
             //     // lignes[i].style.color = 'blue';

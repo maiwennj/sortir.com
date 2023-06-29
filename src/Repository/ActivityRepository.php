@@ -7,6 +7,7 @@ use App\Entity\UserProfile;
 use App\Model\Filter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Sodium\add;
 use function Symfony\Component\Clock\now;
 
 /**
@@ -42,7 +43,7 @@ class ActivityRepository extends ServiceEntityRepository
         }
     }
 
-    public function getFilteredActivities(Filter $filter, UserProfile $userProfile)
+    public function getFilteredActivities(Filter $filter, UserProfile $userProfile, array $activitiesIds)
     {
         $querybuilder = $this->createQueryBuilder("a");
 
@@ -63,6 +64,8 @@ class ActivityRepository extends ServiceEntityRepository
                 ->setParameter("startDate",$filter->getStartDate());
         }
         if($filter->getEndDate()!==null){
+            $inputDate = $filter->getEndDate();
+            $filter->setEndDate($inputDate->modify('+23 hours 59 minutes'));
             $querybuilder
                 ->andWhere("a.startDate <= :endDate")
                 ->setParameter("endDate",$filter->getEndDate());
@@ -74,26 +77,17 @@ class ActivityRepository extends ServiceEntityRepository
         }
         if($filter->getIsRegistered()==1){
             $querybuilder
-                ->join("a.registrations",'r')
-                ->andWhere("r.participant = :user")
-                ->setParameter("user",$userProfile);
+//                ->join("a.registrations",'r')
+//                ->andWhere("r.participant = :user")
+//                ->setParameter("user",$userProfile);
+                ->andWhere('a.id IN (:activitiesIds)')
+                ->setParameter('activitiesIds', $activitiesIds);
         }
-//        if($filter->getIsNotRegistered()==1){
-//
-//            $querybuilder
-////                ->Join("a.registrations",'r')
-//////                ->andWhere(" a.registrations is empty");
-////                ->andWhere("r.participant != :user")
-////                ->andWhere("a.registrations IS empty")
-//////                ->setParameter('user',$userProfile);
-//
-//                ->leftJoin('a.registrations', 'r')
-//                ->andWhere($querybuilder->expr()->orX(
-//                    $querybuilder->expr()->neq('r.participant', ':user'),
-////                    $querybuilder->expr()->isNull('r.registrationDate')
-//                ))
-//                ->setParameter('user', $userProfile);
-//        }
+        if($filter->getIsNotRegistered()==1){
+            $querybuilder
+                ->andWhere('a.id NOT IN (:activitiesIds)')
+                ->setParameter('activitiesIds', $activitiesIds);
+        }
         if($filter->getIsFinished()==1){
             $querybuilder
                 ->andWhere("a.startDate < :now")

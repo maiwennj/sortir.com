@@ -26,30 +26,54 @@
             {{ form_errors(form.endDate) }}
         </div>
         <div>
+            {{ form_label(form.isTheOrganiser) }}
+            {{ form_widget(form.isTheOrganiser) }}
+            {{ form_errors(form.isTheOrganiser) }}
+        </div>
+        <div>
+            {{ form_label(form.isRegistered) }}
+            {{ form_widget(form.isRegistered) }}
+            {{ form_errors(form.isRegistered) }}
+        </div>
+        <div>
+            {{ form_label(form.isNotRegistered) }}
+            {{ form_widget(form.isNotRegistered) }}
+            {{ form_errors(form.isNotRegistered) }}
+        </div>
+        <div>
+            {{ form_label(form.isFinished) }}
+            {{ form_widget(form.isFinished) }}
+            {{ form_errors(form.isFinished) }}
+        </div>
+
+        <div>
             {{ form_widget(form.submit) }}
         </div>
+        <div>
+            {{ form_widget(form.reset) }}
+        </div>
     {{ form_end(form) }}
-
-    <div class="js-user"
-         data-user="{{ app.user.username|serialize(format = 'json') }}"
-    >
-        <div>
-            <input type="checkbox" id="isTheOrganiser" class="">
-            <label for="isTheOrganiser">Sorties dont je suis l'organisteur/trice</label>
-        </div>
-        <div>
-            <input type="checkbox" id="isRegistered" class="">
-            <label for="isRegistered">Sorties auxquelles je suis inscrit/e</label>
-        </div>
-        <div>
-            <input type="checkbox" id="isNotRegistered" class="">
-            <label for="isNotRegistered">Sorties auxquelles je ne suis pas inscrit/e</label>
-        </div>
-        <div>
-            <input type="checkbox" id="isFinished" class="">
-            <label for="isFinished">Sorties passées</label>
-        </div>
-    </div>
+{# ------------------------------ version JS ------------------------------ #}
+{#    <div class="js-user"#}
+{#         data-user="{{ app.user.username|serialize(format = 'json') }}"#}
+{#    >#}
+{#        <div>#}
+{#            <input type="checkbox" id="isTheOrganiser" class="">#}
+{#            <label for="isTheOrganiser">Sorties dont je suis l'organisteur/trice</label>#}
+{#        </div>#}
+{#        <div>#}
+{#            <input type="checkbox" id="isRegistered" class="">#}
+{#            <label for="isRegistered">Sorties auxquelles je suis inscrit/e</label>#}
+{#        </div>#}
+{#        <div>#}
+{#            <input type="checkbox" id="isNotRegistered" class="">#}
+{#            <label for="isNotRegistered">Sorties auxquelles je ne suis pas inscrit/e</label>#}
+{#        </div>#}
+{#        <div>#}
+{#            <input type="checkbox" id="isFinished" class="">#}
+{#            <label for="isFinished">Sorties passées</label>#}
+{#        </div>#}
+{#    </div>#}
 
     <table class="table table-hover" id="activity-table">
         <thead>

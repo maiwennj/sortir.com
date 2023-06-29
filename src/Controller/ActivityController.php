@@ -77,8 +77,15 @@ class ActivityController extends AbstractController
         $form = $formFactory->create(FilterType::class, $filter);
         $form->handleRequest($request);
 
-        $activities = $activityRepository->getFilteredActivities($filter,$this->getUser()->getUserProfile());
+        $userProfile = $this->getUser()->getUserProfile();
+        $registrations = $userProfile->getRegistrations();
+        $activitiesIds = [];
+        foreach ($registrations as $registration ){
+            $activityId = $registration->getActivity()->getId();
+            $activitiesIds[] = $activityId;
+        }
 
+        $activities = $activityRepository->getFilteredActivities($filter,$userProfile,$activitiesIds);
 
         return $this->render('activity/list.html.twig',[
             'activities'=>$activities,
