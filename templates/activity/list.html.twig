@@ -105,7 +105,7 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td>{{ activity.organiser.user.username}}</td>
+                <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{ activity.organiser.user.username}}</a></td>
                 <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
 
                 {% if activity.organiser.user == app.user %}
