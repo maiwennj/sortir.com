@@ -8,14 +8,17 @@ use App\Entity\City;
 
 use App\Entity\Location;
 use App\Entity\Site;
+use DateInterval;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Clock\Clock;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Symfony\Component\Clock\now;
 
 class ActivityType extends AbstractType
 {
@@ -32,13 +35,18 @@ class ActivityType extends AbstractType
             ->add('startDate',
                 null,
                 [
-                    'label'=>'Date et heure de la sortie :'
+                    'label'=>'Date et heure de la sortie :',
+                    'widget' => 'single_text',
+//                    'value'=>date(now()->format('d/m/y H:i'))
+                'years'=>date(now()->format('yyyy'))
                     ]
             )
 
-            ->add('closingDate',
-                DateType::class,
-                ['label'=>"Date limite d'inscription :"])
+            ->add('closingDate',DateType::class,[
+                'label'=>"Date limite d'inscription :",
+                'widget' => 'single_text',
+
+                ])
 
             ->add('maxRegistration',
                 null,
