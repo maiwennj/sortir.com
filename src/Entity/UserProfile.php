@@ -6,6 +6,7 @@ use App\Repository\UserProfileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserProfileRepository::class)]
 class UserProfile
@@ -16,6 +17,7 @@ class UserProfile
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+//    #[Assert\Length(min: 1,minMessage: 'Le nom de famille ne peut pas être vide.')]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 30)]

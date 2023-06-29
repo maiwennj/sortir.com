@@ -6,6 +6,7 @@ use App\Repository\SiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SiteRepository::class)]
 class Site
@@ -16,6 +17,7 @@ class Site
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\Length(min: 3, max: 30, minMessage: 'Le nom du site doit avoir au moins 3 caractères.', maxMessage: 'Le nom du lieu ne doit pas dépasser 30 caractères.')]
     private ?string $siteName = null;
 
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Activity::class)]
