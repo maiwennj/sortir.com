@@ -109,7 +109,9 @@
                 <td><a href="{{ path("activity_details",{'id': activity.id})}}">Afficher</a></td>
 
                 {% if activity.organiser.user == app.user %}
+                     {% if activity.state is not null and activity.state.id == 2 %}
                     <td><a href="{{ path("activity_cancel",{'id': activity.id}) }}">Annuler</a></td>
+                {% endif %}
                 {% endif %}
                 {% if activity.state is not null and activity.state.id == 2 %}
                     {% set isRegistered = false %}
