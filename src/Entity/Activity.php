@@ -19,10 +19,9 @@ class Activity
 
     #[ORM\Column(length: 30)]
     #[Assert\Length(
-        min: 5,
         max: 30,
-        minMessage: "Le titre doit contenir au moins 5 caractères.",
         maxMessage: "Le titre ne doit pas dépasser 30 caractères.")]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     private ?string $activityName = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -30,17 +29,18 @@ class Activity
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\Range(
-        minMessage: 'La durée doit être supérieure ou égale à 1 minute.',
-        min: 1)]
+    #[Assert\GreaterThanOrEqual(30,message: "La durée minimum est de 30 minutes.")]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     private ?int $duration = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     #[Assert\Expression("this.getClosingDate() < this.getStartDate()",message: "La date de clôture des inscriptions doit être antérieure à la date de début de l'activité.")]
     private ?\DateTimeInterface $closingDate = null;
 
     #[ORM\Column]
-    #[Assert\Range(minMessage: 'Il faut ouvrir les inscriptions à au moins une personne.', min: 1)]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\GreaterThanOrEqual(1,message: "Le nombre d'inscriptions doit être d'au moins ")]
     private ?int $maxRegistration = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

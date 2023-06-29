@@ -17,7 +17,8 @@ class Site
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\Length(min: 3, max: 30, minMessage: 'Le nom du site doit avoir au moins 3 caractères.', maxMessage: 'Le nom du lieu ne doit pas dépasser 30 caractères.')]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Length(max: 30, maxMessage: 'Le nom du lieu ne doit pas dépasser 30 caractères.')]
     private ?string $siteName = null;
 
     #[ORM\OneToMany(mappedBy: 'site', targetEntity: Activity::class)]

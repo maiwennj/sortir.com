@@ -17,22 +17,26 @@ class UserProfile
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-//    #[Assert\Length(min: 1,minMessage: 'Le nom de famille ne peut pas être vide.')]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Length(max: 30,maxMessage: 'Le nom de famille ne peut pas dépasser 30 caractères.')]
     private ?string $lastName = null;
 
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Length(max: 30,maxMessage: 'Le prénom ne peut pas dépasser 30 caractères.')]
     #[ORM\Column(length: 30)]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Length(max:15, maxMessage: 'Le numéro de téléphone ne peut pas dépasser 15 caractères.')]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Length(max:50, maxMessage: 'L\'adresse email ne peut pas dépasser 50 caractères.')]
     private ?string $emailAdress = null;
 
     #[ORM\OneToMany(mappedBy: 'organiser', targetEntity: Activity::class, orphanRemoval: true)]
     private Collection $organisedActivities;
-
-
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
