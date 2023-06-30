@@ -87,7 +87,9 @@
         </thead>
 
         <tbody>
-        {% for activity in activities %}
+
+
+            {% for activity in activities %}
             <tr>
                 <td>{{ activity.activityName }}</td>
                 <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
@@ -98,7 +100,6 @@
                 <td>
                     {% for registration in activity.registrations %}
                         {% if registration.participant.id == app.user.id %}
-                        x
                         {% endif %}
                     {% endfor %}
                 </td>
@@ -110,11 +111,9 @@
                     {% else %}
                         <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
                     {% endif %}
-                    {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
+                    {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
                         <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
                     {% endif %}
-                    
-                    
                     {% if activity.state is not null and activity.state.id == 2 %}
                         {% set isRegistered = false %}
                         {% for registration in activity.registrations %}
