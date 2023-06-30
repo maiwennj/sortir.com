@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %}activitie details{% endblock %}
 
 {% block body %}
@@ -87,50 +88,64 @@
         </thead>
 
         <tbody>
-
-
             {% for activity in activities %}
-            <tr>
-                <td>{{ activity.activityName }}</td>
-                <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
-                <td>{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
+                {% set regMax = activity.maxRegistration %}
+                {% set regNumber = activity.registrations|length %}
+                <tr>
+                    <td>{{ activity.activityName }}</td>
+                    <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
+                    <td>{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
 
-                <td>{{ activity.registrations|length  }} / {{ activity.maxRegistration }}</td>
-                <td>{{ activity.state.label }}</td>
-                <td>
-                    {% for registration in activity.registrations %}
-                        {% if registration.participant.id == app.user.id %}
+                    <td>
+                        {{ activity.registrations|length  }} / {{ activity.maxRegistration }}
+                        {% if regNumber == regMax %}
+                            <span class="badge bg-danger">Complet</span >
                         {% endif %}
-                    {% endfor %}
-                </td>
+                    </td>
 
-                <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{ activity.organiser.user.username}}</a></td>
-                <td>
-                    {% if activity.organiser.user == app.user and activity.state.id == 1 %}
-                        <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
-                    {% else %}
-                        <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
-                    {% endif %}
-                    {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
-                        <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
-                    {% endif %}
-                    {% if activity.state is not null and activity.state.id == 2 %}
-                        {% set isRegistered = false %}
+                    <td>{{ activity.state.label }}</td>
+                    <td>
                         {% for registration in activity.registrations %}
-                            {% if registration.participant == app.user.userProfile %}
-                                {% set isRegistered = true %}
+                            {% if registration.participant.id == app.user.id %}
+                                x
                             {% endif %}
                         {% endfor %}
-                        {% if isRegistered and activity.startDate > date('now') %}
-                            <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
-                        {% elseif not isRegistered %}
-                            <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                    </td>
+
+                    <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{ activity.organiser.user.username}}</a></td>
+                    <td>
+                        {% if activity.organiser.user == app.user and activity.state.id == 1 %}
+                            <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
+                        {% else %}
+                            <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
                         {% endif %}
-                    {% endif %}
-                </td>
-        {% endfor %}
+                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
+                        {% endif %}
+                        {% if activity.state is not null and activity.state.id == 2 %}
+                            {% set isRegistered = false %}
+                            {% for registration in activity.registrations %}
+                                {% if registration.participant == app.user.userProfile %}
+                                    {% set isRegistered = true %}
+                                {% endif %}
+                            {% endfor %}
 
-
+                            {# check if there are still places for this activity #}
+                            {% if regNumber < regMax %}
+                                {% if isRegistered and activity.startDate > date('now') %}
+                                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                                {% elseif not isRegistered %}
+                                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                                {% endif %}
+                            {% else %}
+                                {% if isRegistered and activity.startDate > date('now') %}
+                                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
     <script src="{{asset('assets/js/script.js')}}"></script>
