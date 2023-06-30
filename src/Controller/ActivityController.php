@@ -109,13 +109,13 @@ class ActivityController extends AbstractController
         RegistrationRepository $registrationRepository,
         Request                $request,
         FormFactoryInterface   $formFactory
-    ): Response
+        ): Response
     {
         $filter = new Filter();
 
         $form = $formFactory->create(FilterType::class, $filter);
         $form->handleRequest($request);
-      
+
         $userProfile = $this->getUser()->getUserProfile();
         $registrations = $userProfile->getRegistrations();
         $activitiesIds = [];
@@ -205,12 +205,6 @@ class ActivityController extends AbstractController
 
 
     }
-
-
-
-
-
-
     #[Route('/cancel/{id}', name: 'cancel',requirements: ['id'=>'\d+'])]
     public function cancel( EntityManagerInterface $entityManager, int $id,ActivityRepository $activityRepository,Request $request): Response
     {
@@ -218,9 +212,8 @@ class ActivityController extends AbstractController
         $currentUser = $this->getUser()->getUserProfile();
         $organiser = $activity->getOrganiser();
         $currentState = $activity->getState()->getId();
-
         if ($currentUser === $organiser ) {
-            if($currentState === 2 || $currentState === 3) {
+            if($currentState === 2 || $currentState === 3 || $currentState === 1) {
 
                 $activityForm = $this->createForm(ActivityType::class, $activity, ['cancel_mode' => true]);
                 $activityForm->handleRequest($request);
@@ -237,7 +230,7 @@ class ActivityController extends AbstractController
                         $entityManager->flush();
 
                         $this->addFlash('success', "L'activité a été annulée avec succès.");
-                        return $this->redirectToRoute("activity_list");
+                        return $this->redirectToRoute("activity_cancel", ['id' => $activity->getId()]);
                     } catch
                     (\Exception $exception) {
                         $this->addFlash('danger', "Erreur d'annulation");
@@ -250,7 +243,7 @@ class ActivityController extends AbstractController
             }else{
                 $this->addFlash('danger','erreur état');
             }
-        } else {
+        } else{
             $this->addFlash('danger', "Vous n'êtes pas autorisé à annuler cette activité.");
             return $this->redirectToRoute("activity_list");
         }
