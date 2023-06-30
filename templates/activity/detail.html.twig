@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
+{% set regMax = activity.maxRegistration %}
+{% set regNumber = activity.registrations|length %}
 
 {% block title %}activity details{% endblock %}
-{% block h2 %} {{ activity.activityName }} {% endblock %}
-{% block body %}
+{% block h2 %}
+    {{ activity.activityName }}
+    {% if regNumber == regMax %}
+        <span class="badge bg-danger">Complet</span >
+    {% endif %}
+{% endblock %}
 
-  <p> Nom de l'organisateur:<a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{activity.organiser.user.username}}</a></p>
+{% block body %}
+    <p> Nom de l'organisateur:<a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{activity.organiser.user.username}}</a></p>
     <p>Date et heure de la sortie : {{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</p>
     <p>Date limite d'inscription : {{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</p>
     <p>Nombre de place : {{ activity.maxRegistration }}</p>
@@ -16,7 +23,9 @@
     <p>Coordonnées : {{ activity.location.latitude }} {{ activity.location.longitude }} <a href="https://www.google.fr/maps/place/{{ activity.location.latitude }} {{ activity.location.longitude }}" target="_blank">(ouvrir la carte)</a></p>
          {% if activity.cancellationReason is not null %}
             <p> Motif d'annulation :{{ activity.cancellationReason }}</p>
+
         {% endif%}
+
 
 
     <div>
@@ -36,11 +45,22 @@
                     {% set isRegistered = true %}
                 {% endif %}
             {% endfor %}
-            {% if isRegistered and activity.startDate > date('now') %}
-                <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
-            {% elseif not isRegistered %}
-                <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+
+            {# check if there are still places for this activity #}
+            {% set regMax = activity.maxRegistration %}
+            {% set regNumber = activity.registrations|length %}
+            {% if regNumber < regMax %}
+                {% if isRegistered and activity.startDate > date('now') %}
+                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                {% elseif not isRegistered %}
+                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                {% endif %}
+            {% else %}
+                {% if isRegistered and activity.startDate > date('now') %}
+                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                {% endif %}
             {% endif %}
+
         {% endif %}
     </div>
 
