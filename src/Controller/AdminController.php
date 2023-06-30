@@ -34,7 +34,7 @@ class AdminController extends AbstractController
                 $this->addFlash('danger','Ajout impossible');
             }
         }
-        return $this->render('admin/location-site-create.html.twig', [
+        return $this->render('admin/location-create.html.twig', [
             'locationForm'=>$locationForm->createView(),
         ]);
     }

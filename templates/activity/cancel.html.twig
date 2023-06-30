@@ -7,16 +7,15 @@
 {% endblock %}
 
 {% block body %}
-    <form method="GET" action="{{ path('activity_cancel', {'id': activity.id}) }}">
-        <p>Nom de la sortie : {{ activity.activityName }}</p>
-        <p>Date et heure de la sortie : {{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</p>
-        <p>SiteOrganisateur : {{ activity.site.siteName }}</p>
-        <p>Lieu : {{ activity.location.locationName }}</p>
+<p>Titre : {{ activity.activityName }}</p>
+ {{ form_start(form) }}
 
-        <label for="reason">Motif d'annulation :</label>
-        <textarea id="reason" name="reason" rows="4" cols="50"></textarea>
-
-        <button type="submit" class="btn btn-danger">Enregistrer</button>
-        <a href="{{ path('activity_details', {'id': activity.id}) }}" class="btn btn-secondary">Annuler</a>
-    </form>
+<div>
+    {{ form_label(form.cancellationReason) }}
+    {{ form_widget(form.cancellationReason) }}
+    {{ form_errors(form.cancellationReason) }}
+</div>
+    <button type="submit" class="btn btn-info "> Enregistrer </button>
+    <a href="{{ path('activity_list') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
 {% endblock %}
