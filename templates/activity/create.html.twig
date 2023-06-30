@@ -69,7 +69,13 @@
         <div>
             <button type="submit" class="btn btn-success" name="btnActivity" value="add">Publier la sortie</button>
             <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer comme brouillon</button>
-            <a href="{{ path("activity_list") }}" class="btn btn-danger">Annuler</a>
+            <a href="{{ path("activity_list") }}" class="btn btn-secondary">Annuler</a>
+            {% if activity.state is not null and activity.state.id == 1  %}
+                <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
+            {% endif %}
+
         </div>
     {{ form_end(form) }}
+    <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}
+
