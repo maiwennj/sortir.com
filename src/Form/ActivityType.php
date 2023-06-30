@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use function Symfony\Component\Clock\now;
 
 class ActivityType extends AbstractType{
@@ -46,10 +47,20 @@ class ActivityType extends AbstractType{
                 'widget' => 'single_text'])
 
             ->add('maxRegistration',null,[
-              'label'=>'Nombre de places :'])
+              'label'=>'Nombre de places :',
+                'attr'=>[
+                    'min'=>1,
+                    'value'=>"1",
+                ]])
 
-            ->add('duration',null,[
-              'label'=>'Durée :'])
+            ->add('duration',null,
+                [
+                    'label'=>'Durée :',
+                    'attr'=>[
+                        'min'=>30,
+                        'value'=>"30",
+                    ]
+                ])
 
             ->add('description',null,[
               'label'=>'Description et infos :'])
