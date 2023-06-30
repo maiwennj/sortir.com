@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}create activitie{% endblock %}
+{% block title %}Créer une sortied{% endblock %}
 {%  block h2 %}Créer une sortie{% endblock %}
 
 {% block body %}
@@ -59,7 +59,6 @@
             {{ form_widget(form.city,{'attr': {'id': 'select-city'}}) }}
             {{ form_errors(form.city) }}
         </div>
-        <div id="testjs"></div>
         <div>
             {{ form_label(form.location) }}
             {{ form_widget(form.location,{'attr': {'id': 'select-location'}}) }}
@@ -68,14 +67,17 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer</button>
             <button type="submit" class="btn btn-success" name="btnActivity" value="add">Publier la sortie</button>
+            <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer comme brouillon</button>
             <a href="{{ path("activity_list") }}" class="btn btn-secondary">Annuler</a>
 
 
             {% if activity.state is not null and activity.state.id == 1  %}
                 <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
             {% endif %}
+
+           
+
         </div>
     {{ form_end(form) }}
     <script src="{{asset('assets/js/script.js')}}"></script>
