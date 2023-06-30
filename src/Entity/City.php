@@ -16,6 +16,7 @@ class City
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+
     private ?string $cityName = null;
 
     #[ORM\Column(length: 10)]

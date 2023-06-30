@@ -24,17 +24,19 @@ use function Symfony\Component\Clock\now;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/activity', name: 'activity_')]
-class ActivityController extends AbstractController
-{
+class ActivityController extends AbstractController{
     #[Route('/create', name: 'create')]
     public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository): Response{
 
         $activity = new Activity();
+        $activity->setStartDate(now()->modify('+1 day'));
+        $activity->setClosingDate(now()->modify('2 hours'));
         $activityForm = $this->createForm(ActivityType::class, $activity);
         $activityForm->handleRequest($request);
 
         if($activityForm->isSubmitted() && $activityForm->isValid()){
             try{
+                //à modifier pour fonctionner avec le changement de stade et la bdd
                 $state = $stateRepository->find(1);
                 $activity->setState($state);
                 $activity->setOrganiser($this->getUser()->getUserProfile());
@@ -42,6 +44,10 @@ class ActivityController extends AbstractController
                 $entityManager->persist($activity);
                 $entityManager->flush();
                 $this->addFlash('success', "L'activité a bien été créée");
+                $closingdate = $activity->getClosingDate()->format('d/m/y H:i') ;
+                $startdate= $activity->getStartDate()->format('d/m/y H:i');
+                $this->addFlash('danger',"clôture : $closingdate - début de l'activité : $startdate");
+
                 $this->redirectToRoute('activity_details', ["id" => $activity->getId()]);
             } catch (Exception $exception) {
                 $this->addFlash('danger', "Le souhait n'a pas été ajouté.");
@@ -67,9 +73,16 @@ class ActivityController extends AbstractController
 
         $form = $formFactory->create(FilterType::class, $filter);
         $form->handleRequest($request);
+      
+        $userProfile = $this->getUser()->getUserProfile();
+        $registrations = $userProfile->getRegistrations();
+        $activitiesIds = [];
+        foreach ($registrations as $registration ){
+            $activityId = $registration->getActivity()->getId();
+            $activitiesIds[] = $activityId;
+        }
 
-        $activities = $activityRepository->getFilteredActivities($filter, $this->getUser()->getUserProfile());
-
+        $activities = $activityRepository->getFilteredActivities($filter,$userProfile,$activitiesIds);
 
         return $this->render('activity/list.html.twig', [
             'activities' => $activities,
