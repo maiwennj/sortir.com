@@ -18,7 +18,7 @@
     <p>Longitude : {{ activity.location.longitude }}</p>
          {% if activity.cancellationReason is not null %}
             <p> Motif d'annulation :{{ activity.cancellationReason }}</p>
-    {% endif %}
+    {% endblock%}
     <h2>Liste des participants</h2>
     <table class="table table-hover">
         <thead>

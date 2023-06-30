@@ -59,8 +59,8 @@ class ActivityController extends AbstractController
     public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository): Response{
 
         $activity = new Activity();
-        $activity->setStartDate(now()->modify('+1 day'));
-        $activity->setClosingDate(now()->modify('2 hours'));
+        $activity->setStartDate(now()->modify('+3 day'));
+        $activity->setClosingDate(now()->modify('tomorrow'));
         $activityForm = $this->createForm(ActivityType::class, $activity);
         $activityForm->handleRequest($request);
 
