@@ -92,13 +92,6 @@ class FilterType extends AbstractType
                     "label"=>'Rechercher',
 
                 ])
-            ->add("reset",
-                ResetType::class,
-                [
-                    "label"=>'Vider les champs',
-
-                ])
-
         ;
     }
 
