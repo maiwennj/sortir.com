@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
@@ -17,56 +18,65 @@ class Activity
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Assert\Length(
+        max: 30,
+        maxMessage: "Le titre ne doit pas dépasser 30 caractères.")]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     private ?string $activityName = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThanOrEqual(value: 'tomorrow',message: 'La date de début doit être au minimum demain.')]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\GreaterThanOrEqual(30,message: "La durée minimum est de 30 minutes.")]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     private ?int $duration = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Expression("this.getClosingDate() < this.getStartDate()",message: "La date de clôture des inscriptions doit être antérieure à la date de début de l'activité.")]
     private ?\DateTimeInterface $closingDate = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\GreaterThanOrEqual(1,message: "Le nombre d'inscriptions doit être d'au moins ")]
     private ?int $maxRegistration = null;
-
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-       #[ORM\Column(length: 250, nullable: true)]
+    #[ORM\Column(length: 250, nullable: true)]
     private ?string $pictureUrl = null;
 
-       #[ORM\ManyToOne(inversedBy: 'activities')]
-       #[ORM\JoinColumn(nullable: false)]
-       private ?Location $location = null;
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    #[ORM\JoinColumn(nullable: false)]
+//    #[Assert\Choice(callback: )]
+    private ?Location $location = null;
 
-       #[ORM\ManyToOne(inversedBy: 'activities')]
-       #[ORM\JoinColumn(nullable: false)]
-       private ?State $state = null;
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?State $state = null;
 
-       #[ORM\ManyToOne(inversedBy: 'activities')]
-       #[ORM\JoinColumn(nullable: false)]
-       private ?Site $site = null;
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Site $site = null;
 
-       #[ORM\ManyToOne(inversedBy: 'activities')]
-       #[ORM\JoinColumn(nullable: false)]
-       private ?UserProfile $organiser = null;
+    #[ORM\ManyToOne(inversedBy: 'activities')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserProfile $organiser = null;
 
-       #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Registration::class, orphanRemoval: true)]
-       private Collection $registrations;
+    #[ORM\OneToMany(mappedBy: 'activity', targetEntity: Registration::class, orphanRemoval: true)]
+    private Collection $registrations;
 
-       #[ORM\Column(type: Types::TEXT, nullable: true)]
-       private ?string $cancellationReason = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $cancellationReason = null;
 
-       public function __construct()
-       {
-           $this->registrations = new ArrayCollection();
-       }
+    public function __construct(){
+       $this->registrations = new ArrayCollection();
+    }
 
-    public function getId(): ?int
-    {
+    public function getId(): ?int{
         return $this->id;
     }
 
@@ -244,6 +254,7 @@ class Activity
 
         return $this;
     }
+
 
 
 

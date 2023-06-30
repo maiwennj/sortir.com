@@ -18,26 +18,28 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminController extends AbstractController
 {
 
-    #[Route('/location/create', name: 'location_create')]
-    public function createLocation(EntityManagerInterface $entityManager,Request $request): Response
-    {
-        $location = new Location();
-        $locationForm=$this->createForm(LocationFormType::class,$location);
-        $locationForm->handleRequest($request);
-        if ($locationForm->isSubmitted() && $locationForm->isValid()) {
-            try {
-                $entityManager->persist($location);
-                $entityManager->flush();
-                $this->addFlash('success', 'Lieu ajouté avec succès.');
-                return $this->redirectToRoute('activity_list');
-            }catch (\Exception $exception){
-                $this->addFlash('danger','Ajout impossible');
-            }
-        }
-        return $this->render('admin/location-create.html.twig', [
-            'locationForm'=>$locationForm->createView(),
-        ]);
-    }
+
+//    #[Route('/location/create', name: 'location_create')]
+//    public function createLocation(EntityManagerInterface $entityManager,Request $request): Response
+//    {
+//        $location = new Location();
+//        $locationForm=$this->createForm(LocationFormType::class,$location);
+//        $locationForm->handleRequest($request);
+//        if ($locationForm->isSubmitted() && $locationForm->isValid()) {
+//            try {
+//                $entityManager->persist($location);
+//                $entityManager->flush();
+//                $this->addFlash('success', 'Lieu ajouté avec succès.');
+//                return $this->redirectToRoute('activity_list');
+//            }catch (\Exception $exception){
+//                $this->addFlash('danger','Ajout impossible');
+//            }
+//        }
+//        return $this->render('admin/location-site-create.html.twig', [
+//            'locationForm'=>$locationForm->createView(),
+//        ]);
+//    }
+
 
 
     #[Route('/site/create', name: 'site_create')]
