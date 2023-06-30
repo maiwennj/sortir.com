@@ -102,17 +102,19 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td>{{ activity.organiser.user.username}}</td>
+
+                <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{ activity.organiser.user.username}}</a></td>
                 <td>
-                    {#  #}
                     {% if activity.organiser.user == app.user and activity.state.id == 1 %}
                         <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
                     {% else %}
                         <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
                     {% endif %}
-                    {% if activity.organiser.user == app.user %}
+                    {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
                         <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
                     {% endif %}
+                    
+                    
                     {% if activity.state is not null and activity.state.id == 2 %}
                         {% set isRegistered = false %}
                         {% for registration in activity.registrations %}
@@ -124,6 +126,9 @@
                             <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
                         {% elseif not isRegistered %}
                             <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+
+                
+               
                         {% endif %}
                     {% endif %}
                 </td>

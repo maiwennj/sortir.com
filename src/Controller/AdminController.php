@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdminController extends AbstractController
 {
 
+
 //    #[Route('/location/create', name: 'location_create')]
 //    public function createLocation(EntityManagerInterface $entityManager,Request $request): Response
 //    {
@@ -38,6 +39,7 @@ class AdminController extends AbstractController
 //            'locationForm'=>$locationForm->createView(),
 //        ]);
 //    }
+
 
 
     #[Route('/site/create', name: 'site_create')]

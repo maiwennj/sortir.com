@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Afficher une sortie</h1>
-
+  <p> Nom de l'organisateur:<a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{activity.organiser.user.username}}</a></p>
     <p>Nom de la sortie : {{ activity.activityName }}</p>
     <p>Date et heure de la sortie : {{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</p>
     <p>Date limite d'inscription : {{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</p>
