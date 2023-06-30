@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}bonjour!{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -15,16 +16,20 @@
         <header>
             {% include('common/navigation/navigation.html.twig')  %}
         </header>
-        <main>
-            <h2>{% block h2 %}Titre de la page{% endblock %}</h2>
-            {% for label,messages in app.flashes %}
-                {% for message in messages %}
-                    <div>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        {% block body %}{% endblock %}
+        <main class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>{% block h2 %}Titre de la page{% endblock %}</h2>
+                    {% for label,messages in app.flashes %}
+                        {% for message in messages %}
+                            <div>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
         </main>
         {% block footer %}{% endblock %}
     </body>

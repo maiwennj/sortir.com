@@ -1,0 +1,63 @@
+/*      VARIABLES   */
+:root{
+  --bs-primary : #776c64;
+  --bs-primary-hover : #8a7e74;
+  --bs-secondary-color : #e7d4b4;
+  --bs-tertiary-color : #f7a340;
+  --bs-tertiary-color-hover : #ce8837;
+  --bs-tertiary-color-dark : #b47730;
+
+  --bs-danger: #8b1c00;
+}
+
+/*      BUTTONS REDEFINED   */
+
+.btn-primary {
+  --bs-btn-color: var(--bs-secondary-color);
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-color: var(--bs-secondary-color);
+  --bs-btn-hover-bg: var(--bs-primary-hover);
+  --bs-btn-hover-border-color: var(--bs-primary);
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--bs-tertiary-color);
+  --bs-btn-active-border-color: var(--bs-tertiary-color);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.btn-danger {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--bs-danger);
+  --bs-btn-border-color: var(--bs-danger);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #bb2d3b;
+  --bs-btn-hover-border-color: #b02a37;
+  --bs-btn-focus-shadow-rgb: 225, 83, 97;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #b02a37;
+  --bs-btn-active-border-color: #a52834;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+// warning, success, danger, primary, secondary
+
+/**************************** ELEMENTS **************************************/
+
+/*      HEADER   */
+
+.navbar{
+  background-color: var(--bs-primary);
+}
+.navbar-brand{
+  margin: 0 3%;
+}
+.nav-link{
+  color: var(--bs-secondary-color);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+.nav-link:hover{
+  color: var(--bs-tertiary-color);
+}
+
