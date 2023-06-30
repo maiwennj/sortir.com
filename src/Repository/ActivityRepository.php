@@ -48,12 +48,12 @@ class ActivityRepository extends ServiceEntityRepository
         $querybuilder = $this->createQueryBuilder("a");
         $querybuilder
             ->join("a.state",'s')
-            ->Where('s.id != 7');
+            ->Where('s.id != 7')
+            ->orderBy("a.startDate","DESC");
         if($filter->getSite()!== null){
             $querybuilder
                 ->andwhere("a.site = :site")
                 ->setParameter("site",$filter->getSite());
-
         }
         if($filter->getKeyWord()!== null){
             $querybuilder

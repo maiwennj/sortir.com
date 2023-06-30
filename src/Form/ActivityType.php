@@ -27,7 +27,7 @@ class ActivityType extends AbstractType{
 
         if ($options['cancel_mode'] === true) {
             $builder->add('cancellationReason', TextareaType::class, [
-                'label' => 'Motif d\'annulation',
+                'label' => "Motif d'annulation",
                 'required' => true,
             ]);
         }
