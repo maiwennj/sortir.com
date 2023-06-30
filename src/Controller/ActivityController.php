@@ -98,7 +98,9 @@ class ActivityController extends AbstractController
         }
 
         return $this->render('activity/create.html.twig', [
-            'form' => $activityForm->createView()
+            'form' => $activityForm->createView(),
+            'activity'=>$activity,
+
         ]);
     }
 
@@ -123,8 +125,14 @@ class ActivityController extends AbstractController
             $activityId = $registration->getActivity()->getId();
             $activitiesIds[] = $activityId;
         }
-
         $activities = $activityRepository->getFilteredActivities($filter,$userProfile,$activitiesIds);
+
+        //unset activity if in creation and not organise by user connected
+        for($i = 0 ; $i<count($activities); $i++){
+            if($activities[$i]->getState()->getId() === 1 && $activities[$i]->getOrganiser()->getId() != $userProfile->getId()){
+                unset($activities[$i]);
+            }
+        }
 
         return $this->render('activity/list.html.twig', [
             'activities' => $activities,
@@ -147,7 +155,11 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/update/{id}', name: 'update',requirements: ['id'=>'\d+'])]
-    public function update( EntityManagerInterface $entityManager, int $id,ActivityRepository $activityRepository,StateRepository $stateRepository, Request $request)
+    public function update( ActivityRepository $activityRepository,
+                            EntityManagerInterface $entityManager,
+                            StateRepository $stateRepository,
+                            Request $request,
+                            int $id)
     {
         $activity = $activityRepository->find($id);
         $user = $this->getUser()->getUserProfile();
@@ -196,6 +208,7 @@ class ActivityController extends AbstractController
 
             return $this->render('activity/create.html.twig', [
                 'form' => $activityForm->createView(),
+                'activity'=> $activity,
             ]);
 
         }else{
@@ -205,8 +218,45 @@ class ActivityController extends AbstractController
 
 
     }
+
+
+    #[Route('/delete/{id}',name: 'delete' ,requirements: ['id'=>'\d+'])]
+    public function delete(EntityManagerInterface $entityManager,ActivityRepository $activityRepository, int $id)
+    {
+        $userProfile = $this->getUser()->getUserProfile();
+        $activity = $activityRepository->find($id);
+        $activityOrganiser = $activity->getOrganiser();
+
+        if($userProfile===$activityOrganiser){
+            if($activity->getState()->getId()===1){
+                try {
+                    $entityManager->remove($activity);
+                    $entityManager->flush();
+
+                    $this->addFlash('success',"L'activité a bien été supprimée");
+                    $this->redirectToRoute('activity_list');
+                }catch (Exception $exception){
+                    $this->addFlash('danger', "L'activité n'a pas été supprimée.");
+                    return $this->redirectToRoute('activity_update',["id" => $activity->getId()]);
+                }
+            }else{
+                $this->addFlash('danger',"L'état de cette activité ne lui permet pas d'être supprimmée");
+            }
+        }else{
+            $this->addFlash('danger',"Vous n'avez pas le droit de supprimer cette activité");
+        }
+        return $this->redirectToRoute('activity_list');
+
+
+
+    }
+
     #[Route('/cancel/{id}', name: 'cancel',requirements: ['id'=>'\d+'])]
-    public function cancel( EntityManagerInterface $entityManager, int $id,ActivityRepository $activityRepository,Request $request): Response
+    public function cancel(ActivityRepository $activityRepository,
+                           EntityManagerInterface $entityManager,
+                           StateRepository $stateRepository,
+                           Request $request,
+                           int $id): Response
     {
         $activity = $activityRepository->find($id);
         $currentUser = $this->getUser()->getUserProfile();
@@ -217,33 +267,37 @@ class ActivityController extends AbstractController
 
                 $activityForm = $this->createForm(ActivityType::class, $activity, ['cancel_mode' => true]);
                 $activityForm->handleRequest($request);
-                $cancelStateId = 6;
 
                 if ($activityForm->isSubmitted() && $activityForm->isValid()) {
 
                     try {
-                        $cancelState = $entityManager->getReference(State::class, $cancelStateId);
-                        $activity->setState($cancelState);
-                        $cancelState = $entityManager->getReference(State::class, $cancelStateId);
+                        $cancelStateId = 6;
+                        $cancelState = $stateRepository->find($cancelStateId);
                         $activity->setState($cancelState);
                         $entityManager->persist($activity);
                         $entityManager->flush();
 
                         $this->addFlash('success', "L'activité a été annulée avec succès.");
+
                         return $this->redirectToRoute("activity_cancel", ['id' => $activity->getId()]);
+
                     } catch
-                    (\Exception $exception) {
+                    (Exception $exception) {
                         $this->addFlash('danger', "Erreur d'annulation");
                         return $this->redirectToRoute("activity_cancel", ['id' => $activity->getId()]);
                     }
 
                 }
-
                 return $this->render('activity/cancel.html.twig', ["activity" => $activity, "form" => $activityForm->createView()]);
+
             }else{
-                $this->addFlash('danger','erreur état');
+                $this->addFlash('danger',"L'état de cette activité ne lui permet pas d'être annulée");
             }
-        } else{
+
+
+
+        } else {
+
             $this->addFlash('danger', "Vous n'êtes pas autorisé à annuler cette activité.");
             return $this->redirectToRoute("activity_list");
         }
@@ -281,17 +335,20 @@ class ActivityController extends AbstractController
 
         return $this->redirectToRoute('activity_list');
     }
+
     #[Route('/quit/{id}',name:'quit')]
-    public function quit(EntityManagerInterface $entityManager, Request $request, int $id): Response
+    public function quit(EntityManagerInterface $entityManager,
+                         ActivityRepository $activityRepository,
+                         RegistrationRepository $registrationRepository,
+                         int $id): Response
     {
         try {
-            $activity = $entityManager->getRepository(Activity::class)->find($id);
+//            $activity = $entityManager->getRepository(Activity::class)->find($id);
+            $activity = $activityRepository->find($id);
             $userProfile = $this->getUser()->getUserProfile();
 
-            $registration = $entityManager->getRepository(Registration::class)->findOneBy([
-                'activity' => $activity,
-                'participant' => $userProfile,
-            ]);
+//            $registration = $entityManager->getRepository(Registration::class)->findOneBy(['activity' => $activity,'participant' => $userProfile,]);
+            $registration = $registrationRepository->findOneBy(['activity' => $activity,'participant' => $userProfile,]);
 
             if ($registration) {
                 $activity->removeRegistration($registration);

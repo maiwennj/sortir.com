@@ -1,3 +1,15 @@
+function deleteEvent(event) {
+    let confirmation = confirm('Êtes-vous sûr de vouloir supprimer ce brouillon ?');
+    if (!confirmation) {
+        event.preventDefault(); // Annuler le comportement par défaut du lien
+    }
+}
+
+
+
+
+//////// test js pour lieu
+
 // window.onload = init
 //
 // function init(){
@@ -18,16 +30,16 @@
             //     lignes[i].style.display = 'none';
             //     // lignes[i].style.color = 'blue';
             // }
-            if(!check){
+            // if(!check){
                 // lignes[i].style.display = 'none' ;
                 // lignes[i].style.color = 'red';
-            }
-            // lignes[i].style.display = lignes[i].style.display === 'none' ? '' : 'none';
-
-        }
-    }
-
-}
+//             }
+//             // lignes[i].style.display = lignes[i].style.display === 'none' ? '' : 'none';
+//
+//         }
+//     }
+//
+// }
 // function testListener(valeur,champIndex, checkboxid) {
 //     let checkbox = document.getElementById('isTheOrganiser')
 //     let table = document.getElementById('activity-table')
@@ -44,10 +56,6 @@
 //
 //
 // }
-
-
-
-
 // function cacherLignes(tableId, champIndex, valeur) {
 //     var table = document.getElementById(tableId);
 //     var lignes = table.getElementsByTagName('tr');

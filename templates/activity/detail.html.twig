@@ -11,14 +11,40 @@
     <p>Durée : {{ activity.duration }} minutes</p>
     <p>Description et infos : {{ activity.description }}</p>
     <p>Lieu : {{ activity.location.locationName }}</p>
-    <p>Rue : {{ activity.location.street }}</p>
-    <p>Ville : {{ activity.location.city.cityName }}</p>
-    <p>Code postal : {{ activity.location.city.postCode }}</p>
-    <p>Latitude : {{ activity.location.latitude }}</p>
-    <p>Longitude : {{ activity.location.longitude }}</p>
+
+    <p>Adresse : {{ activity.location.street }} - {{ activity.location.city.postCode }} {{ activity.location.city.cityName }}</p>
+    <p>Coordonnées : {{ activity.location.latitude }} {{ activity.location.longitude }} <a href="https://www.google.fr/maps/place/{{ activity.location.latitude }} {{ activity.location.longitude }}" target="_blank">(ouvrir la carte)</a></p>
          {% if activity.cancellationReason is not null %}
             <p> Motif d'annulation :{{ activity.cancellationReason }}</p>
-    {% endblock%}
+        {% endblock%}
+
+
+    <div>
+        {% if activity.organiser.user == app.user and activity.state.id == 1 %}
+            <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
+        {% endif %}
+        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
+            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
+        {% endif %}
+        {% if activity.state is not null and activity.state.id == 1  %}
+            <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
+        {% endif %}
+        {% if activity.state is not null and activity.state.id == 2 %}
+            {% set isRegistered = false %}
+            {% for registration in activity.registrations %}
+                {% if registration.participant == app.user.userProfile %}
+                    {% set isRegistered = true %}
+                {% endif %}
+            {% endfor %}
+            {% if isRegistered and activity.startDate > date('now') %}
+                <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+            {% elseif not isRegistered %}
+                <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+
     <h2>Liste des participants</h2>
     <table class="table table-hover">
         <thead>
