@@ -16,7 +16,9 @@
     <p>Coordonnées : {{ activity.location.latitude }} {{ activity.location.longitude }} <a href="https://www.google.fr/maps/place/{{ activity.location.latitude }} {{ activity.location.longitude }}" target="_blank">(ouvrir la carte)</a></p>
          {% if activity.cancellationReason is not null %}
             <p> Motif d'annulation :{{ activity.cancellationReason }}</p>
+
         {% endif%}
+
 
 
     <div>

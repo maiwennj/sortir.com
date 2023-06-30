@@ -76,6 +76,30 @@
 
         </div>
     {{ form_end(form) }}
-    <script src="{{asset('assets/js/script.js')}}"></script>
+
+    <script>
+        window.onload = () => {
+            let city = document.querySelector("#activity_city");
+            city.addEventListener("change", function() {
+                let form = this.closest("form");
+                let data = new FormData(form);
+                fetch(form.action, {
+                    method: form.getAttribute("method"),
+                    body: data,
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        let parser = new DOMParser();
+                        let parsedHTML = parser.parseFromString(html, "text/html");
+                        let nouveauSelect = parsedHTML.querySelector("#activity_location");
+                        let existingSelect = document.querySelector("#activity_location");
+
+                        if (existingSelect && nouveauSelect) {
+                            existingSelect.parentNode.replaceChild(nouveauSelect, existingSelect);
+                        }
+                    });
+            });
+        };
+    </script>
 {% endblock %}
 
