@@ -25,7 +25,7 @@ class Activity
     private ?string $activityName = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual(value: 'tomorrow',message: 'La date de début doit être au minimum demain.')]
+    #[Assert\GreaterThanOrEqual(value: 'tomorrow+2days',message: 'La date de début doit être au minimum dans 3 jours.')]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(nullable: true)]

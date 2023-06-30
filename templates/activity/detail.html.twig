@@ -1,22 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}activity details{% endblock %}
-
+{% block title %}Détail d'une activité{% endblock %}
+{% block h2 %}{{ activity.activityName }}{% endblock %}
 {% block body %}
-    <h1>Afficher une sortie</h1>
-  <p> Nom de l'organisateur:<a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{activity.organiser.user.username}}</a></p>
-    <p>Nom de la sortie : {{ activity.activityName }}</p>
-    <p>Date et heure de la sortie : {{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</p>
+    <p>Organisateur : <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}">{{activity.organiser.user.username}}</a></p>
+    <p>Date de la sortie : {{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</p>
     <p>Date limite d'inscription : {{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</p>
-    <p>Nombre de place : {{ activity.maxRegistration }}</p>
+    <p>Nombre d'inscrits/places max : {{ activity.registrations|length }}/{{ activity.maxRegistration }}</p>
     <p>Durée : {{ activity.duration }} minutes</p>
     <p>Description et infos : {{ activity.description }}</p>
     <p>Lieu : {{ activity.location.locationName }}</p>
-    <p>Rue : {{ activity.location.street }}</p>
-    <p>Ville : {{ activity.location.city.cityName }}</p>
-    <p>Code postal : {{ activity.location.city.postCode }}</p>
-    <p>Latitude : {{ activity.location.latitude }}</p>
-    <p>Longitude : {{ activity.location.longitude }}</p>
+    <p>Adresse : {{ activity.location.street }} - {{ activity.location.city.postCode }} {{ activity.location.city.cityName }}</p>
+    <p>Coordonnées : {{ activity.location.latitude }} {{ activity.location.longitude }} <a href="https://www.google.fr/maps/place/{{ activity.location.latitude }} {{ activity.location.longitude }}" target="_blank">(ouvrir la carte)</a></p>
 
     <h2>Liste des participants</h2>
     <table class="table table-hover">
@@ -30,9 +25,10 @@
         <tbody>
         {% for registration in activity.registrations %}
             <tr>
-                <td>{{ registration.participant.user.username }}</td>
+                <td><a href="{{ path('user_profile',{'id':registration.participant.user.id}) }}">{{ registration.participant.user.username }}</a></td>
                 <td>{{ registration.participant.firstName }} {{ registration.participant.lastName|upper }}</td>
             </tr>
+
         {% endfor %}
         </tbody>
     </table>
