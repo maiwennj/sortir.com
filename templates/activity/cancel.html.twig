@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}activity details{% endblock %}
-
-{% block h2 %}
-    Annuler une sortie
-{% endblock %}
+{% block title %}Annuler une sortie{% endblock %}
+{% block h2 %}Annuler la sortie : {{ activity.activityName }}{% endblock %}
 
 {% block body %}
-<p>Titre : {{ activity.activityName }}</p>
+
  {{ form_start(form) }}
 
 <div>
@@ -16,6 +13,6 @@
     {{ form_errors(form.cancellationReason) }}
 </div>
     <button type="submit" class="btn btn-info "> Enregistrer </button>
-    <a href="{{ path('activity_list') }}" class="btn btn-secondary">Annuler</a>
+    <a href="{{ path('activity_details',{'id':activity.id}) }}" class="btn btn-secondary">Annuler</a>
     {{ form_end(form) }}
 {% endblock %}
