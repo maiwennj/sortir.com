@@ -164,9 +164,7 @@ class ActivityController extends AbstractController
         $activity = $activityRepository->find($id);
         $user = $this->getUser()->getUserProfile();
 
-        /**
-         * check if user is the organiser
-         */
+        //check if user is the organiser
         if($activity->getOrganiser()==$user){
 
             $activityForm = $this->createForm(ActivityType::class, $activity);
@@ -310,29 +308,37 @@ class ActivityController extends AbstractController
         $activity = $entityManager->getRepository(Activity::class)->find($id);
         $currentState = $activity->getState()->getId();
 
+        //check if current activity state is 'open'
         if ($currentState === 2) {
-            try {
-                $registration = new Registration();
-                $registration->setParticipant($this->getUser()->getUserProfile());
-                $registration->setActivity($activity);
-                $registration->setRegistrationDate(now());
-                $activity->addRegistration($registration);
+            $regMax = $activity->getMaxRegistration();
+            $regNumber = count($activity->getRegistrations());
 
-                $entityManager->persist($registration);
-                $entityManager->persist($activity);
-                $entityManager->flush();
+            //check if there are still places for this activity
+            if($regNumber<$regMax){
+                try {
+                    $registration = new Registration();
+                    $registration->setParticipant($this->getUser()->getUserProfile());
+                    $registration->setActivity($activity);
+                    $registration->setRegistrationDate(now());
+                    $activity->addRegistration($registration);
 
-                $this->addFlash('success', "Vous avez été inscrit à cette activité avec succès.");
+                    $entityManager->persist($registration);
+                    $entityManager->persist($activity);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', "Vous avez été inscrit à cette activité avec succès.");
+                    return $this->redirectToRoute('activity_list');
+
+                } catch (\Exception $exception) {
+                    $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
+                }
                 return $this->redirectToRoute('activity_list');
-            } catch (\Exception $exception) {
-                $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
+            }else{
+                $this->addFlash('danger', "Il n'y a plus de place disponible pour cette activité.");
             }
-
-            return $this->redirectToRoute('activity_list');
         } else {
             $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
         }
-
         return $this->redirectToRoute('activity_list');
     }
 
