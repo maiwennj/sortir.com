@@ -263,7 +263,7 @@ class ActivityController extends AbstractController
         $organiser = $activity->getOrganiser();
         $currentState = $activity->getState()->getId();
         if ($currentUser === $organiser ) {
-            if($currentState === 2 || $currentState === 3 || $currentState === 1) {
+            if($currentState === 2 || $currentState === 3) {
 
                 $activityForm = $this->createForm(ActivityType::class, $activity, ['cancel_mode' => true]);
                 $activityForm->handleRequest($request);
