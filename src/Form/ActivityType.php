@@ -27,7 +27,7 @@ class ActivityType extends AbstractType{
 
         if ($options['cancel_mode'] === true) {
             $builder->add('cancellationReason', TextareaType::class, [
-                'label' => 'Motif d\'annulation',
+                'label' => "Motif d'annulation",
                 'required' => true,
             ]);
         }
@@ -39,9 +39,7 @@ class ActivityType extends AbstractType{
 
             ->add('startDate',null,[
               'label'=>'Date et heure de la sortie :',
-              'widget' => 'single_text',
-//               'value'=>date(now()->format('d/m/y H:i')),
-              'years'=>date(now()->format('yyyy'))])
+              'widget' => 'single_text'])
 
             ->add('closingDate',DateType::class,[
                 'label'=>"Date limite d'inscription :",
