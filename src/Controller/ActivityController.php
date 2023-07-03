@@ -59,7 +59,7 @@ class ActivityController extends AbstractController
     public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository): Response{
 
         $activity = new Activity();
-        $activity->setStartDate(now()->modify('+3 day'));
+        $activity->setStartDate(now()->modify('+3 days'));
         $activity->setClosingDate(now()->modify('tomorrow'));
         $activityForm = $this->createForm(ActivityType::class, $activity);
         $activityForm->handleRequest($request);
@@ -302,8 +302,8 @@ class ActivityController extends AbstractController
         return $this->redirectToRoute("activity_list");
     }
 
-    #[Route('/register/{id}', name: 'register')]
-    public function register(EntityManagerInterface $entityManager, Request $request, int $id): Response
+    #[Route('/participate/{id}', name: 'participate')]
+    public function participate(EntityManagerInterface $entityManager, Request $request, int $id, StateRepository $stateRepository): Response
     {
         $activity = $entityManager->getRepository(Activity::class)->find($id);
         $currentState = $activity->getState()->getId();
@@ -321,6 +321,10 @@ class ActivityController extends AbstractController
                     $registration->setActivity($activity);
                     $registration->setRegistrationDate(now());
                     $activity->addRegistration($registration);
+
+                    if ($activity->getMaxRegistration() == count($activity->getRegistrations())){
+                        $activity->setState($stateRepository->find(3));
+                    }
 
                     $entityManager->persist($registration);
                     $entityManager->persist($activity);
@@ -343,31 +347,42 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/quit/{id}',name:'quit')]
-    public function quit(EntityManagerInterface $entityManager,
-                         ActivityRepository $activityRepository,
-                         RegistrationRepository $registrationRepository,
-                         int $id): Response
-    {
+    public function quit(EntityManagerInterface $entityManager,ActivityRepository $activityRepository,RegistrationRepository $registrationRepository,
+                         StateRepository $stateRepository,int $id): Response{
         try {
-//            $activity = $entityManager->getRepository(Activity::class)->find($id);
+            // getting the activity, the user and a registration, if it exists for this user in this activity
             $activity = $activityRepository->find($id);
-            $userProfile = $this->getUser()->getUserProfile();
+            $participant = $this->getUser()->getUserProfile();
+            $registration = $registrationRepository->findOneBy(['activity' => $activity,'participant' => $participant]);
 
-//            $registration = $entityManager->getRepository(Registration::class)->findOneBy(['activity' => $activity,'participant' => $userProfile,]);
-            $registration = $registrationRepository->findOneBy(['activity' => $activity,'participant' => $userProfile,]);
-
+            /**
+             * If there IS a participation, AND if the date of the day is INFERIOR to the activity date
+             * --> 1. we can remove the participation
+             * --> 2. if the date of the day is INFERIOR to the closing date, then the activity is set back to "ouvert"
+             */
             if ($registration) {
-                $activity->removeRegistration($registration);
-                $entityManager->remove($registration);
-                $entityManager->flush();
-                $this->addFlash('success', "Vous avez été désinscrit de cette activité avec succès.");
+                /**
+                 * Check : has the activity already begun ?
+                 */
+                if ($activity->getStartDate()<now()){
+                    $activity->removeRegistration($registration);
+                    if ($activity->getMaxRegistration() > count($activity->getRegistrations())) {
+                        $activity->setState($stateRepository->find(2));
+                    }
+                    $entityManager->persist($activity);
+                    $entityManager->flush();
+                    $this->addFlash('success', "Vous avez été désinscrit de cette activité avec succès.");
+                }else{
+                    // ERROR MESSAGE if the activity has already beguns
+                    $this->addFlash('danger', "L'activité est déjà commencée, vous ne pouvez pas vous en désinscrire.");
+                }
             } else {
+                // ERROR MESSAGE if the user isn't participating
                 $this->addFlash('danger', "Vous n'êtes pas inscrit à cette activité.");
             }
         } catch (\Exception $exception) {
             $this->addFlash('danger', "Nous n'avons pas pu vous désinscrire de cette activité : " . $exception->getMessage());
         }
-
         return $this->redirectToRoute('activity_list');
     }
 }

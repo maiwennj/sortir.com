@@ -45,6 +45,7 @@ class ActivityType extends AbstractType{
 //            ->add('startDate',null,[
 //              'label'=>'Date et heure de la sortie :',
 //              'widget' => 'single_text'])
+
               ->add('startDate', DateTimeType::class, [
                   'widget' => 'single_text',
                   'data' => new \DateTime(),
@@ -99,25 +100,27 @@ class ActivityType extends AbstractType{
               'required' =>'false',
               'mapped' => false]);
 
+//            $formModifier=function(FormInterface $form,City $city=null){
+//                $locations= (null===$city ) ? [] :$city->getLocations();
+//                $form->add('locations',EntityType::class,[
+//                        'class' =>Location::class,
+//                        'choices'=>$locations,
+//                        'choice_label'=>'name',
+//                        'placeholder'=>'Choisir un lieu',
+//                        'label'=>'Lieu'
+//                    ]
+//                );
+//            };
+//            $builder->get('city')->addEventListener(
+//                FormEvents::POST_SUBMIT,
+//                function(FormEvent $event) use ($formModifier){
+//                    $city=$event->getForm()->getData();
+//                    $formModifier($event->getForm()->getParent(),$city);
+//                }
+//            );
+
         }
-        $formModifier=function(FormInterface $form,City $city=null){
-            $locations= (null===$city ) ? [] :$city->getLocations();
-            $form->add('locations',EntityType::class,[
-                'class' =>Location::class,
-                'choices'=>$locations,
-                'choice_label'=>'name',
-                'placeholder'=>'Choisir un lieu',
-                 'label'=>'Lieu'
-                ]
-            );
-        };
-        $builder->get('city')->addEventListener(
-FormEvents::POST_SUBMIT,
-            function(FormEvent $event) use ($formModifier){
-            $city=$event->getForm()->getData();
-            $formModifier($event->getForm()->getParent(),$city);
-            }
-        );
+
     }  
 
     public function configureOptions(OptionsResolver $resolver): void{

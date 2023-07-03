@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des sorties{% endblock %}
+{% block title %}Sorties{% endblock %}
 {% block h2 %}Sorties{% endblock %}
+
 {% block body %}
     {{ form_start(form) }}
         <div>
@@ -112,15 +113,17 @@
 
                     <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{ activity.organiser.user.username}}</a></td>
                     <td>
+
                         {% if activity.organiser.user == app.user and activity.state.id == 1 %}
                             <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
                         {% else %}
                             <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
                         {% endif %}
-                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
+
+                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
                             <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
                         {% endif %}
-                        {% if activity.state is not null and activity.state.id == 2 %}
+                        {% if activity.state is not null and (activity.state.id == 2 or activity.state.id == 3)%}
                             {% set isRegistered = false %}
                             {% for registration in activity.registrations %}
                                 {% if registration.participant == app.user.userProfile %}
@@ -133,7 +136,7 @@
                                 {% if isRegistered and activity.startDate > date('now') %}
                                     <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
                                 {% elseif not isRegistered %}
-                                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                                    <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
                                 {% endif %}
                             {% else %}
                                 {% if isRegistered and activity.startDate > date('now') %}
