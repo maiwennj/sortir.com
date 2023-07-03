@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}activitie details{% endblock %}
-
+{% block title %}Liste des sorties{% endblock %}
+ {% block h2 %}Sorties{% endblock %}
 {% block body %}
-    <h1>Afficher les sorties</h1>
     {{ form_start(form) }}
         <div>
             {{ form_label(form.keyWord) }}
