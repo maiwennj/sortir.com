@@ -53,7 +53,7 @@
                 {% if isRegistered and activity.startDate > date('now') %}
                     <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
                 {% elseif not isRegistered %}
-                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                    <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
                 {% endif %}
             {% else %}
                 {% if isRegistered and activity.startDate > date('now') %}
