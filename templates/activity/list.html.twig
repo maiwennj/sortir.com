@@ -121,7 +121,7 @@
                         {% endif %}
 
                         {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
-                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler la sortie</a>
                         {% endif %}
                         {% if activity.state is not null and (activity.state.id == 2 or activity.state.id == 3)%}
                             {% set isRegistered = false %}

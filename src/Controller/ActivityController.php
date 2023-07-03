@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Activity;
 use App\Entity\Location;
 use App\Entity\Registration;
-use App\Entity\State;
 use App\Form\ActivityType;
 use App\Form\FilterType;
 use App\Form\LocationFormType;

@@ -13,17 +13,17 @@
             {{ form_errors(form.activityName) }}
         </div>
 
-        <div>
-            {{ form_label(form.startDate) }}
-            {{ form_widget(form.startDate) }}
-            {{ form_errors(form.startDate) }}
-        </div>
+{#        <div>#}
+{#            {{ form_label(form.startDate) }}#}
+{#            {{ form_widget(form.startDate) }}#}
+{#            {{ form_errors(form.startDate) }}#}
+{#        </div>#}
 
-        <div>
-            {{ form_label(form.closingDate) }}
-            {{ form_widget(form.closingDate) }}
-            {{ form_errors(form.closingDate) }}
-        </div>
+{#        <div>#}
+{#            {{ form_label(form.closingDate) }}#}
+{#            {{ form_widget(form.closingDate) }}#}
+{#            {{ form_errors(form.closingDate) }}#}
+{#        </div>#}
 
         <div>
             {{ form_label(form.maxRegistration) }}
@@ -69,7 +69,7 @@
         <div>
             <button type="submit" class="btn btn-success" name="btnActivity" value="add">Publier la sortie</button>
             <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer comme brouillon</button>
-            <a href="{{ path("activity_list") }}" class="btn btn-secondary">Annuler</a>
+            <a href="{{ path("activity_list") }}" class="btn btn-secondary">Abandonner</a>
             {% if activity.state is not null and activity.state.id == 1  %}
                 <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
             {% endif %}
@@ -82,22 +82,25 @@
             let city = document.querySelector("#activity_city");
             city.addEventListener("change", function() {
                 let form = this.closest("form");
-                let data = new FormData(form);
+                let data=this.name +"="+this.value;
                 fetch(form.action, {
                     method: form.getAttribute("method"),
                     body: data,
+                    headers:{
+                        "Content-Type":"application/x-www-form-urlencoded; charset:UTF-8"}
                 })
+
                     .then(response => response.text())
                     .then(html => {
-                        let parser = new DOMParser();
-                        let parsedHTML = parser.parseFromString(html, "text/html");
-                        let nouveauSelect = parsedHTML.querySelector("#activity_location");
-                        let existingSelect = document.querySelector("#activity_location");
+                        let content = document.createElement("html");
+                        content.innerHTML =  html;
+                        let newSelect = content.querySelector("#activity_location");
+                        console.log(newSelect);
+                        document.querySelector('#activity_location').replaceWith(newSelect);
+                    })
+                .catch(error=>{console.log(error);
 
-                        if (existingSelect && nouveauSelect) {
-                            existingSelect.parentNode.replaceChild(nouveauSelect, existingSelect);
-                        }
-                    });
+                })
             });
         };
     </script>

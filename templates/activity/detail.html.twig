@@ -20,7 +20,7 @@
     <p>Lieu : {{ activity.location.locationName }}</p>
 
     <p>Adresse : {{ activity.location.street }} - {{ activity.location.city.postCode }} {{ activity.location.city.cityName }}</p>
-    <p>Coordonnées : {{ activity.location.latitude }} {{ activity.location.longitude }} <a href="https://www.google.fr/maps/place/{{ activity.location.latitude }} {{ activity.location.longitude }}" target="_blank">(ouvrir la carte)</a></p>
+    <p>Coordonnées : {{ activity.location.latitude }} {{ activity.location.longitude }} <a href="https://www.google.fr/maps/place/{{ activity.location.latitude }} {{ activity.location.longitude }}" target="_blank" alt="ouvrir la carte"><i class="material-icons">place</i></a></p>
          {% if activity.cancellationReason is not null %}
             <p> Motif d'annulation :{{ activity.cancellationReason }}</p>
 
@@ -33,7 +33,7 @@
             <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
         {% endif %}
         {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
-            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
+            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler la sortie</a>
         {% endif %}
         {% if activity.state is not null and activity.state.id == 1  %}
             <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>

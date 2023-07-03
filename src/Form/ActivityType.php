@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\Types\String_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -46,17 +47,18 @@ class ActivityType extends AbstractType{
 //              'label'=>'Date et heure de la sortie :',
 //              'widget' => 'single_text'])
 
-              ->add('startDate', DateTimeType::class, [
-                  'widget' => 'single_text',
-                  'data' => new \DateTime(),
-                  'by_reference' => true,
-              ])
-
-            ->add('closingDate',DateTimeType::class,[
-                'label'=>"Date limite d'inscription :",
-                'widget' => 'single_text',
-                'by_reference' => true,
-                ])
+//              ->add('startDate', DateTimeType::class, [
+//                  'widget' => 'single_text',
+//                  'data' => new \DateTime(),
+//                  'by_reference' => true
+//              ])
+//
+//            ->add('closingDate',DateTimeType::class,[
+//                'label'=>"Date limite d'inscription :",
+//                'data' => new \DateTime(),
+//                'widget' => 'single_text',
+//                'by_reference' => true
+//                ])
 
             ->add('maxRegistration',null,[
               'label'=>'Nombre de places :',
@@ -79,26 +81,53 @@ class ActivityType extends AbstractType{
 
 //            ->add('pictureUrl',FileType::class,[
 //             'label'=>'Ajouter une image (fichier image)'])
-              
-            ->add('location',EntityType::class,[
-              'label' => 'Lieu :',
-              'class' => Location::class,
-              'choice_label' => 'locationName',
-              'required' =>'false',
+
+              ->add('city',EntityType::class,[
+                  'label' => 'Ville :',
+                  'class' => City::class,
+                  'choice_label' => 'cityName',
+                  'required' =>'false',
+                  'mapped' => false])
+
+
+//            ->add('location',EntityType::class,[
+//              'label' => 'Lieu :',
+//              'class' => Location::class,
+//              'choice_label' => 'locationName',
+//              'required' =>'false',
+//              ])
+
+
+              ->add('location',ChoiceType::class,[
+                  'placeholder' => 'Choisir une ville ^',
+                  'required'=>false
               ])
 
             
             ->add('site',EntityType::class,[
               'label' => 'Campus :',
               'class' => Site::class,
-              'choice_label' => 'siteName'])
-            
-            ->add('city',EntityType::class,[
-              'label' => 'Ville :',
-              'class' => City::class,
-              'choice_label' => 'cityName',
-              'required' =>'false',
-              'mapped' => false]);
+              'choice_label' => 'siteName']);
+
+          $formModifier = function (FormInterface $form, City $city = null){
+              $locations = ($city===null) ? [] : $city->getLocations();
+              $form->add('location',EntityType::class,[
+                 'class'=>Location::class,
+                 'choices'=>$locations,
+                 'choice_label'=>'locationName',
+                  'placeholder' => 'Choisir une ville ^',
+                  'label'=>'Lieu : '
+              ]);
+          };
+
+          $builder->get('city')->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) use ($formModifier){
+                    $city = $event->getForm()->getData();
+                    $formModifier($event->getForm()->getParent(),$city);
+                }
+            );
+
 
 //            $formModifier=function(FormInterface $form,City $city=null){
 //                $locations= (null===$city ) ? [] :$city->getLocations();
