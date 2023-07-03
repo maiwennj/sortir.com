@@ -16,13 +16,13 @@
         <header>
             {% include('common/navigation/navigation.html.twig')  %}
         </header>
-        <main class="container-fluid">
+        <main class="container-fluid m-lg-auto mt-lg-5 width-1800">
             <div class="row">
                 <div class="col-12">
-                    <h2>{% block h2 %}Titre de la page{% endblock %}</h2>
+                    <h2 class="my-2 text-center text-uppercase">{% block h2 %}Titre de la page{% endblock %}</h2>
                     {% for label,messages in app.flashes %}
                         {% for message in messages %}
-                            <div>
+                            <div class="alert alert-dismissible alert-{{ label }}">
                                 {{ message }}
                             </div>
                         {% endfor %}

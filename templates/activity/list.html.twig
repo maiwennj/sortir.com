@@ -2,97 +2,83 @@
 
 
 {% block title %}activitie details{% endblock %}
-
+{% block h2 %}Filtrer les sorties{% endblock %}
 {% block body %}
-    <h1>Afficher les sorties</h1>
-    {{ form_start(form) }}
-        <div>
-            {{ form_label(form.keyWord) }}
-            {{ form_widget(form.keyWord) }}
-            {{ form_errors(form.keyWord) }}
-        </div>
-        <div>
-            {{ form_label(form.site) }}
-            {{ form_widget(form.site) }}
-            {{ form_errors(form.site) }}
-        </div>
-        <div>
-            {{ form_label(form.startDate) }}
-            {{ form_widget(form.startDate) }}
-            {{ form_errors(form.startDate) }}
-        </div>
-        <div>
-            {{ form_label(form.endDate) }}
-            {{ form_widget(form.endDate) }}
-            {{ form_errors(form.endDate) }}
-        </div>
-        <div>
-            {{ form_label(form.isTheOrganiser) }}
-            {{ form_widget(form.isTheOrganiser) }}
-            {{ form_errors(form.isTheOrganiser) }}
-        </div>
-        <div>
-            {{ form_label(form.isRegistered) }}
-            {{ form_widget(form.isRegistered) }}
-            {{ form_errors(form.isRegistered) }}
-        </div>
-        <div>
-            {{ form_label(form.isNotRegistered) }}
-            {{ form_widget(form.isNotRegistered) }}
-            {{ form_errors(form.isNotRegistered) }}
-        </div>
-        <div>
-            {{ form_label(form.isFinished) }}
-            {{ form_widget(form.isFinished) }}
-            {{ form_errors(form.isFinished) }}
-        </div>
+    <div class="m-auto width-1800">
 
-        <div>
-            {{ form_widget(form.submit) }}
+        {{ form_start(form) }}
+        <div class="row align-items-center justify-content-between">
+            <div class="col mt-2">
+                <div>
+                    {{ form_label(form.site) }}
+                    {{ form_widget(form.site) }}
+                    {{ form_errors(form.site) }}
+                </div>
+                <div class="mt-2">
+                    {{ form_label(form.keyWord) }}
+                    {{ form_widget(form.keyWord) }}
+                    {{ form_errors(form.keyWord) }}
+                </div>
+                <div class="mt-2">
+                    {{ form_label(form.startDate) }}
+                    {{ form_widget(form.startDate) }}
+                    {{ form_errors(form.startDate) }}
+
+                    {{ form_label(form.endDate) }}
+                    {{ form_widget(form.endDate) }}
+                    {{ form_errors(form.endDate) }}
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    {{ form_widget(form.isTheOrganiser) }}
+                    {{ form_label(form.isTheOrganiser) }}
+                    {{ form_errors(form.isTheOrganiser) }}
+                </div>
+                <div class="mt-1">
+                    {{ form_widget(form.isRegistered) }}
+                    {{ form_label(form.isRegistered) }}
+                    {{ form_errors(form.isRegistered) }}
+                </div>
+                <div class="mt-1">
+                    {{ form_widget(form.isNotRegistered) }}
+                    {{ form_label(form.isNotRegistered) }}
+                    {{ form_errors(form.isNotRegistered) }}
+                </div>
+                <div class="mt-1">
+                    {{ form_widget(form.isFinished) }}
+                    {{ form_label(form.isFinished) }}
+                    {{ form_errors(form.isFinished) }}
+                </div>
+            </div>
+            <div class="col-2">
+                {{ form_widget(form.submit,{'attr': { 'class':"btn btn-success btn-width btn-height"}})}}
+            </div>
         </div>
     {{ form_end(form) }}
-{# ------------------------------ version JS ------------------------------ #}
-{#    <div class="js-user"#}
-{#         data-user="{{ app.user.username|serialize(format = 'json') }}"#}
-{#    >#}
-{#        <div>#}
-{#            <input type="checkbox" id="isTheOrganiser" class="">#}
-{#            <label for="isTheOrganiser">Sorties dont je suis l'organisteur/trice</label>#}
-{#        </div>#}
-{#        <div>#}
-{#            <input type="checkbox" id="isRegistered" class="">#}
-{#            <label for="isRegistered">Sorties auxquelles je suis inscrit/e</label>#}
-{#        </div>#}
-{#        <div>#}
-{#            <input type="checkbox" id="isNotRegistered" class="">#}
-{#            <label for="isNotRegistered">Sorties auxquelles je ne suis pas inscrit/e</label>#}
-{#        </div>#}
-{#        <div>#}
-{#            <input type="checkbox" id="isFinished" class="">#}
-{#            <label for="isFinished">Sorties passées</label>#}
-{#        </div>#}
-{#    </div>#}
+    </div>
 
-    <table class="table table-hover" id="activity-table">
-        <thead>
-            <tr>
-                <th scope="col">Nom de la sortie</th>
-                <th scope="col">Date de la sortie</th>
-                <th scope="col">Clôture</th>
-                <th scope="col">inscrits/places</th>
-                <th scope="col">Etat</th>
-                <th scope="col">Inscrit</th>
-                <th scope="col">Organisateur</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
+    <div class="tbl-height  width-1800  mt-4 m-auto ">
+        <table class="table table-hover" id="activity-table">
+            <thead class="sticky-top shadow table-primary">
+                <tr>
+                    <th scope="col">Nom de la sortie</th>
+                    <th scope="col">Date de la sortie</th>
+                    <th scope="col">Clôture</th>
+                    <th scope="col">inscrits/places</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Inscrit</th>
+                    <th scope="col">Organisateur</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
 
-        <tbody>
+            <tbody class="">
             {% for activity in activities %}
                 {% set regMax = activity.maxRegistration %}
                 {% set regNumber = activity.registrations|length %}
-                <tr>
-                    <td>{{ activity.activityName }}</td>
+                <tr class="align-middle">
+                    <td class="">{{ activity.activityName }}</td>
                     <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
                     <td>{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
 
@@ -112,15 +98,15 @@
                         {% endfor %}
                     </td>
 
-                    <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}"> {{ activity.organiser.user.username}}</a></td>
+                    <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}" class="user-link"> {{ activity.organiser.user.username}}</a></td>
                     <td>
                         {% if activity.organiser.user == app.user and activity.state.id == 1 %}
-                            <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
+                            <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary btn-width">Modifier</a>
                         {% else %}
-                            <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary">Afficher</a>
+                            <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary btn-width">Afficher</a>
                         {% endif %}
                         {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
-                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler</a>
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler</a>
                         {% endif %}
                         {% if activity.state is not null and activity.state.id == 2 %}
                             {% set isRegistered = false %}
@@ -133,21 +119,22 @@
                             {# check if there are still places for this activity #}
                             {% if regNumber < regMax %}
                                 {% if isRegistered and activity.startDate > date('now') %}
-                                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning btn-width">Se désister</a>
                                 {% elseif not isRegistered %}
-                                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
                                 {% endif %}
                             {% else %}
                                 {% if isRegistered and activity.startDate > date('now') %}
-                                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning btn-width">Se désister</a>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
     <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}
 
