@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sorties{% endblock %}
-
-
+{% block title %}Accueil - Sorties{% endblock %}
 {% block h2 %}Les sorties du moment{% endblock %}
 {% block body %}
     <div class="m-auto width-1800">
     <div class="filter-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-controls="filter" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="btn btn-primary">filtrer les sorties</span>
+        <span class="btn btn-primary">Filtrer les sorties</span>
     </div>
     <div class="container">
         <div class="collapse filter-collapse" id="filter">
@@ -27,16 +25,13 @@
                         {{ form_label(form.startDate) }}
                         {{ form_widget(form.startDate) }}
                         {{ form_errors(form.startDate) }}
-
-
+                    </div>
+                    <div class="my-1">
                         {{ form_label(form.endDate) }}
                         {{ form_widget(form.endDate) }}
                         {{ form_errors(form.endDate) }}
                     </div>
-
-
-
-
+                </div>
                 <div class="col">
                     <div>
                         {{ form_widget(form.isTheOrganiser) }}
@@ -70,12 +65,12 @@
         <table class="table table-hover" id="activity-table">
             <thead class="sticky-top shadow table-primary">
                 <tr>
-                    <th scope="col">Nom de la sortie</th>
-                    <th scope="col">Date de la sortie</th>
-                    <th class="d-none d-md-table-cell" scope="col">Clôture</th>
-                    <th class="d-none d-md-table-cell" scope="col">inscrits/places</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Date</th>
+                    <th class="d-none d-md-table-cell" scope="col">Fin des inscriptions</th>
+                    <th class="d-none d-md-table-cell" scope="col">Inscrits/Places</th>
                     <th class="d-none "  scope="col">Etat</th>
-                    <th class="d-none d-md-table-cell "  scope="col">Inscrit</th>
+                    <th class="d-none d-md-table-cell "  scope="col">Inscrit(e)</th>
                     <th class=""  scope="col">Organisateur</th>
                     <th class="d-none d-lg-table-cell " scope="col">Actions</th>
                 </tr>
@@ -148,6 +143,7 @@
             {% endfor %}
             </tbody>
         </table>
+    </div>
     </div>
     <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}

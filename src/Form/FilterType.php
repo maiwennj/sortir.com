@@ -8,12 +8,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use function Symfony\Component\Clock\now;
-
 
 class FilterType extends AbstractType
 {
@@ -24,7 +21,7 @@ class FilterType extends AbstractType
                 'keyWord',
                 null,
                 [
-                    'label'=>'Le nom de la sortie contient :  '
+                    'label'=>'Dans le nom :  '
 
                 ])
             ->add("site", EntityType::class,
@@ -40,7 +37,7 @@ class FilterType extends AbstractType
                 DateType::class,
                 [
                     "required"=>false,
-                    'label'=>'Entre ',
+                    'label'=>'Entre le : ',
                     'widget'=>'single_text',
 //                    'empty_data' => (new \DateTime())->format('Y-m-d'),
                 ]
@@ -50,7 +47,7 @@ class FilterType extends AbstractType
                 DateType::class,
                 [
                     "required"=>false,
-                    'label'=>'et ',
+                    'label'=>'et le : ',
                     'widget'=>'single_text'
                 ]
             )
@@ -59,7 +56,7 @@ class FilterType extends AbstractType
                 CheckboxType::class,
                 [
                     "required"=>false,
-                    "label"=>"Sorties dont je suis l'organisteur/trice "
+                    "label"=>"Sorties que j'organise"
                 ]
             )
             ->add(
@@ -67,7 +64,7 @@ class FilterType extends AbstractType
                 CheckboxType::class,
                 [
                     "required"=>false,
-                    "label"=>"Sorties auxquelles je suis inscrit/e "
+                    "label"=>"Sorties auxquelles je suis inscrit(e) "
                 ]
             )
             ->add(
@@ -75,7 +72,7 @@ class FilterType extends AbstractType
                 CheckboxType::class,
                 [
                     "required"=>false,
-                    "label"=>"Sorties auxquelles je ne suis pas inscrit/e "
+                    "label"=>"Sorties auxquelles je ne suis pas inscrit(e) "
                 ]
             )
             ->add(
@@ -83,7 +80,7 @@ class FilterType extends AbstractType
                 CheckboxType::class,
                 [
                     "required"=>false,
-                    "label"=>"Sorties passées "
+                    "label"=>"Sorties passées"
                 ]
             )
             ->add("submit",
