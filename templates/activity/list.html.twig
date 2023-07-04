@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}activitie details{% endblock %}
+{% block title %}Sorties{% endblock %}
+    <div class="m-auto width-1800">
 
 {% block h2 %}Les sorties du moment{% endblock %}
 {% block body %}
@@ -27,10 +27,18 @@
                         {{ form_widget(form.startDate) }}
                         {{ form_errors(form.startDate) }}
 
+
                         {{ form_label(form.endDate) }}
                         {{ form_widget(form.endDate) }}
                         {{ form_errors(form.endDate) }}
                     </div>
+
+
+                    {{ form_label(form.endDate) }}
+                    {{ form_widget(form.endDate) }}
+                    {{ form_errors(form.endDate) }}
+                </div>
+
                 </div>
                 <div class="col">
                     <div>
@@ -102,16 +110,20 @@
                     </td>
 
                     <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}" class="user-link"> {{ activity.organiser.user.username}}</a></td>
+
                     <td class="d-none d-lg-table-cell" >
+
                         {% if activity.organiser.user == app.user and activity.state.id == 1 %}
                             <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary btn-width">Modifier</a>
                         {% else %}
                             <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary btn-width">Afficher</a>
                         {% endif %}
-                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
-                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler</a>
+
+
+                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler la sortie</a>
                         {% endif %}
-                        {% if activity.state is not null and activity.state.id == 2 %}
+                        {% if activity.state is not null and (activity.state.id == 2 or activity.state.id == 3)%}
                             {% set isRegistered = false %}
                             {% for registration in activity.registrations %}
                                 {% if registration.participant == app.user.userProfile %}
@@ -124,7 +136,9 @@
                                 {% if isRegistered and activity.startDate > date('now') %}
                                     <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning btn-width">Se désister</a>
                                 {% elseif not isRegistered %}
+
                                     <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
+
                                 {% endif %}
                             {% else %}
                                 {% if isRegistered and activity.startDate > date('now') %}
