@@ -10,8 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     #[Route(['/main','/','home'], name: 'app_main')]
-    public function index(): Response
-    {
+    public function index(): Response{
         return $this->redirectToRoute('activity_list');
     }
 

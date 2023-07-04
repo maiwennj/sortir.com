@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\Types\String_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -38,49 +39,62 @@ class ActivityType extends AbstractType{
         }
       
         if ($options['cancel_mode'] === false) {
-          $builder
-            ->add('activityName',null,[
-              'label' => 'Nom de la sortie :'])
+            $builder
+                ->add('activityName', null, [
+                    'label' => 'Nom de la sortie :'])
 
-//            ->add('startDate',null,[
-//              'label'=>'Date et heure de la sortie :',
-//              'widget' => 'single_text'])
+            ->add('startDate',null,[
+              'label'=>'Date et heure de la sortie :',
+              'widget' => 'single_text'])
+
               ->add('startDate', DateTimeType::class, [
+<<<<<<< HEAD
 
                   'widget' => 'single_text',
                   //'data' => new \DateTime(),
                   'by_reference' => true,
+=======
+                  'widget' => 'single_text'
+>>>>>>> 06b090945196054619c6e39c6532a2e17edf898d
               ])
 
             ->add('closingDate',DateTimeType::class,[
                 'label'=>"Date limite d'inscription :",
+<<<<<<< HEAD
                 'widget' => 'single_text',
                 //'data' => new \DateTime(),
                 'by_reference' => true,
                 ])
+=======
+                'widget' => 'single_text'
+            ])
+>>>>>>> 06b090945196054619c6e39c6532a2e17edf898d
 
-            ->add('maxRegistration',null,[
-              'label'=>'Nombre de places :',
-                'attr'=>[
-                    'min'=>1,
-                    'value'=>"1",
-                ]])
+                ->add('maxRegistration', null, [
+                    'label' => 'Nombre de places :',
+                    'attr' => [
+                        'min' => 1,
+                        'value' => "1",
+                    ]])
+                ->add('duration', null,
+                    [
+                        'label' => 'Durée :',
+                        'attr' => [
+                            'min' => 30,
+                            'value' => "30",
+                        ]
+                    ])
+                ->add('description', null, [
+                    'label' => 'Description et infos :'])
 
-            ->add('duration',null,
-                [
-                    'label'=>'Durée :',
-                    'attr'=>[
-                        'min'=>30,
-                        'value'=>"30",
-                    ]
-                ])
-
-            ->add('description',null,[
-              'label'=>'Description et infos :'])
-
-//            ->add('pictureUrl',FileType::class,[
-//             'label'=>'Ajouter une image (fichier image)'])
+                ->add('city', EntityType::class, [
+                    'label' => 'Ville :',
+                    'class' => City::class,
+                    'choice_label' => 'cityName',
+                    'required' => false,
+                    'mapped' => false])
               
+<<<<<<< HEAD
             ->add('location',EntityType::class,[
               'label' => 'Lieu :',
               'class' => Location::class,
@@ -124,6 +138,24 @@ class ActivityType extends AbstractType{
 //                }
 //            );
        }
+=======
+                ->add('location', EntityType::class, [
+                    'label' => 'Lieu :',
+                    'class' => Location::class,
+                    'choice_label' => 'locationName',
+                    'required' => false,
+                ])
+              
+                ->add('site', EntityType::class, [
+                    'label' => 'Campus :',
+                    'class' => Site::class,
+                    'choice_label' => 'siteName']);
+
+
+        }
+
+    }  
+>>>>>>> 06b090945196054619c6e39c6532a2e17edf898d
 
    }
     public function configureOptions(OptionsResolver $resolver): void{

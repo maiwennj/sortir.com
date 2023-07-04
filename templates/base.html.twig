@@ -5,6 +5,7 @@
         <title>{% block title %}bonjour!{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -16,13 +17,13 @@
         <header>
             {% include('common/navigation/navigation.html.twig')  %}
         </header>
-        <main class="container-fluid">
+        <main class="container-fluid m-lg-auto mt-lg-5 width-1800">
             <div class="row">
                 <div class="col-12">
-                    <h2>{% block h2 %}Titre de la page{% endblock %}</h2>
+                    <h2 class="my-2 text-center text-uppercase">{% block h2 %}Titre de la page{% endblock %}</h2>
                     {% for label,messages in app.flashes %}
                         {% for message in messages %}
-                            <div>
+                            <div class="alert alert-dismissible alert-{{ label }}">
                                 {{ message }}
                             </div>
                         {% endfor %}
