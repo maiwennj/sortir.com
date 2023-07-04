@@ -17,10 +17,10 @@
         <header>
             {% include('common/navigation/navigation.html.twig')  %}
         </header>
-        <main class="container-fluid m-lg-auto mt-lg-5 width-1800">
+        <main class="container my-auto py-2 py-sm-4">
             <div class="row">
                 <div class="col-12">
-                    <h2 class="my-2 text-center text-uppercase">{% block h2 %}Titre de la page{% endblock %}</h2>
+                    <h2 class="text-center text-uppercase">{% block h2 %}Titre de la page{% endblock %}</h2>
                     {% for label,messages in app.flashes %}
                         {% for message in messages %}
                             <div class="alert alert-dismissible alert-{{ label }}">
@@ -32,6 +32,13 @@
                 </div>
             </div>
         </main>
-        {% block footer %}{% endblock %}
+        <footer>
+            {% block footer %}
+            <div class="container-fluid footer">
+                <p class="mx-auto">©2023 ENI Sortir.com</p>
+            </div>
+
+            {% endblock %}
+        </footer>
     </body>
 </html>

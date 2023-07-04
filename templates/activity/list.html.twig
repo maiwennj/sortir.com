@@ -1,78 +1,86 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}Sorties{% endblock %}
-{% block h2 %}Sorties{% endblock %}
-
-{% block body %}
-
     <div class="m-auto width-1800">
 
-        {{ form_start(form) }}
-        <div class="row align-items-center justify-content-between">
-            <div class="col mt-2">
-                <div>
-                    {{ form_label(form.site) }}
-                    {{ form_widget(form.site) }}
-                    {{ form_errors(form.site) }}
-                </div>
-                <div class="mt-2">
-                    {{ form_label(form.keyWord) }}
-                    {{ form_widget(form.keyWord) }}
-                    {{ form_errors(form.keyWord) }}
-                </div>
-                <div class="mt-2">
-                    {{ form_label(form.startDate) }}
-                    {{ form_widget(form.startDate) }}
-                    {{ form_errors(form.startDate) }}
+{% block h2 %}Les sorties du moment{% endblock %}
+{% block body %}
+    <div class="filter-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-controls="filter" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="btn btn-primary">filtrer les sorties</span>
+    </div>
+    <div class="container">
+        <div class="collapse filter-collapse" id="filter">
+            {{ form_start(form) }}
+                <div class="col">
+                    <div class="my-1">
+                        {{ form_label(form.site) }}
+                        {{ form_widget(form.site) }}
+                        {{ form_errors(form.site) }}
+                    </div>
+                    <div class="my-1">
+                        {{ form_label(form.keyWord) }}
+                        {{ form_widget(form.keyWord) }}
+                        {{ form_errors(form.keyWord) }}
+                    </div>
+                    <div class="my-1">
+                        {{ form_label(form.startDate) }}
+                        {{ form_widget(form.startDate) }}
+                        {{ form_errors(form.startDate) }}
+
+
+                        {{ form_label(form.endDate) }}
+                        {{ form_widget(form.endDate) }}
+                        {{ form_errors(form.endDate) }}
+                    </div>
 
 
                     {{ form_label(form.endDate) }}
                     {{ form_widget(form.endDate) }}
                     {{ form_errors(form.endDate) }}
                 </div>
-            </div>
-            <div class="col">
-                <div>
-                    {{ form_widget(form.isTheOrganiser) }}
-                    {{ form_label(form.isTheOrganiser) }}
-                    {{ form_errors(form.isTheOrganiser) }}
+
                 </div>
-                <div class="mt-1">
-                    {{ form_widget(form.isRegistered) }}
-                    {{ form_label(form.isRegistered) }}
-                    {{ form_errors(form.isRegistered) }}
+                <div class="col">
+                    <div>
+                        {{ form_widget(form.isTheOrganiser) }}
+                        {{ form_label(form.isTheOrganiser) }}
+                        {{ form_errors(form.isTheOrganiser) }}
+                    </div>
+                    <div class="my-1">
+                        {{ form_widget(form.isRegistered) }}
+                        {{ form_label(form.isRegistered) }}
+                        {{ form_errors(form.isRegistered) }}
+                    </div>
+                    <div class="my-1">
+                        {{ form_widget(form.isNotRegistered) }}
+                        {{ form_label(form.isNotRegistered) }}
+                        {{ form_errors(form.isNotRegistered) }}
+                    </div>
+                    <div class="my-1">
+                        {{ form_widget(form.isFinished) }}
+                        {{ form_label(form.isFinished) }}
+                        {{ form_errors(form.isFinished) }}
+                    </div>
                 </div>
-                <div class="mt-1">
-                    {{ form_widget(form.isNotRegistered) }}
-                    {{ form_label(form.isNotRegistered) }}
-                    {{ form_errors(form.isNotRegistered) }}
+                <div class="text-center">
+                    {{ form_widget(form.submit,{'attr': { 'class':"btn btn-success btn-width btn-height"}})}}
                 </div>
-                <div class="mt-1">
-                    {{ form_widget(form.isFinished) }}
-                    {{ form_label(form.isFinished) }}
-                    {{ form_errors(form.isFinished) }}
-                </div>
-            </div>
-            <div class="col-2">
-                {{ form_widget(form.submit,{'attr': { 'class':"btn btn-success btn-width btn-height"}})}}
-            </div>
+            {{ form_end(form) }}
         </div>
-    {{ form_end(form) }}
     </div>
 
-    <div class="tbl-height  width-1800  mt-4 m-auto ">
+    <div class="tbl-height mt-4 m-auto ">
         <table class="table table-hover" id="activity-table">
             <thead class="sticky-top shadow table-primary">
                 <tr>
                     <th scope="col">Nom de la sortie</th>
                     <th scope="col">Date de la sortie</th>
-                    <th scope="col">Clôture</th>
-                    <th scope="col">inscrits/places</th>
-                    <th scope="col">Etat</th>
-                    <th scope="col">Inscrit</th>
-                    <th scope="col">Organisateur</th>
-                    <th scope="col">Actions</th>
+                    <th class="d-none d-md-table-cell" scope="col">Clôture</th>
+                    <th class="d-none d-md-table-cell" scope="col">inscrits/places</th>
+                    <th class="d-none "  scope="col">Etat</th>
+                    <th class="d-none d-md-table-cell "  scope="col">Inscrit</th>
+                    <th class=""  scope="col">Organisateur</th>
+                    <th class="d-none d-lg-table-cell " scope="col">Actions</th>
                 </tr>
             </thead>
 
@@ -83,17 +91,17 @@
                 <tr class="align-middle">
                     <td class="">{{ activity.activityName }}</td>
                     <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
-                    <td>{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
+                    <td class="d-none d-md-table-cell" >{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
 
-                    <td>
+                    <td class="d-none d-md-table-cell" >
                         {{ activity.registrations|length  }} / {{ activity.maxRegistration }}
                         {% if regNumber == regMax %}
                             <span class="badge bg-danger">Complet</span >
                         {% endif %}
                     </td>
 
-                    <td>{{ activity.state.label }}</td>
-                    <td>
+                    <td class="d-none" >{{ activity.state.label }}</td>
+                    <td class="d-none d-md-table-cell" >
                         {% for registration in activity.registrations %}
                             {% if registration.participant.id == app.user.id %}
                                 x
@@ -102,7 +110,8 @@
                     </td>
 
                     <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}" class="user-link"> {{ activity.organiser.user.username}}</a></td>
-                    <td>
+
+                    <td class="d-none d-lg-table-cell" >
 
                         {% if activity.organiser.user == app.user and activity.state.id == 1 %}
                             <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary btn-width">Modifier</a>
