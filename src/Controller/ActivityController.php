@@ -11,6 +11,7 @@ use App\Form\FilterType;
 use App\Form\LocationFormType;
 use App\Model\Filter;
 use App\Repository\ActivityRepository;
+use App\Repository\LocationRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\StateRepository;
 use App\Repository\UserProfileRepository;
@@ -56,8 +57,8 @@ class ActivityController extends AbstractController
     /**---------------Activity--------------**/
 
     #[Route('/create', name: 'create')]
-    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository): Response{
-
+    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository,LocationRepository $locationRepository): Response{
+        $locations=$locationRepository->findAll();
         $activity = new Activity();
         $activity->setStartDate(now()->modify('+3 day'));
         $activity->setClosingDate(now()->modify('tomorrow'));
@@ -100,7 +101,7 @@ class ActivityController extends AbstractController
         return $this->render('activity/create.html.twig', [
             'form' => $activityForm->createView(),
             'activity'=>$activity,
-
+            'locations'=> $locations
         ]);
     }
 

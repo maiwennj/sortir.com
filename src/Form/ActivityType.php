@@ -48,14 +48,14 @@ class ActivityType extends AbstractType{
               ->add('startDate', DateTimeType::class, [
 
                   'widget' => 'single_text',
-                  'data' => new \DateTime(),
+                  //'data' => new \DateTime(),
                   'by_reference' => true,
               ])
 
             ->add('closingDate',DateTimeType::class,[
                 'label'=>"Date limite d'inscription :",
                 'widget' => 'single_text',
-                'data' => new \DateTime(),
+                //'data' => new \DateTime(),
                 'by_reference' => true,
                 ])
 
@@ -85,6 +85,7 @@ class ActivityType extends AbstractType{
               'label' => 'Lieu :',
               'class' => Location::class,
               'choice_label' => 'locationName',
+                  'placeholder'=>'Choisir un lieu',
               'required' =>'false',
               ])
 
@@ -99,31 +100,32 @@ class ActivityType extends AbstractType{
               'class' => City::class,
               'choice_label' => 'cityName',
               'required' =>'false',
+              'placeholder'=>'Choisir une ville',
               'mapped' => false]);
 
-            $formModifier=function(FormInterface $form,City $city=null){
-                $locations= (null===$city ) ? [] :$city->getLocations();
-                $form->add('location',EntityType::class,[
-                        'class' =>Location::class,
-                        'choices'=>$locations,
-                        'choice_label'=>'locationName',
-                        'placeholder'=>'Choisir une ville ',
-                        'required' =>'false',
-                        'label'=>'Lieu'
-                    ]
-                );
-            };
+//            $formModifier=function(FormInterface $form,City $city=null){
+//                $locations= (null===$city ) ? [] :$city->getLocations();
+//                $form->add('location',EntityType::class,[
+//                        'class' =>Location::class,
+//                        'choices'=>$locations,
+//                        'choice_label'=>'locationName',
+//                        'placeholder'=>'Choisir une ville ',
+//                        'required' =>'false',
+//                        'label'=>'Lieu'
+//                    ]
+//                );
+//            };
+//
+//            $builder->get('city')->addEventListener(
+//                FormEvents::POST_SUBMIT,
+//                function(FormEvent $event) use ($formModifier){
+//                    $city=$event->getForm()->getData();
+//                    $formModifier($event->getForm()->getParent(),$city);
+//                }
+//            );
+       }
 
-            $builder->get('city')->addEventListener(
-                FormEvents::POST_SUBMIT,
-                function(FormEvent $event) use ($formModifier){
-                    $city=$event->getForm()->getData();
-                    $formModifier($event->getForm()->getParent(),$city);
-                }
-            );
-        }
-
-    }
+   }
     public function configureOptions(OptionsResolver $resolver): void{
         $resolver->setDefaults([
             'data_class' => Activity::class,
