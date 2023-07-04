@@ -48,6 +48,10 @@ class UserProfile
     #[ORM\OneToOne(inversedBy: 'userProfile',cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+
+    #[ORM\Column(length: 250, nullable: true)]
+    private ?string $pictureUrl = null;
+
     public function __construct()
     {
         $this->organisedActivities = new ArrayCollection();
@@ -195,5 +199,16 @@ class UserProfile
         return $this;
     }
 
+    public function getPictureUrl(): ?string
+    {
+        return $this->pictureUrl;
+    }
+
+    public function setPictureUrl(string $pictureUrl): static
+    {
+        $this->pictureUrl = $pictureUrl;
+
+        return $this;
+    }
 
 }
