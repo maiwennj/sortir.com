@@ -39,115 +39,78 @@ class ActivityType extends AbstractType{
         }
       
         if ($options['cancel_mode'] === false) {
-          $builder
-            ->add('activityName',null,[
-              'label' => 'Nom de la sortie :'])
+            $builder
+                ->add('activityName', null, [
+                    'label' => 'Nom de la sortie :'])
 
-//            ->add('startDate',null,[
-//              'label'=>'Date et heure de la sortie :',
-//              'widget' => 'single_text'])
+            ->add('startDate',null,[
+              'label'=>'Date et heure de la sortie :',
+              'widget' => 'single_text'])
 
-//              ->add('startDate', DateTimeType::class, [
-//                  'widget' => 'single_text',
-//                  'data' => new \DateTime(),
-//                  'by_reference' => true
-//              ])
-//
-//            ->add('closingDate',DateTimeType::class,[
-//                'label'=>"Date limite d'inscription :",
-//                'data' => new \DateTime(),
-//                'widget' => 'single_text',
-//                'by_reference' => true
-//                ])
+              ->add('startDate', DateTimeType::class, [
+                  'widget' => 'single_text'
+              ])
 
-            ->add('maxRegistration',null,[
-              'label'=>'Nombre de places :',
-                'attr'=>[
-                    'min'=>1,
-                    'value'=>"1",
-                ]])
+            ->add('closingDate',DateTimeType::class,[
+                'label'=>"Date limite d'inscription :",
+                'widget' => 'single_text'
+            ])
 
-            ->add('duration',null,
-                [
-                    'label'=>'Durée :',
-                    'attr'=>[
-                        'min'=>30,
-                        'value'=>"30",
-                    ]
-                ])
-
-            ->add('description',null,[
-              'label'=>'Description et infos :'])
+                ->add('maxRegistration', null, [
+                    'label' => 'Nombre de places :',
+                    'attr' => [
+                        'min' => 1,
+                        'value' => "1",
+                    ]])
+                ->add('duration', null,
+                    [
+                        'label' => 'Durée :',
+                        'attr' => [
+                            'min' => 30,
+                            'value' => "30",
+                        ]
+                    ])
+                ->add('description', null, [
+                    'label' => 'Description et infos :'])
 
 //            ->add('pictureUrl',FileType::class,[
 //             'label'=>'Ajouter une image (fichier image)'])
 
-              ->add('city',EntityType::class,[
-                  'label' => 'Ville :',
-                  'class' => City::class,
-                  'choice_label' => 'cityName',
-                  'required' =>'false',
-                  'mapped' => false])
+                ->add('city', EntityType::class, [
+                    'label' => 'Ville :',
+                    'class' => City::class,
+                    'choice_label' => 'cityName',
+                    'required' => 'false',
+                    'mapped' => false])
+                ->add('location', EntityType::class, [
+                    'label' => 'Lieu :',
+                    'class' => Location::class,
+                    'choice_label' => 'locationName',
+                    'required' => 'false',
+                ])
+                ->add('site', EntityType::class, [
+                    'label' => 'Campus :',
+                    'class' => Site::class,
+                    'choice_label' => 'siteName']);
 
+            $formModifier = function (FormInterface $form, City $city = null) {
+                $locations = ($city === null) ? [] : $city->getLocations();
+                $form->add('location', EntityType::class, [
+                    'class' => Location::class,
+                    'choices' => $locations,
+                    'choice_label' => 'locationName',
+                    'placeholder' => 'Choisir une ville ^',
+                    'label' => 'Lieu : '
+                ]);
+            };
 
-//            ->add('location',EntityType::class,[
-//              'label' => 'Lieu :',
-//              'class' => Location::class,
-//              'choice_label' => 'locationName',
-//              'required' =>'false',
-//              ])
-
-
-              ->add('location',ChoiceType::class,[
-                  'placeholder' => 'Choisir une ville ^',
-                  'required'=>false
-              ])
-
-            
-            ->add('site',EntityType::class,[
-              'label' => 'Campus :',
-              'class' => Site::class,
-              'choice_label' => 'siteName']);
-
-          $formModifier = function (FormInterface $form, City $city = null){
-              $locations = ($city===null) ? [] : $city->getLocations();
-              $form->add('location',EntityType::class,[
-                 'class'=>Location::class,
-                 'choices'=>$locations,
-                 'choice_label'=>'locationName',
-                  'placeholder' => 'Choisir une ville ^',
-                  'label'=>'Lieu : '
-              ]);
-          };
-
-          $builder->get('city')->addEventListener(
+            $builder->get('city')->addEventListener(
                 FormEvents::POST_SUBMIT,
-                function (FormEvent $event) use ($formModifier){
+                function (FormEvent $event) use ($formModifier) {
                     $city = $event->getForm()->getData();
-                    $formModifier($event->getForm()->getParent(),$city);
+                    $formModifier($event->getForm()->getParent(), $city);
                 }
             );
-
-
-//            $formModifier=function(FormInterface $form,City $city=null){
-//                $locations= (null===$city ) ? [] :$city->getLocations();
-//                $form->add('locations',EntityType::class,[
-//                        'class' =>Location::class,
-//                        'choices'=>$locations,
-//                        'choice_label'=>'name',
-//                        'placeholder'=>'Choisir un lieu',
-//                        'label'=>'Lieu'
-//                    ]
-//                );
-//            };
-//            $builder->get('city')->addEventListener(
-//                FormEvents::POST_SUBMIT,
-//                function(FormEvent $event) use ($formModifier){
-//                    $city=$event->getForm()->getData();
-//                    $formModifier($event->getForm()->getParent(),$city);
-//                }
-//            );
-
         }
 
     }  
