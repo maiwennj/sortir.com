@@ -1,33 +1,73 @@
 <nav class="navbar navbar-expand-lg ">
-    <a class="navbar-brand" href="{{ path("activity_list") }}"><img src="{{asset('assets/img/logo_sortir.svg')}}" width="150px" alt="sortir.com"></a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path("activity_list") }}">Sorties</a>
-            </li>
-            {% if app.user %}
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand m-auto hover-rotate" href="{{ path("activity_list") }}"><img src="{{asset('assets/img/logo_sortir-v2.png')}}" width="150px" alt="sortir.com"></a>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path("activity_list") }}">Sorties</a>
+                </li>
+                {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('activity_create') }}">Ajouter une sortie</a>
                 </li>
-            {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="{{path('user_my_profile')}}">Mon profil</a>
-            </li>
-            {% if app.user and is_granted("ROLE_ADMIN") %}
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{path('user_my_profile')}}">Mon profil</a>
+                </li>
+                {% if app.user and is_granted("ROLE_ADMIN") %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_login') }}">Administration</a>
                 </li>
-            {% endif %}
-            {% if app.user %}
+                {% endif %}
+                {% if app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
                 </li>
-            {% endif %}
-            {% if not app.user %}
+                {% endif %}
+                {% if not app.user %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
                 </li>
-            {% endif %}
-        </ul>
+                {% endif %}
+            </ul>
+        </div>
+
+
+        {# --------------- ODL VERSION --------------- #}
+
+{#        <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#            <ul class="navbar-nav me-auto">#}
+{#                <li class="nav-item active">#}
+{#                    <a class="nav-link" href="{{ path("activity_list") }}">Sorties</a>#}
+{#                </li>#}
+{#                {% if app.user %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('activity_create') }}">Ajouter une sortie</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{{path('user_my_profile')}}">Mon profil</a>#}
+{#                </li>#}
+{#                {% if app.user and is_granted("ROLE_ADMIN") %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('app_login') }}">Administration</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#                {% if app.user %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#                {% if not app.user %}#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>#}
+{#                    </li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </div>#}
+
     </div>
 </nav>

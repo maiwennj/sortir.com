@@ -149,6 +149,18 @@
   color: var(--bs-tertiary-color);
 }
 
+/* FOOTER */
+.footer{
+  background-color: var(--bs-primary);
+  height: 30px;
+  bottom: 0px;
+  display: flex;
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  position: fixed;
+  width: 100%;
+}
 
 /*     FORM    */
 
@@ -159,7 +171,7 @@ form[name="filter"] input{
 form[name="filter"] input:focus{
   //outline: 0 none;
   //outline: 2px solid var(--bs-tertiary-color);
-  outline: 2px solid var(--bs-success);
+  outline: 2px solid var(--bs-tertiary-color);
 }
 
 form[name="location_form"] input{
@@ -168,7 +180,7 @@ form[name="location_form"] input{
 
 input[type=checkbox]:checked{
   //accent-color:var(--bs-tertiary-color);
-  accent-color:var(--bs-success);
+  accent-color:var(--bs-tertiary-color);
 }
 
 #activity_city,#activity_location,#activity_site {
@@ -191,9 +203,16 @@ input[type=checkbox]:checked{
 
 /* -----------  utils  ------------------ */
 
+//hover animation
+.hover-rotate:hover{
+  transform: rotate(10deg);
+}
+
+
+
 /* TEST BOX */
 .b-test{
-  //border: solid red 1px;
+  border: solid red 1px;
 }
 
 //btn
