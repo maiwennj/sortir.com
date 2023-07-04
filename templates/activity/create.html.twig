@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer une sortied{% endblock %}
+{% block title %}Créer une sortie{% endblock %}
 {%  block h2 %}Créer une sortie{% endblock %}
 
 {% block body %}
@@ -110,35 +110,13 @@
             <button type="submit" class="btn btn-success mx-2" name="btnActivity" value="add">Publier la sortie</button>
             <button type="submit" class="btn btn-info mx-2" name="btnActivity" value="save">Enregistrer comme brouillon</button>
             <a href="{{ path("activity_list") }}" class="btn btn-warning mx-2">Annuler</a>
+
             {% if activity.state is not null and activity.state.id == 1  %}
                 <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
             {% endif %}
         </div>
     {{ form_end(form) }}
 
-    <script>
-        window.onload = () => {
-            let city = document.querySelector("#activity_city");
-            city.addEventListener("change", function() {
-                let form = this.closest("form");
-                let data = new FormData(form);
-                fetch(form.action, {
-                    method: form.getAttribute("method"),
-                    body: data,
-                })
-                    .then(response => response.text())
-                    .then(html => {
-                        let parser = new DOMParser();
-                        let parsedHTML = parser.parseFromString(html, "text/html");
-                        let nouveauSelect = parsedHTML.querySelector("#activity_location");
-                        let existingSelect = document.querySelector("#activity_location");
 
-                        if (existingSelect && nouveauSelect) {
-                            existingSelect.parentNode.replaceChild(nouveauSelect, existingSelect);
-                        }
-                    });
-            });
-        };
-    </script>
 {% endblock %}
 
