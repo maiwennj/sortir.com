@@ -39,6 +39,26 @@ class UserController extends AbstractController{
 
         if ($formUser->isSubmitted() && $formUser->isValid()){
             try {
+                $file = $formUser->get('userProfile')->get('pictureFile')->getData();
+                if($file!==null){
+                    //create and add file
+                    $extension = $file->guessExtension();
+                    $userId = $user->getId();
+                    $fileName = rand(1, 99999).'-'.$userId.'.'.$extension;
+                    dump($fileName);
+                    $file->move('assets\img\userImg',$fileName);
+
+                    //delete old img file if existing
+                    $existanteFile = 'assets\img\userImg'.'/'.$user->getUserProfile()->getPictureUrl();
+                    if(file_exists($existanteFile)){
+                        unlink($existanteFile);
+                    }
+
+
+                    $userProfile = $user->getUserProfile();
+                    $userProfile->setPictureUrl($fileName);
+                    $user->setUserProfile($userProfile);
+                }
                 $entityManager->persist($user);
                 $entityManager->flush();
 

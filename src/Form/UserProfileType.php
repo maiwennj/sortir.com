@@ -6,7 +6,9 @@ use App\Entity\Site;
 use App\Entity\UserProfile;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Mime\Part\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserProfileType extends AbstractType
@@ -19,7 +21,23 @@ class UserProfileType extends AbstractType
             ->add('phoneNumber',null,['label'=>'Téléphone : '])
             ->add('emailAdress',null,['label'=>'Email : '])
             ->add('site',EntityType::class,['label'=>'Site de rattachement : ','class'=>Site::class,'choice_label'=>'siteName'])
-        ;
+            ->add('pictureFile',
+                FileType::class,
+                [
+                    'label'=>'Image : ',
+                    "required"=>false,
+                    "mapped"=>false,
+                    'constraints' => [
+                        new \Symfony\Component\Validator\Constraints\File([
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png',
+                                'image/jpg',
+                            ],
+                            'mimeTypesMessage' => 'Extensions autorisées : jpg, jpeg, png.',
+                        ]),
+                    ]
+                ]);
     }
 
 

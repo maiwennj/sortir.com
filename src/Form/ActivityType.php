@@ -73,44 +73,26 @@ class ActivityType extends AbstractType{
                 ->add('description', null, [
                     'label' => 'Description et infos :'])
 
-//            ->add('pictureUrl',FileType::class,[
-//             'label'=>'Ajouter une image (fichier image)'])
-
                 ->add('city', EntityType::class, [
                     'label' => 'Ville :',
                     'class' => City::class,
                     'choice_label' => 'cityName',
-                    'required' => 'false',
+                    'required' => false,
                     'mapped' => false])
+              
                 ->add('location', EntityType::class, [
                     'label' => 'Lieu :',
                     'class' => Location::class,
                     'choice_label' => 'locationName',
-                    'required' => 'false',
+                    'required' => false,
                 ])
+              
                 ->add('site', EntityType::class, [
                     'label' => 'Campus :',
                     'class' => Site::class,
                     'choice_label' => 'siteName']);
 
-            $formModifier = function (FormInterface $form, City $city = null) {
-                $locations = ($city === null) ? [] : $city->getLocations();
-                $form->add('location', EntityType::class, [
-                    'class' => Location::class,
-                    'choices' => $locations,
-                    'choice_label' => 'locationName',
-                    'placeholder' => 'Choisir une ville ^',
-                    'label' => 'Lieu : '
-                ]);
-            };
 
-            $builder->get('city')->addEventListener(
-                FormEvents::POST_SUBMIT,
-                function (FormEvent $event) use ($formModifier) {
-                    $city = $event->getForm()->getData();
-                    $formModifier($event->getForm()->getParent(), $city);
-                }
-            );
         }
 
     }  
