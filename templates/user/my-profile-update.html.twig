@@ -34,6 +34,10 @@
         {{ form_widget(formUser.userProfile.site) }}<br>
         {{ form_errors(formUser.userProfile.site) }}
 
+        {{ form_label(formUser.userProfile.pictureFile) }}
+        {{ form_widget(formUser.userProfile.pictureFile) }}<br>
+        {{ form_errors(formUser.userProfile.pictureFile) }}
+
     <button type="submit">Enregistrer</button>
     {{ form_end(formUser) }}
 

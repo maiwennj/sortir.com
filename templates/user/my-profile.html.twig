@@ -3,14 +3,27 @@
 {% block title %}Mon profil{% endblock %}
 {% block h2 %}Mon profil{% endblock %}
 {% block body %}
-    <p>Pseudo : {{ user.username }}</p>
-    <p>Prénom : {{ user.userProfile.firstName }}</p>
-    <p>Nom : {{user.userProfile.lastName }}</p>
-    <p>Téléphone : {{ user.userProfile.phoneNumber }}</p>
-    <p>Adresse email : {{ user.userProfile.emailAdress }}</p>
-    <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
+    <div class="mt-4">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <img src="{{ asset('assets/img/userImg/'~user.userProfile.pictureUrl) }}" class="user-img">
+            </div>
+            <div class="col">
+                <p>Pseudo : {{ user.username }}</p>
+                <p>Prénom : {{ user.userProfile.firstName }}</p>
+                <p>Nom : {{user.userProfile.lastName }}</p>
+                <p>Téléphone : {{ user.userProfile.phoneNumber }}</p>
+                <p>Adresse email : {{ user.userProfile.emailAdress }}</p>
+                <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
+            </div>
+            <div class="col"></div>
+        </div>
+        <div class="text-center">
+            <a class="btn btn-secondary" href="{{ path('user_my_profile_update') }}">Update profile</a>
+        </div>
+    </div>
 
-        <a class="btn btn-secondary" href="{{ path('user_my_profile_update') }}">Update profile</a>
 
 
 {% endblock %}
