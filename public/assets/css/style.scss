@@ -193,7 +193,7 @@ input[type=checkbox]:checked{
 
 /* TEST BOX */
 .b-test{
-  border: solid red 1px;
+  //border: solid red 1px;
 }
 
 //btn
@@ -212,5 +212,12 @@ input[type=checkbox]:checked{
   height: 500px;
   overflow: auto;
 
+}
+
+//userImg
+.user-img{
+  width: 300px;
+  height: 300px;
+  border-radius: 300px;
 }
 
