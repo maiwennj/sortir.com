@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Sorties{% endblock %}
-    <div class="m-auto width-1800">
+
 
 {% block h2 %}Les sorties du moment{% endblock %}
 {% block body %}
+    <div class="m-auto width-1800">
     <div class="filter-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-controls="filter" aria-expanded="false" aria-label="Toggle navigation">
         <span class="btn btn-primary">filtrer les sorties</span>
     </div>
@@ -34,12 +35,8 @@
                     </div>
 
 
-                    {{ form_label(form.endDate) }}
-                    {{ form_widget(form.endDate) }}
-                    {{ form_errors(form.endDate) }}
-                </div>
 
-                </div>
+
                 <div class="col">
                     <div>
                         {{ form_widget(form.isTheOrganiser) }}
@@ -137,7 +134,7 @@
                                     <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning btn-width">Se désister</a>
                                 {% elseif not isRegistered %}
 
-                                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
+                                    <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
 
                                 {% endif %}
                             {% else %}
