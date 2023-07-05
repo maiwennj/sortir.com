@@ -8,7 +8,7 @@
 
     {{ form_start(form) }}
         <div class="row align-items-top justify-content-between b-test">
-            <div class="col-2 mt-4 b-test"></div>
+            <div class="d-none d-md-table-cell col-2 mt-4 b-test"></div>
             <div  class="col mt-4 b-test">
                 <div class="d-flex justify-content-between mt-1">
                     <div class="w-50 b-test">
@@ -102,14 +102,16 @@
 
                 </div>
             </div>
-            <div class="col-2 mt-4 b-test"></div>
+            <div class="d-none d-md-table-cell  col-2 mt-4 b-test"></div>
         </div>
 
 
-        <div class="mt-4 b-test text-center b-test">
-            <button type="submit" class="btn btn-success mx-2" name="btnActivity" value="add">Publier la sortie</button>
-            <button type="submit" class="btn btn-info mx-2" name="btnActivity" value="save">Enregistrer comme brouillon</button>
-            <a href="{{ path("activity_list") }}" class="btn btn-warning mx-2">Annuler</a>
+        <div class="mt-4 b-test  b-test">
+            <button type="submit" class="btn btn-success my-1" name="btnActivity" value="add">Publier</button>
+            <button type="submit" class="btn btn-info my-1" name="btnActivity" value="save">Enregistrer le brouillon</button>
+            <a href="{{ path("activity_list") }}" class="btn btn-warning my-1">Annuler</a>
+
+
 
     {% if activity.state is not null and activity.state.id == 1  %}
         <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>

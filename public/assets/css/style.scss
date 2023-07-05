@@ -130,6 +130,12 @@
 
 
 /**************************** ELEMENTS **************************************/
+/*    BODY      */
+body{
+  min-height: 100vh;
+  position: relative;
+}
+
 /*      HEADER   */
 
 .navbar{
@@ -146,7 +152,10 @@
 .nav-link:hover{
   color: var(--bs-tertiary-color);
 }
-
+/*  MAIN */
+main{
+  margin-bottom: 50px;
+}
 /* FOOTER */
 .footer{
   background-color: var(--bs-primary);
@@ -156,11 +165,12 @@
   vertical-align: middle;
   text-align: center;
   margin: auto;
-  position: fixed;
+  position: absolute;
   width: 100%;
 }
 
 /*     FORM    */
+
 
 form[name="filter"] input{
   border-radius: 10px;
@@ -207,6 +217,11 @@ input[type=checkbox]:checked{
 }
 
 
+.complete-badge{
+  font-size: small;
+  background-color: var(--bs-danger)!important;
+}
+
 
 /* TEST BOX */
 .b-test{
@@ -221,20 +236,23 @@ input[type=checkbox]:checked{
   height: 50px;
 }
 
-.width-1800{
-  width: 1800px;
-}
 //table
 .tbl-height{
-  height: 500px;
+  height: 450px;
   overflow: auto;
-
 }
 
 //userImg
 .user-img{
-  width: 300px;
-  height: 300px;
-  border-radius: 300px;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+}
+@media (min-width: 992px){
+  .user-img-lg{
+    width: 300px;
+    height: 300px;
+    border-radius: 300px;
+  }
 }
 

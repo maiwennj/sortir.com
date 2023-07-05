@@ -54,7 +54,7 @@
                     {{ form_errors(form.isFinished) }}
                 </div>
             </div>
-            <div class="text-center">
+            <div class="text-center my-3">
                 {{ form_widget(form.submit,{'attr': { 'class':"btn btn-success btn-width btn-height"}})}}
             </div>
             {{ form_end(form) }}
@@ -63,10 +63,10 @@
 
     <div class="tbl-height mt-4 m-auto ">
         <table class="table table-hover" id="activity-table">
-            <thead class="sticky-top shadow table-primary">
+            <thead class="sticky-top shadow table-primary ">
             <tr>
-                <th scope="col">Nom de la sortie</th>
-                <th scope="col">Date de la sortie</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Date</th>
                 <th class="d-none d-md-table-cell" scope="col">Clôture</th>
                 <th class="d-none d-md-table-cell" scope="col">inscrits/places</th>
                 <th class="d-none "  scope="col">Etat</th>
@@ -80,7 +80,8 @@
             {% for activity in activities %}
                 {% set regMax = activity.maxRegistration %}
                 {% set regNumber = activity.registrations|length %}
-                <tr class="align-middle">
+                <tr class="align-middle" onclick="location.href='{{ path("activity_details",{'id': activity.id})}}'" style="cursor:pointer;">
+
                     <td class="">{{ activity.activityName }}</td>
                     <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
                     <td class="d-none d-md-table-cell" >{{ activity.closingDate|date("d/m/Y", "Europe/Paris")  }}</td>
@@ -101,7 +102,7 @@
                         {% endfor %}
                     </td>
 
-                    <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}" class="user-link"> {{ activity.organiser.user.username}}</a></td>
+                    <td> <a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}" class="user-link"> {{ activity.organiser.user.username|upper}}</a></td>
                     <td class="d-none d-lg-table-cell" >
                         {% if activity.organiser.user == app.user and activity.state.id == 1 %}
                             <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary btn-width">Modifier</a>
@@ -133,6 +134,7 @@
                             {% endif %}
                         {% endif %}
                     </td>
+
                 </tr>
             {% endfor %}
             </tbody>

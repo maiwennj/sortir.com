@@ -49,11 +49,17 @@ class UserController extends AbstractController{
                     $file->move('assets\img\userImg',$fileName);
 
                     //delete old img file if existing
-                    $existanteFile = 'assets\img\userImg'.'/'.$user->getUserProfile()->getPictureUrl();
-                    if(file_exists($existanteFile)){
-                        unlink($existanteFile);
+                    $existantImgName = $user->getUserProfile()->getPictureUrl();
+                    if ($existantImgName!==null){
+                        $existanteFile = 'assets\img\userImg'.'/'.$existantImgName;
+                        dump($existanteFile);
+                        if($existanteFile!==null){
+                            if(file_exists($existanteFile)){
+                                dump($existanteFile);
+                                unlink($existanteFile);
+                            }
+                        }
                     }
-
 
                     $userProfile = $user->getUserProfile();
                     $userProfile->setPictureUrl($fileName);
