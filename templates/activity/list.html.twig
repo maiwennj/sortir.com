@@ -128,7 +128,7 @@
                                     <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning btn-width">Se désister</a>
                                 {% elseif not isRegistered %}
 
-                                    <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
+                                    <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
 
                                 {% endif %}
                             {% else %}

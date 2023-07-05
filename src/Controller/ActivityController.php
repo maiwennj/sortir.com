@@ -56,7 +56,9 @@ class ActivityController extends AbstractController
     /**---------------Activity--------------**/
 
     #[Route('/create', name: 'create')]
-    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository, LocationRepository $locationRepository): Response{
+
+    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository,LocationRepository $locationRepository): Response{
+        $locations=$locationRepository->findAll();
 
         $activity = new Activity();
         $activity->setStartDate(now()->modify('+3 days'));
@@ -101,7 +103,9 @@ class ActivityController extends AbstractController
         return $this->render('activity/create.html.twig', [
             'form' => $activityForm->createView(),
             'activity'=>$activity,
-            'locations'=>$locations
+
+            'locations'=> $locations
+
         ]);
     }
 
