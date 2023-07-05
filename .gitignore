@@ -18,7 +18,11 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+
 /.idea/
+/public/uploaded_files/
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
