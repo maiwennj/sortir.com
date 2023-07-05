@@ -3,13 +3,18 @@
 {% block title %}Profil de {{ user.username }}{% endblock %}
 {% block h2 %}{{ user.username }}{% endblock %}
 {% block body %}
-    <p>Prénom : {{ user.userProfile.firstName }}</p>
-    <p>Nom : {{user.userProfile.lastName }}</p>
-    <p>Téléphone : {{ user.userProfile.phoneNumber }}</p>
-    <p>Email : {{ user.userProfile.emailAdress }}</p>
-    <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
-
-
-
-
+    <div class="row">
+        {% if user.userProfile.pictureUrl is not null %}
+            <div class="col-12 col-md-6 col-lg-4 text-center">
+                <img src="{{ asset('assets/img/userImg/'~user.userProfile.pictureUrl) }}" class="user-img user-img-lg">
+            </div>
+        {% endif %}
+        <div class="col col-md-6 col-lg mx-4 my-4">
+            <p><span class="fw-semibold">Prénom : </span>{{ user.userProfile.firstName }}</p>
+            <p><span class="fw-semibold">Nom : </span>{{user.userProfile.lastName }}</p>
+            <p><span class="fw-semibold">Téléphone : </span>{{ user.userProfile.phoneNumber }}</p>
+            <p><span class="fw-semibold">Email : </span>{{ user.userProfile.emailAdress }}</p>
+            <p><span class="fw-semibold">Site de rattachement : </span>{{ user.userProfile.site.siteName}}</p>
+        </div>
+    </div>
 {% endblock %}

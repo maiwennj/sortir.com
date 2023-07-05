@@ -3,13 +3,13 @@
 {% block title %}Mon profil{% endblock %}
 {% block h2 %}Mon profil{% endblock %}
 {% block body %}
-    <div class="mt-4">
         <div class="row">
-            <div class="col"></div>
-            <div class="col">
-                <img src="{{ asset('assets/img/userImg/'~user.userProfile.pictureUrl) }}" class="user-img">
-            </div>
-            <div class="col">
+            {% if user.userProfile.pictureUrl is not null %}
+                <div class="col-12 col-md-6 col-lg-4 text-center">
+                    <img src="{{ asset('assets/img/userImg/'~user.userProfile.pictureUrl) }}" class="user-img">
+                </div>
+            {% endif %}
+            <div class="col col-md-6 col-lg mx-4 my-4">
                 <p>Pseudo : {{ user.username }}</p>
                 <p>Prénom : {{ user.userProfile.firstName }}</p>
                 <p>Nom : {{user.userProfile.lastName }}</p>
@@ -17,13 +17,8 @@
                 <p>Adresse email : {{ user.userProfile.emailAdress }}</p>
                 <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
             </div>
-            <div class="col"></div>
         </div>
-        <div class="text-center">
+        <div class="text-center mb-4">
             <a class="btn btn-secondary" href="{{ path('user_my_profile_update') }}">Update profile</a>
         </div>
-    </div>
-
-
-
 {% endblock %}
