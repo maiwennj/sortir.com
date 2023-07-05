@@ -289,11 +289,8 @@ class ActivityController extends AbstractController
                         $activity->setState($cancelState);
                         $entityManager->persist($activity);
                         $entityManager->flush();
-
                         $this->addFlash('success', "L'activité a été annulée avec succès.");
-
-                        return $this->redirectToRoute("activity_cancel", ['id' => $activity->getId()]);
-
+                        return $this->redirectToRoute("activity_list");
                     } catch
                     (Exception $exception) {
                         $this->addFlash('danger', "Erreur d'annulation");
@@ -301,9 +298,10 @@ class ActivityController extends AbstractController
                     }
 
                 }
-                return $this->render('activity/cancel.html.twig', ["activity" => $activity, "form" => $activityForm->createView()
-                    ,'referer' => $referer]);
-
+                return $this->render('activity/cancel.html.twig', [
+                    'activity' => $activity,
+                    'form' => $activityForm->createView(),
+                    'referer' => $referer]);
             }else{
                 $this->addFlash('danger',"L'état de cette activité ne lui permet pas d'être annulée");
             }

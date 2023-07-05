@@ -9,6 +9,7 @@ use App\Entity\UserProfile;
 use App\Form\LocationFormType;
 use App\Form\SiteType;
 use App\Form\UserImportType;
+use App\Form\UserType;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin',name: 'admin_')]
 class AdminController extends AbstractController
 {
+    #[Route('/', name: 'hub')]
+    public function adminHub(): Response{
+        return $this->render('admin/index.html.twig');
+    }
 
     #[Route('/site/create', name: 'site_create')]
     public function create(EntityManagerInterface $entityManager,Request $request): Response
@@ -45,17 +50,39 @@ class AdminController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'hub')]
-    public function adminHub(): Response{
-
-        return $this->render('admin/index.html.twig',[
-
-        ]);
-    }
-
-
     #[Route('/user-creation', name: 'user_create')]
-    public function addUser(){
+    public function addUser(Request $request,EntityManagerInterface $entityManager,UserPasswordHasherInterface $userPasswordHasher){
+
+        $user = new User();
+        $userProfile = new UserProfile();
+        $form = $this->createForm(UserType::class,$user,['admin-mode'=>true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            try {
+
+                if ($user->getIsAdmin()){
+                    $user->setRoles(["ROLE_ADMIN"]);
+                }else{
+                    $user->setRoles(["ROLE_USER"]);
+                }
+
+                $user->setPassword( $userPasswordHasher->hashPassword($user, $user->getUsername()));
+                $userProfile= $user->getUserProfile();
+                $user->setUserProfile($userProfile);
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $username = $user->getUsername();
+                $this->addFlash('success',"L'utilisateur $username a bien été créé.");
+                return $this->redirectToRoute('admin_hub');
+            }catch (\Exception $exception){
+                $this->addFlash('danger',"L'utilisateur n'a pas pu être ajouté.");
+            }
+        }
+
+        return $this->render('admin/user-create.html.twig',[
+            'form'=>$form
+        ]);
 
     }
     #[Route('/user-import', name: 'user_import')]

@@ -20,8 +20,10 @@ class UserProfileType extends AbstractType
             ->add('firstName',null,['label'=>'Prénom : '])
             ->add('phoneNumber',null,['label'=>'Téléphone : '])
             ->add('emailAdress',null,['label'=>'Email : '])
-            ->add('site',EntityType::class,['label'=>'Site de rattachement : ','class'=>Site::class,'choice_label'=>'siteName'])
-            ->add('pictureFile',
+            ->add('site',EntityType::class,['label'=>'Site de rattachement : ','class'=>Site::class,'choice_label'=>'siteName']);
+
+        if ($options['admin-mode'] === false){
+            $builder->add('pictureFile',
                 FileType::class,
                 [
                     'label'=>'Image : ',
@@ -38,6 +40,8 @@ class UserProfileType extends AbstractType
                         ]),
                     ]
                 ]);
+        }
+
     }
 
 
@@ -45,6 +49,7 @@ class UserProfileType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserProfile::class,
+            'admin-mode'=>false
         ]);
     }
 }

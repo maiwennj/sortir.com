@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un utilisateur{% endblock %}
+{% block h2 %}Créer un utilisateur{% endblock %}
+{% block body %}
+    {{ form_start(form) }}
+
+    {{ form_label(form.username) }}
+    {{ form_widget(form.username) }}<br>
+    {{ form_errors(form.username) }}
+
+    {{ form_label(form.userProfile) }}<br>
+    {{ form_label(form.userProfile.lastName) }}
+    {{ form_widget(form.userProfile.lastName) }}<br>
+    {{ form_errors(form.userProfile.lastName) }}
+
+    {{ form_label(form.userProfile.firstName) }}
+    {{ form_widget(form.userProfile.firstName) }}<br>
+    {{ form_errors(form.userProfile.firstName) }}
+
+    {{ form_label(form.userProfile.phoneNumber) }}
+    {{ form_widget(form.userProfile.phoneNumber) }}<br>
+    {{ form_errors(form.userProfile.phoneNumber) }}
+
+    {{ form_label(form.userProfile.emailAdress) }}
+    {{ form_widget(form.userProfile.emailAdress) }}<br>
+    {{ form_errors(form.userProfile.emailAdress) }}
+
+    {{ form_label(form.userProfile.site) }}
+    {{ form_widget(form.userProfile.site) }}<br>
+    {{ form_errors(form.userProfile.site) }}
+
+{#    {{ form_label(form.userProfile.pictureFile) }}#}
+{#    {{ form_widget(form.userProfile.pictureFile) }}<br>#}
+{#    {{ form_errors(form.userProfile.pictureFile) }}#}
+
+    {{ form_label(form.isAdmin) }}
+    {{ form_widget(form.isAdmin) }}
+    {{ form_errors(form.isAdmin) }}
+
+    {{ form_label(form.isActive) }}
+    {{ form_widget(form.isActive) }}<br>
+    {{ form_errors(form.isActive) }}
+
+
+    <button type="submit">Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}
