@@ -57,8 +57,11 @@ class ActivityController extends AbstractController
 
     #[Route('/create', name: 'create')]
 
+
     public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository,LocationRepository $locationRepository): Response{
         $locations=$locationRepository->findAll();
+
+
 
         $activity = new Activity();
         $activity->setStartDate(now()->modify('+3 days'));
