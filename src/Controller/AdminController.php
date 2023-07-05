@@ -12,6 +12,7 @@ use App\Form\UserImportType;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -114,6 +115,10 @@ class AdminController extends AbstractController
 
 
                 $this->addFlash('success',"$compteur utilisateur(s) inséré(s) avec succès.");
+
+                $filesystem = new Filesystem();
+                $filesystem->remove("./uploaded_files", $fileName);
+
                 return $this->redirectToRoute('admin_user_import');
             }catch (\Exception $exception){
                 $this->addFlash('danger',"Impossible d'insérer le fichier d'utilisateurs.");
