@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use function Symfony\Component\Clock\now;
 
@@ -319,7 +320,7 @@ class ActivityController extends AbstractController
     }
 
     #[Route('/participate/{id}', name: 'participate')]
-    public function participate(EntityManagerInterface $entityManager, Request $request, int $id, StateRepository $stateRepository): Response
+    public function participate(EntityManagerInterface $entityManager, Request $request, int $id, StateRepository $stateRepository,UrlGeneratorInterface $urlGenerator): Response
     {
         $activity = $entityManager->getRepository(Activity::class)->find($id);
         $currentState = $activity->getState()->getId();
@@ -345,9 +346,13 @@ class ActivityController extends AbstractController
                     $entityManager->persist($registration);
                     $entityManager->persist($activity);
                     $entityManager->flush();
-
                     $this->addFlash('success', "Vous avez été inscrit à cette activité avec succès.");
-                    return $this->redirectToRoute('activity_list');
+                   // return $this->redirectToRoute('activity_list');
+                    $referer = $request->headers->get('referer');
+                    if ($referer) {
+                        $activityDetailsUrl = $this->generateUrl('activity_details', ['id' => $activity->getId()]);
+                        return $this->redirect($activityDetailsUrl);
+                    }
 
                 } catch (\Exception $exception) {
                     $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
