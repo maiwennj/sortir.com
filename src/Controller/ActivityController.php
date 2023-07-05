@@ -380,7 +380,7 @@ class ActivityController extends AbstractController
                 /**
                  * Check : has the activity already begun ?
                  */
-                if ($activity->getStartDate()<now()){
+                if ($activity->getStartDate()>now()){
                     $activity->removeRegistration($registration);
                     if ($activity->getMaxRegistration() > count($activity->getRegistrations())) {
                         $activity->setState($stateRepository->find(2));
