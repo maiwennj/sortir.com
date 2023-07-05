@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un utilisateur{% endblock %}
+{% block h2 %}Créer un utilisateur{% endblock %}
+{% block body %}
+    <div>
+        <p>Vous pouvez insérer un fichier <span class="fw-bold">.csv</span> pour importer des utilisateurs.</p>
+        <p>Les éléments de votre fichier .csv doivent être séparés par un <span class="fw-bold">point-virgule</span> et les éléments doivent être dans l'ordre suivant, <span class="fw-bold">sans espaces</span> avant ou après :</p>
+        <p class="ali">Pseudo Rôles Admin Actif Prénom Nom Campus Numéro Email</p>
+        <p>Exemple : dark_avenger_666;["ROLE_USER"];0;1;Enzo;Martin;2;0240595068;coccinelle_brute@mail.fr</p>
+    </div>
+
+
+    {{ form(form) }}
+
+
+
+
+{% endblock %}
