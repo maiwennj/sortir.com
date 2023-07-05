@@ -82,7 +82,7 @@
                         {{ form_label(form.city) }}
                     </div>
                     <div class="w-100 b-test">
-                        {{ form_widget(form.city,{'attr': {'id': 'select-city'}}) }}
+                        {{ form_widget(form.city,{'attr': {'id': 'select-city','onchange': 'changeLocation()'} }) }}
                         {{ form_errors(form.city) }}
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                         {{ form_label(form.location) }}
                     </div>
                     <div class="w-100 b-test d-flex justify-content-between">
-                        {{ form_widget(form.location,{'attr': {'id': 'select-location'}}) }}
+                        {{ form_widget(form.location,{'attr': {'id': 'select-location','onchange': 'locationDetails()'} }) }}
                         {{ form_errors(form.location) }}
                         <div class="">
                             <a href="{{ path("activity_location_create")}}" class="btn btn-primary loc-creat">
@@ -111,51 +111,123 @@
             <button type="submit" class="btn btn-info mx-2" name="btnActivity" value="save">Enregistrer comme brouillon</button>
             <a href="{{ path("activity_list") }}" class="btn btn-warning mx-2">Annuler</a>
 
-            {% if activity.state is not null and activity.state.id == 1  %}
-                <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
-            {% endif %}
-        </div>
+    {% if activity.state is not null and activity.state.id == 1  %}
+        <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
+    {% endif %}
+
+
+{#        <div>#}
+{#            {{ form_label(form.maxRegistration) }}#}
+{#            {{ form_widget(form.maxRegistration) }}#}
+{#            {{ form_errors(form.maxRegistration) }}#}
+{#        </div>#}
+
+{#        <div>#}
+{#            {{ form_label(form.duration) }}#}
+{#            {{ form_widget(form.duration) }}#}
+{#            {{ form_errors(form.duration) }}#}
+{#        </div>#}
+{#        <div>#}
+{#            {{ form_label(form.description) }}#}
+{#            {{ form_widget(form.description) }}#}
+{#            {{ form_errors(form.description) }}#}
+{#        </div>#}
+
+{#        <div>#}
+{#            {{ form_label(form.pictureUrl) }}#}
+{#            {{ form_widget(form.pictureUrl) }}#}
+{#            {{ form_errors(form.pictureUrl) }}#}
+{#        </div>#}
+
+{#        <div>#}
+{#            {{ form_label(form.site) }}#}
+{#            {{ form_widget(form.site, {'attr': {'default': app.user.userProfile.site.id}})}}#}
+{#            {{ form_errors(form.site) }}#}
+{#        </div>#}
+
+{#        <div >#}
+{#            {{ form_label(form.city) }}#}
+{#            {{ form_widget(form.city,{'attr': {'id': 'select-city','onchange': 'changeLocation()'} }) }}#}
+{#            {{ form_errors(form.city) }}#}
+{#        </div>#}
+{#        <div >#}
+{#            {{ form_label(form.location) }}#}
+{#            {{ form_widget(form.location,{'attr': {'id': 'select-location','onchange': 'locationDetails()'} }) }}#}
+{#            {{ form_errors(form.location) }}#}
+{#            <a href="{{ path("activity_location_create")}}" class="btn btn-primary">+</a>#}
+{#        </div>#}
+        <div id="location-details" style="display: none;">
+            <p id="location-street"></p>
+            <p id="location-latitude"></p>
+            <p id="location-longitude"></p>
+            <p id="city-postCode"> </p>
+         </div>
+{#        <div>#}
+{#            <button type="submit" class="btn btn-success" name="btnActivity" value="add">Publier la sortie</button>#}
+{#            <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer comme brouillon</button>#}
+{#            <a href="{{ path("activity_list") }}" class="btn btn-secondary">Annuler</a>#}
+
+{#            {% if activity.state is not null and activity.state.id == 1  %}#}
+{#                <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>#}
+{#            {% endif %}#}
+{#        </div>#}
     {{ form_end(form) }}
 
-
     <script>
-        window.onload = () => {
-            let city = document.querySelector("#activity_city");
-           // console.log(city.value);
-            let placeSelect = document.querySelector("#activity_location");
-            //console.log(placeSelect);
-            city.addEventListener("change", function() {
-              // let form = document.querySelector("#activity_city");
-                let form = city.closest("form");
-                //let data = new FormData(form);
-               let data = this.name +"=" + this.value;
+        window.onload;
+        function changeLocation() {
+            var citySelect = document.getElementById('activity_city');
+            var locationSelect = document.getElementById('activity_location');
+            var selectedCity = citySelect.value;
+            locationSelect.innerHTML = '';
+            {% for location in locations %}
+                {% set locationId = location.id %}
+                {% set locationName = location.locationName %}
+                if (selectedCity === '{{ location.city.id }}') {
+                var option = document.createElement('option');
+                option.value = '{{ locationId }}';
+                option.text = '{{ locationName }}';
+                locationSelect.appendChild(option);
 
-               fetch(form.action, {
-                       method: form.getAttribute("method"),
-                       body: data,
-                       headers:{
-                          "content-Type":"application/x-www-form-urlencoded;charset:UTF-8"
-                          }
-                      })
+                }
+            {% endfor %}
+            locationDetails();
 
-            .then(response => response.text())
-            .then(html => {
-                    let content = document.createElement("html");
-                    content.innerHTML=html;
-                    let nouveauSelect = content.querySelector("#activity_city");
-                    // let locations = nouveauSelect.querySelector("option");
-                    //  locations.forEach((location) => {
-                    //  console.log(locations.textContent);
-                      //});
-                          placeSelect.replaceWith(nouveauSelect);
-                       placeSelect= nouveauSelect;
-                      document.querySelector("#activity_location").replaceWith(nouveauSelect);
+        }
 
-              });
+    function locationDetails(){
+        var citySelect = document.getElementById('activity_city');
+        var locationSelect = document.getElementById('activity_location');
+        var selectedLocation =locationSelect.value;
 
-       });
-       };
+        var locationDetailsDiv = document.getElementById('location-details');
+        var locationStreet = document.getElementById('location-street');
+        var locationLatitude = document.getElementById('location-latitude');
+        var locationLongitude= document.getElementById('location-longitude');
+        var postCode= document.getElementById('city-postCode');
+
+        locationDetailsDiv.style.display = 'none';
+
+        {% for location in locations %}
+        if ('{{ location.id }}' === selectedLocation) {
+            locationStreet.textContent = 'Street: {{ location.street }}';
+            locationLatitude.textContent = 'Latitude: {{ location.latitude }}';
+            locationLongitude.textContent = 'Latitude: {{ location.longitude }}';
+           postCode.textContent = 'Code Postale:{{ location.city.postCode }}';
+
+            locationDetailsDiv.style.display = 'block';
+
+        }
+        {% endfor %}
+
+    }
+
+        window.onload = function() {
+
+            changeLocation();
+
+    }
+
     </script>
 
 {% endblock %}
-

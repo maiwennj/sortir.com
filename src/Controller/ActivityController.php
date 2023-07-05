@@ -13,6 +13,7 @@ use App\Repository\ActivityRepository;
 use App\Repository\LocationRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\StateRepository;
+use App\Repository\UserProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -55,7 +56,12 @@ class ActivityController extends AbstractController
     /**---------------Activity--------------**/
 
     #[Route('/create', name: 'create')]
-    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository, LocationRepository $locationRepository): Response{
+
+
+    public function create(EntityManagerInterface $entityManager,Request $request,StateRepository $stateRepository,UserProfileRepository $userProfileRepository,LocationRepository $locationRepository): Response{
+        $locations=$locationRepository->findAll();
+
+
 
         $activity = new Activity();
         $activity->setStartDate(now()->modify('+3 days'));
@@ -100,7 +106,9 @@ class ActivityController extends AbstractController
         return $this->render('activity/create.html.twig', [
             'form' => $activityForm->createView(),
             'activity'=>$activity,
-            'locations'=>$locations
+
+            'locations'=> $locations
+
         ]);
     }
 

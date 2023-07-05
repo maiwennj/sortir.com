@@ -48,22 +48,34 @@ class ActivityType extends AbstractType{
                 ->add('startDate', DateTimeType::class, [
 
                     'widget' => 'single_text',
-                    'data' => new \DateTime(),
 
+
+                ])
+                ->add('closingDate', DateTimeType::class, [
+                    'label' => "Date limite d'inscription :"])
+                ->add('startDate', DateTimeType::class, [
+
+                    'widget' => 'single_text',
+                    //'data' => new \DateTime(),
+                    'by_reference' => true,
 
                 ])
                 ->add('closingDate', DateTimeType::class, [
                     'label' => "Date limite d'inscription :",
 
                     'widget' => 'single_text',
-
+                    //'data' => new \DateTime(),
+                    'by_reference' => true,
                 ])
+
+
+
                 ->add('maxRegistration', null, [
-                    'label' => 'Nombre de places :',
-                    'attr' => [
-                        'min' => 1,
-                        'value' => "1",
-                    ]])
+                'label' => 'Nombre de places :',
+                'attr' => [
+                    'min' => 1,
+                    'value' => "1",
+                ]])
                 ->add('duration', null,
                     [
                         'label' => 'Durée :',
@@ -84,21 +96,33 @@ class ActivityType extends AbstractType{
                     'label' => 'Lieu :',
                     'class' => Location::class,
                     'choice_label' => 'locationName',
-                    'required' => false,
+                    'placeholder' => 'Choisir un lieu',
+                    'required' => 'false',
                 ])
                 ->add('site', EntityType::class, [
                     'label' => 'Campus :',
                     'class' => Site::class,
-                    'choice_label' => 'siteName']);
-        }}
+                    'choice_label' => 'siteName'])
+                ->add('city', EntityType::class, [
+                    'label' => 'Ville :',
+                    'class' => City::class,
+                    'choice_label' => 'cityName',
+                    'required' => 'false',
+                    'placeholder' => 'Choisir une ville',
+                    'mapped' => false]);
 
-            public
-            function configureOptions(OptionsResolver $resolver): void
-            {
-                $resolver->setDefaults([
-                    'data_class' => Activity::class,
-                    'cancel_mode' => false,]);
-            }
+
+         }
 
         }
+
+
+    public function configureOptions(OptionsResolver $resolver): void{
+        $resolver->setDefaults([
+            'data_class' => Activity::class,
+            'cancel_mode' => false,]);
+    }
+  
+  
+}
 
