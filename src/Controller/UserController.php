@@ -34,7 +34,7 @@ class UserController extends AbstractController{
     #[Route(path: '/my_profile_update', name: 'my_profile_update')]
     public function update(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response{
         $user = $this->getUser();
-        $formUser = $this->createForm(UserType::class,$user);
+        $formUser = $this->createForm(UserType::class,$user,['admin-mode'=>false]);
         $formUser->handleRequest($request);
 
         if ($formUser->isSubmitted() && $formUser->isValid()){

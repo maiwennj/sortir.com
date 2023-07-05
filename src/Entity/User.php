@@ -123,6 +123,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getIsAdmin(): ?bool
+    {
+        return $this->isAdmin;
+    }
+
     public function isIsActive(): ?bool
     {
         return $this->isActive;
