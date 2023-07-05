@@ -80,7 +80,8 @@
             {% for activity in activities %}
                 {% set regMax = activity.maxRegistration %}
                 {% set regNumber = activity.registrations|length %}
-                <tr class="align-middle" onclick="location.href='{{ path("activity_details",{'id': activity.id})}}'" style="cursor:pointer;">
+{#                <tr class="align-middle" onclick="location.href='{{ path("activity_details",{'id': activity.id})}}'" style="cursor:pointer;">#}
+                <tr class="align-middle tr-pointer" onclick="trLink(event,{{ activity.id }})">
 
                     <td class="">{{ activity.activityName }}</td>
                     <td>{{ activity.startDate|date("d/m/Y H:i", "Europe/Paris") }}</td>
@@ -110,7 +111,7 @@
                             <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary btn-width">Afficher</a>
                         {% endif %}
                         {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
-                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler la sortie</a>
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger btn-width">Annuler la sortie</a>
                         {% endif %}
                         {% if activity.state is not null and activity.state.id == 2 %}
                             {% set isRegistered = false %}
