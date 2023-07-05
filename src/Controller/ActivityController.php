@@ -107,7 +107,9 @@ class ActivityController extends AbstractController
             'form' => $activityForm->createView(),
             'activity'=>$activity,
 
-            'locations'=> $locations
+            'locations'=> $locations,
+            'page_title'=> 'Créer une sortie'
+
 
         ]);
     }
@@ -166,12 +168,13 @@ class ActivityController extends AbstractController
     public function update( ActivityRepository $activityRepository,
                             EntityManagerInterface $entityManager,
                             StateRepository $stateRepository,
+                            LocationRepository $locationRepository,
                             Request $request,
                             int $id)
     {
         $activity = $activityRepository->find($id);
         $user = $this->getUser()->getUserProfile();
-
+        $locations = $locationRepository->findAll();
         //check if user is the organiser
         if($activity->getOrganiser()==$user){
 
@@ -215,11 +218,14 @@ class ActivityController extends AbstractController
             return $this->render('activity/create.html.twig', [
                 'form' => $activityForm->createView(),
                 'activity'=> $activity,
+                'locations'=> $locations,
+                'page_title'=>'Modifier une sortie'
             ]);
 
         }else{
             $this->addFlash('danger', "Vous ne pouvez pas modifier cette activité");
             return $this->redirectToRoute('activity_list');
+
         }
 
 
@@ -268,6 +274,7 @@ class ActivityController extends AbstractController
         $currentUser = $this->getUser()->getUserProfile();
         $organiser = $activity->getOrganiser();
         $currentState = $activity->getState()->getId();
+        $referer = $request->headers->get('referer');
         if ($currentUser === $organiser ) {
             if($currentState === 2 || $currentState === 3) {
 
@@ -294,7 +301,8 @@ class ActivityController extends AbstractController
                     }
 
                 }
-                return $this->render('activity/cancel.html.twig', ["activity" => $activity, "form" => $activityForm->createView()]);
+                return $this->render('activity/cancel.html.twig', ["activity" => $activity, "form" => $activityForm->createView()
+                    ,'referer' => $referer]);
 
             }else{
                 $this->addFlash('danger',"L'état de cette activité ne lui permet pas d'être annulée");
