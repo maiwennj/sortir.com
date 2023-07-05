@@ -1,44 +1,107 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Mon profil{{ app.user.username }}{% endblock %}
-
+{% block h2 %}Mon profil{% endblock %}
 {% block body %}
-    {% block h2 %}Mon profil{% endblock %}
+
     {{ form_start(formUser) }}
+        <div class="row align-items-top justify-content-between b-test">
+            <div class="d-none d-md-table-cell col-2 mt-4 b-test"></div>
+            <div  class="col mt-4 b-test">
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.username) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.username) }}<br>
+                        {{ form_errors(formUser.username) }}
+                    </div>
+                </div>
 
-    {{ form_label(formUser.username) }}
-    {{ form_widget(formUser.username) }}<br>
-    {{ form_errors(formUser.username) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.password.first) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.password.first) }}<br>
+                        {{ form_errors(formUser.password.first) }}
+                    </div>
+                </div>
 
-    {{ form_widget(formUser.password) }}
-    {{ form_errors(formUser.password) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.password.second) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.password.second) }}<br>
+                        {{ form_errors(formUser.password.second) }}
+                    </div>
+                </div>
 
-    {{ form_label(formUser.userProfile) }}<br>
-        {{ form_label(formUser.userProfile.lastName) }}
-        {{ form_widget(formUser.userProfile.lastName) }}<br>
-        {{ form_errors(formUser.userProfile.lastName) }}
+                <div class="mt-2">{{ form_label(formUser.userProfile) }}</div>
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.userProfile.lastName) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.userProfile.lastName) }}<br>
+                        {{ form_errors(formUser.userProfile.lastName) }}
+                    </div>
+                </div>
 
-        {{ form_label(formUser.userProfile.firstName) }}
-        {{ form_widget(formUser.userProfile.firstName) }}<br>
-        {{ form_errors(formUser.userProfile.firstName) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.userProfile.firstName) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.userProfile.firstName) }}<br>
+                        {{ form_errors(formUser.userProfile.firstName) }}
+                    </div>
+                </div>
 
-        {{ form_label(formUser.userProfile.phoneNumber) }}
-        {{ form_widget(formUser.userProfile.phoneNumber) }}<br>
-        {{ form_errors(formUser.userProfile.phoneNumber) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.userProfile.phoneNumber) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.userProfile.phoneNumber) }}<br>
+                        {{ form_errors(formUser.userProfile.phoneNumber) }}
+                    </div>
+                </div>
 
-        {{ form_label(formUser.userProfile.emailAdress) }}
-        {{ form_widget(formUser.userProfile.emailAdress) }}<br>
-        {{ form_errors(formUser.userProfile.emailAdress) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.userProfile.emailAdress) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.userProfile.emailAdress) }}<br>
+                        {{ form_errors(formUser.userProfile.emailAdress) }}
+                    </div>
+                </div>
 
-        {{ form_label(formUser.userProfile.site) }}
-        {{ form_widget(formUser.userProfile.site) }}<br>
-        {{ form_errors(formUser.userProfile.site) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.userProfile.site) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.userProfile.site) }}<br>
+                        {{ form_errors(formUser.userProfile.site) }}
+                    </div>
+                </div>
 
-        {{ form_label(formUser.userProfile.pictureFile) }}
-        {{ form_widget(formUser.userProfile.pictureFile) }}<br>
-        {{ form_errors(formUser.userProfile.pictureFile) }}
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(formUser.userProfile.pictureFile) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(formUser.userProfile.pictureFile) }}<br>
+                        {{ form_errors(formUser.userProfile.pictureFile) }}
+                    </div>
+                </div>
 
-    <button type="submit">Enregistrer</button>
+            </div>
+        </div>
+    <button type="submit" class="btn btn-success my-4">Enregistrer</button>
     {{ form_end(formUser) }}
 
 
