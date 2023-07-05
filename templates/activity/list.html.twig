@@ -69,7 +69,7 @@
                 <th scope="col">Date</th>
                 <th class="d-none d-md-table-cell" scope="col">Clôture</th>
                 <th class="d-none d-md-table-cell" scope="col">inscrits/places</th>
-                <th class="d-none "  scope="col">Etat</th>
+                <th class="d-none d-lg-table-cell"  scope="col">Etat</th>
                 <th class="d-none d-md-table-cell "  scope="col">Inscrit</th>
                 <th class=""  scope="col">Organisateur</th>
                 <th class="d-none d-lg-table-cell " scope="col">Actions</th>
@@ -93,7 +93,7 @@
                         {% endif %}
                     </td>
 
-                    <td class="d-none" >{{ activity.state.label }}</td>
+                    <td class="d-none d-lg-table-cell" >{{ activity.state.label }}</td>
                     <td class="d-none d-md-table-cell" >
                         {% for registration in activity.registrations %}
                             {% if registration.participant.id == app.user.id %}
@@ -110,7 +110,7 @@
                             <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary btn-width">Afficher</a>
                         {% endif %}
                         {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
-                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler</a>
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler la sortie</a>
                         {% endif %}
                         {% if activity.state is not null and activity.state.id == 2 %}
                             {% set isRegistered = false %}

@@ -156,6 +156,13 @@ body{
 main{
   margin-bottom: 50px;
 }
+
+/* p */
+p{
+  margin-bottom: 0px;
+}
+
+
 /* FOOTER */
 .footer{
   background-color: var(--bs-primary);
@@ -225,7 +232,7 @@ input[type=checkbox]:checked{
 
 /* TEST BOX */
 .b-test{
-  border: solid red 1px;
+  //border: solid red 1px;
 }
 
 //btn
