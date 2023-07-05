@@ -20,64 +20,47 @@
             <p>Durée : {{ activity.duration }} minutes</p>
             <p>Description et infos : {{ activity.description }}</p>
             <p>Lieu : {{ activity.location.locationName }}</p>
-
-
-
-    <div>
-        {% if activity.organiser.user == app.user and activity.state.id == 1 %}
-            <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
-        {% endif %}
-        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
-            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler la sortie</a>
-        {% endif %}
-        {% if activity.state is not null and activity.state.id == 1  %}
-            <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
-        {% endif %}
-        {% if activity.state is not null and activity.state.id == 2 %}
-            {% set isRegistered = false %}
-            {% for registration in activity.registrations %}
-                {% if registration.participant == app.user.userProfile %}
-                    {% set isRegistered = true %}
-                {% endif %}
-            {% endfor %}
-
-            {# check if there are still places for this activity #}
-            {% set regMax = activity.maxRegistration %}
-            {% set regNumber = activity.registrations|length %}
-            {% if regNumber < regMax %}
-                {% if isRegistered and activity.startDate > date('now') %}
-                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
-                {% elseif not isRegistered %}
-                    <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
-                {% endif %}
-                {% if activity.state is not null and activity.state.id == 1  %}
-                    <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
-                {% endif %}
-                {% if activity.state is not null and activity.state.id == 2 %}
-                    {% set isRegistered = false %}
-                    {% for registration in activity.registrations %}
-                        {% if registration.participant == app.user.userProfile %}
-                            {% set isRegistered = true %}
-                        {% endif %}
-                    {% endfor %}
-
-                    {# check if there are still places for this activity #}
-                    {% set regMax = activity.maxRegistration %}
-                    {% set regNumber = activity.registrations|length %}
-                    {% if regNumber < regMax %}
-                        {% if isRegistered and activity.startDate > date('now') %}
-                            <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
-                        {% elseif not isRegistered %}
-                            <a href="{{ path("activity_register",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
-                        {% endif %}
-                    {% else %}
-                        {% if isRegistered and activity.startDate > date('now') %}
-                            <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
-                        {% endif %}
+        </div>
+        <div>
+            {% if activity.organiser.user == app.user and activity.state.id == 1 %}
+                <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
+            {% endif %}
+            {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3))%}
+                <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger">Annuler la sortie</a>
+            {% endif %}
+            {% if activity.state is not null and activity.state.id == 1  %}
+                <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
+            {% endif %}
+            {% if activity.state is not null and activity.state.id == 2 %}
+                {% set isRegistered = false %}
+                {% for registration in activity.registrations %}
+                    {% if registration.participant == app.user.userProfile %}
+                        {% set isRegistered = true %}
                     {% endif %}
+                {% endfor %}
 
+                {# check if there are still places for this activity #}
+                {% set regMax = activity.maxRegistration %}
+                {% set regNumber = activity.registrations|length %}
+                {% if regNumber < regMax %}
+                    {% if isRegistered and activity.startDate > date('now') %}
+                        <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                    {% elseif not isRegistered %}
+                        <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
+                    {% endif %}
+                    {% if activity.state is not null and activity.state.id == 1  %}
+                        <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
+                    {% endif %}
+                    {% if activity.state is not null and activity.state.id == 2 %}
+                        {% set isRegistered = false %}
+                        {% for registration in activity.registrations %}
+                            {% if registration.participant == app.user.userProfile %}
+                                {% set isRegistered = true %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 {% endif %}
-            </div>
+            {% endif %}
         </div>
         <div class="col-6">
             <h3 class="text-center">Liste des participants</h3>
@@ -88,7 +71,6 @@
                         <th scope="col">Nom</th>
                     </tr>
                 </thead>
-
                 <tbody>
                 {% for registration in activity.registrations %}
                     <tr class="align-middle">
