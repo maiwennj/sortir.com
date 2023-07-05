@@ -189,9 +189,6 @@ form[name="filter"] input:focus{
   outline: 2px solid var(--bs-tertiary-color);
 }
 
-form[name="location_form"] input{
-  width:400px
-}
 
 input[type=checkbox]:checked{
   //accent-color:var(--bs-tertiary-color);
@@ -218,12 +215,24 @@ input[type=checkbox]:checked{
 
 /* -----------  utils  ------------------ */
 
-//hover animation
-.hover-rotate:hover{
-  transform: rotate(10deg);
+//tablz pointer
+.tr-pointer{
+  cursor:pointer;
+}
+@media (min-width: 992px){
+  .tr-pointer{
+    cursor:default;
+  }
 }
 
 
+//hover animation
+.hover-rotate:hover{
+  transform: rotate(10deg);
+  cursor:wait;
+}
+
+//complete badge
 .complete-badge{
   font-size: small;
   background-color: var(--bs-danger)!important;
@@ -256,7 +265,7 @@ input[type=checkbox]:checked{
   border-radius: 100px;
 }
 @media (min-width: 992px){
-  .user-img-lg{
+  .user-img{
     width: 300px;
     height: 300px;
     border-radius: 300px;

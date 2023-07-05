@@ -102,51 +102,39 @@
                     </div>
 
                 </div>
+                <div id="location-details" >
+                    <p class="mt-1"><span class="fw-semibold">Rue : </span><span id="location-street"></span></p>
+                    <p class="mt-1"><span class="fw-semibold">Coordonnées : </span><span id="location-coordinates"></span></p>
+                    {#            <p id="city-postCode"> </p>#}
+                    {#            <p id="location-latitude"></p>#}
+                    {#            <p id="location-longitude"></p>#}
+                </div>
             </div>
             <div class="d-none d-md-table-cell  col-2 mt-4 b-test"></div>
         </div>
-        <div id="location-details" style="display: none;" >
-            <p class="mt-1"><span class="fw-semibold">Rue : </span><span id="location-street"></span></p>
-            <p class="mt-1"><span class="fw-semibold">Coordonnées : </span><span id="location-coordinates"></span></p>
-{#            <p id="city-postCode"> </p>#}
-{#            <p id="location-latitude"></p>#}
-{#            <p id="location-longitude"></p>#}
-        </div>
 
-        <div class="mt-4 b-test  b-test">
+        <div class="mt-4 b-test">
             <button type="submit" class="btn btn-success my-1" name="btnActivity" value="add">Publier</button>
             <button type="submit" class="btn btn-info my-1" name="btnActivity" value="save">Enregistrer le brouillon</button>
             <a href="{{ path("activity_list") }}" class="btn btn-warning my-1">Annuler</a>
-
-
-
-    {% if activity.state is not null and activity.state.id == 1  %}
-        <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
-    {% endif %}
-
-{#        <div>#}
-{#            <button type="submit" class="btn btn-success" name="btnActivity" value="add">Publier la sortie</button>#}
-{#            <button type="submit" class="btn btn-info" name="btnActivity" value="save">Enregistrer comme brouillon</button>#}
-{#            <a href="{{ path("activity_list") }}" class="btn btn-secondary">Annuler</a>#}
-
-{#            {% if activity.state is not null and activity.state.id == 1  %}#}
-{#                <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>#}
-{#            {% endif %}#}
-{#        </div>#}
+            {% if activity.state is not null and activity.state.id == 1  %}
+                <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
+            {% endif %}
+        </div>
     {{ form_end(form) }}
 
     <script>
         window.onload;
         function changeLocation() {
-            var citySelect = document.getElementById('activity_city');
-            var locationSelect = document.getElementById('activity_location');
-            var selectedCity = citySelect.value;
+            let citySelect = document.getElementById('activity_city');
+            let locationSelect = document.getElementById('activity_location');
+            let selectedCity = citySelect.value;
             locationSelect.innerHTML = '';
             {% for location in locations %}
                 {% set locationId = location.id %}
                 {% set locationName = location.locationName %}
                 if (selectedCity === '{{ location.city.id }}') {
-                var option = document.createElement('option');
+                let option = document.createElement('option');
                 option.value = '{{ locationId }}';
                 option.text = '{{ locationName }}';
                 locationSelect.appendChild(option);
@@ -169,7 +157,7 @@
         let locationCoordinates = document.getElementById('location-coordinates');
         // let postCode= document.getElementById('city-postCode');
 
-        locationDetailsDiv.style.display = 'none';
+        // locationDetailsDiv.style.display = 'none';
 
         {% for location in locations %}
         if ('{{ location.id }}' === selectedLocation) {
@@ -179,17 +167,12 @@
             {#locationLongitude.textContent = 'Latitude : {{ location.longitude }}';#}
             locationCoordinates.textContent = '{{ location.latitude }}\ {{ location.longitude }}';
             locationDetailsDiv.style.display = 'block';
-
         }
         {% endfor %}
-
     }
-
         window.onload = function() {
-
             changeLocation();
-
     }
     </script>
-
+    <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}

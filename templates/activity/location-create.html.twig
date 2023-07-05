@@ -1,65 +1,68 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Créer un lieu{% endblock %}
 {% block h2 %}Créer un lieu{% endblock %}
+
 {% block body %}
-
     {{ form_start(locationForm) }}
-    <div class="row align-items-top justify-content-between b-test">
-        <div class="col-2 mt-4 b-test"></div>
-        <div  class="col mt-4 b-test">
-            <div class="d-flex justify-content-between mt-1">
-                <div class="w-50 b-test">
-                    {{ form_label(locationForm.locationName) }}
+        <div class="row align-items-top justify-content-between b-test">
+            <div class="d-none d-md-table-cell col-2 mt-4 b-test"></div>
+            <div  class="col mt-4 b-test">
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(locationForm.locationName) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(locationForm.locationName) }}<br>
+                        {{ form_errors(locationForm.locationName) }}
+                    </div>
                 </div>
-                <div class="w-100 b-test">
-                    {{ form_widget(locationForm.locationName) }}
-                    {{ form_errors(locationForm.locationName) }}
+
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(locationForm.city) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(locationForm.city) }}<br>
+                        {{ form_errors(locationForm.city) }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(locationForm.street) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(locationForm.street) }}<br>
+                        {{ form_errors(locationForm.street) }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(locationForm.latitude) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(locationForm.latitude) }}<br>
+                        {{ form_errors(locationForm.latitude) }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-1">
+                    <div class="w-50 b-test">
+                        <span class="fw-semibold">{{ form_label(locationForm.longitude) }}</span>
+                    </div>
+                    <div class="w-100 b-test">
+                        {{ form_widget(locationForm.longitude) }}<br>
+                        {{ form_errors(locationForm.longitude) }}
+                    </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-between my-1">
-                <div class="w-50 b-test">
-                    {{ form_label(locationForm.city) }}
-                </div>
-                <div class="w-100 b-test">
-                    {{ form_widget(locationForm.city) }}
-                    {{ form_errors(locationForm.city) }}
-                </div>
-            </div>
-            <div class="d-flex justify-content-between my-1">
-                <div class="w-50 b-test">
-                    {{ form_label(locationForm.street) }}
-                </div>
-                <div class="w-100 b-test">
-                    {{ form_widget(locationForm.street) }}
-                    {{ form_errors(locationForm.street) }}
-                </div>
-            </div>
-            <div class="d-flex justify-content-between my-1">
-                <div class="w-50 b-test">
-                    {{ form_label(locationForm.latitude) }}
-                </div>
-                <div class="w-100 b-test">
-                    {{ form_widget(locationForm.latitude) }}
-                    {{ form_errors(locationForm.latitude) }}
-                </div>
-            </div>
-            <div class="d-flex justify-content-between my-1">
-                <div class="w-50 b-test">
-                    {{ form_label(locationForm.longitude) }}
-                </div>
-                <div class="w-100 b-test">
-                    {{ form_widget(locationForm.longitude) }}
-                    {{ form_errors(locationForm.longitude) }}
-                </div>
-            </div>
+            <div class="d-none d-md-table-cell col-2 mt-4 b-test"></div>
         </div>
-        <div class="col-2 mt-4 b-test"></div>
-    </div>
-    <div class="mt-4 b-test text-center b-test">
-        <button type="submit" class="btn btn-primary">Ajouter</button>
-        <a href="{{ path("activity_create") }}" class="btn btn-danger">Annuler</a>
-    </div>
-
+        <div class="mt-4 b-test">
+            <button type="submit" class="btn btn-primary my-1" >Ajouter</button>
+            <a href="{{ path("activity_create") }}" class="btn btn-danger">Annuler</a>
+        </div>
     {{ form_end(locationForm) }}
-
 {% endblock %}
