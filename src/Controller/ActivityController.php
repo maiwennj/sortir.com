@@ -211,7 +211,7 @@ class ActivityController extends AbstractController
 
                 } catch (Exception $exception) {
                     $this->addFlash('danger', "L'activité n'a pas été modifiée.");
-                    return $this->redirectToRoute('activity_update',["id" => $activity->getId()]);
+                    return $this->redirectToRoute('activity_update',["id" => $activity->getId(),'activity'=>$activity]);
                 }
             }
 
