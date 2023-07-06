@@ -3,9 +3,7 @@
 {% block title %}{{ page_title }}{% endblock %}
 {%  block h2 %}{{ page_title }}{% endblock %}
 
-
 {% block body %}
-
 
     {{ form_start(form) }}
         <div class="row align-items-top justify-content-between b-test">
@@ -103,8 +101,8 @@
 
                 </div>
                 <div id="location-details" >
-                    <p class="mt-1"><span class="fw-semibold">Rue : </span><span id="location-street"></span></p>
-                    <p class="mt-1"><span class="fw-semibold">Coordonnées : </span><span id="location-coordinates"></span></p>
+                    <p class="mt-1"><span class="fw-semibold">Rue : </span><span id="location-street">{{ activity.location ? activity.location.street : ""}}</span></p>
+                    <p class="mt-1"><span class="fw-semibold">Coordonnées : </span><span id="location-coordinates">{{ activity.location ? activity.location.latitude : "" }} {{ activity.location ? activity.location.longitude : ""}}</span></p>
                     {#            <p id="city-postCode"> </p>#}
                     {#            <p id="location-latitude"></p>#}
                     {#            <p id="location-longitude"></p>#}
@@ -124,25 +122,32 @@
     {{ form_end(form) }}
 
     <script>
-        window.onload;
+
+        window.onload = function() {
+            changeLocation();
+        }
+
+        // window.onload;
         function changeLocation() {
             let citySelect = document.getElementById('activity_city');
             let locationSelect = document.getElementById('activity_location');
             let selectedCity = citySelect.value;
             locationSelect.innerHTML = '';
+
             {% for location in locations %}
                 {% set locationId = location.id %}
                 {% set locationName = location.locationName %}
                 if (selectedCity === '{{ location.city.id }}') {
-                let option = document.createElement('option');
-                option.value = '{{ locationId }}';
-                option.text = '{{ locationName }}';
-                locationSelect.appendChild(option);
-
+                    let option = document.createElement('option');
+                    option.value = '{{ locationId }}';
+                    option.text = '{{ locationName }}';
+                    {% if activity.location is not null and activity.location.id == location.id%}
+                        option.setAttribute('selected',true);
+                    {% endif %}
+                    locationSelect.appendChild(option);
                 }
             {% endfor %}
             locationDetails();
-
         }
 
     function locationDetails(){
@@ -170,9 +175,7 @@
         }
         {% endfor %}
     }
-        window.onload = function() {
-            changeLocation();
-    }
+
     </script>
     <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}
