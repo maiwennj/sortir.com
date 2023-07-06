@@ -5,22 +5,39 @@
 {% block title %}activity details{% endblock %}
 {% block h2 %}
     {{ activity.activityName }}<br>
-    {% if regNumber == regMax %}
-        <span class="badge bg-danger complete-badge">Complet</span >
+    {% if activity.state.id == 6  %}
+        <span class="badge cancel-badge">Annulée</span >
+    {% elseif regNumber == regMax %}
+        <span class="badge complete-badge">Complet</span >
     {% endif %}
+
 {% endblock %}
 
 {% block body %}
     <div class="row my-2">
-        <div class="col">
+        <div class="d-none d-lg-block col col-lg-1 mt-4 b-test"></div>
+        <div class="col-12 col-md b-test">
             <p><span class="fw-semibold">Pseudo de l'organisateur : </span><a href="{{ path("user_profile",{'id': activity.organiser.user.id}) }}" class="user-link">{{activity.organiser.user.username|upper}}</a></p>
             <p><span class="fw-semibold">Date et heure de la sortie : </span>{{ activity.startDate|date("m/d/Y H:i", "Europe/Paris") }}</p>
             <p><span class="fw-semibold">Date limite d'inscription : </span>{{ activity.closingDate|date("m/d/Y", "Europe/Paris")  }}</p>
             <p><span class="fw-semibold">Nombre de place : </span>{{ activity.maxRegistration }}</p>
             <p><span class="fw-semibold">Durée : </span>{{ activity.duration }} minutes</p>
             <p><span class="fw-semibold">Description et infos : </span>{{ activity.description }}</p>
+            <p class="mt-2"><span class="fw-semibold">Adresse : </span></p>
+            <p><span class="fw-semibold">Vile : </span>{{ activity.location.city }}</p>
             <p><span class="fw-semibold">Lieu : </span>{{ activity.location.locationName }}</p>
+            <p><span class="fw-semibold">Rue : </span>{{ activity.location.street }}</p>
+            <p><span class="fw-semibold">Coordonées : </span>{{ activity.location.latitude }} {{ activity.location.longitude }}  <a href="https://www.google.fr/maps/place/{{ activity.location.latitude}} {{ activity.location.longitude}}"><span class="material-symbols-outlined location-ico">location_on</span></a></p>
         </div>
+
+        {% if activity.state.id == 6 %}
+            <div class=" col p-4 m-2 cancellation-bg">
+                <p><span class="fw-semibold">Raison de l'annulation</span></p>
+                <p>{{ activity.cancellationReason }}</p>
+            </div>
+        {% endif %}
+        <div class="d-none d-lg-block col col-lg-1 mt-4 b-test"></div>
+
         <div class="text-center">
             {% if activity.organiser.user == app.user and activity.state.id == 1 %}
                 <a href="{{ path("activity_update",{'id': activity.id})}}" class="btn btn-secondary">Modifier</a>
@@ -62,7 +79,11 @@
                 {% endif %}
             {% endif %}
         </div>
-        <div class="col my-3">
+
+
+
+        <div class="d-none d-lg-block col col-lg-1 mt-4 b-test"></div>
+        <div class="col my-3 mw-activity-details">
             <h3 class="text-center">Liste des participants</h3>
             <table class="table table-hover">
                 <thead class="sticky-top shadow table-primary">
@@ -81,6 +102,8 @@
                 </tbody>
             </table>
         </div>
+        <div class="d-none d-lg-block col col-lg-1 mt-4 b-test"></div>
     </div>
+
     <script src="{{asset('assets/js/script.js')}}"></script>
 {% endblock %}

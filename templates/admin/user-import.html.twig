@@ -3,17 +3,27 @@
 {% block title %}Importer des utilisateurs{% endblock %}
 {% block h2 %}Importer des utilisateurs{% endblock %}
 {% block body %}
-    <div>
-        <p>Vous pouvez insérer un fichier <span class="fw-bold">.csv</span> pour importer des utilisateurs.</p>
-        <p>Les éléments de votre fichier .csv doivent être séparés par un <span class="fw-bold">point-virgule</span> et les éléments doivent être dans l'ordre suivant, <span class="fw-bold">sans espaces</span> avant ou après :</p>
-        <p class="ali">Pseudo Rôles Admin Actif Prénom Nom Campus Numéro Email</p>
-        <p>Exemple : dark_avenger_666;["ROLE_USER"];0;1;Enzo;Martin;2;0240595068;coccinelle_brute@mail.fr</p>
+    <div class="row align-items-top justify-content-between b-test mt-4">
+        <div class="d-none d-md-block col b-test"></div>
+        <div class="col-12 col-md-10 col-lg-10 col-xl-8">
+            <p>Vous pouvez insérer un fichier <span class="fw-bold">.csv</span> pour importer des utilisateurs.</p>
+            <p>Les éléments de votre fichier .csv doivent être séparés par un <span class="fw-bold">point-virgule</span> et les éléments doivent être dans l'ordre suivant, <span class="fw-bold">sans espaces</span> avant ou après :</p>
+            <p class="ali">Pseudo Rôles Admin Actif Prénom Nom Campus Numéro Email</p>
+            <p class="text-break">Exemple : dark_avenger_666;["ROLE_USER"];0;1;Enzo;Martin;2;0240595068;coccinelle_brute@mail.fr</p>
+
+            <div class="col-12 col-md-10 col-lg-6 d-flex justify-content-between my-4">
+                <div class="w-50 b-test">
+                    <span class="fw-semibold">{{ form_label(form.attachment) }}</span>
+                </div>
+                <div class="w-100 b-test">
+                    {{ form_widget(form.attachment) }}<br>
+                    {{ form_errors(form.attachment) }}
+                </div>
+            </div>
+        </div>
+        <div class="d-none d-md-block col b-test"></div>
     </div>
-
-
-    {{ form(form) }}
-
-
-
-
+    <div class="text-md-center">
+        <button type="submit" class="btn btn-success my-4 ">Ajouter</button>
+    </div>
 {% endblock %}

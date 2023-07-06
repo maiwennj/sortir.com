@@ -12,11 +12,7 @@ class UserImportType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('attachment', FileType::class)
-            ->add("submit",SubmitType::class,[
-                    "label"=>'Envoyer',
-                ]);
-
+        $builder->add('attachment', FileType::class,["label"=>'Fichier : ']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

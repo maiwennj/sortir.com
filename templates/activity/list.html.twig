@@ -6,7 +6,7 @@
 {% block h2 %}Les sorties du moment{% endblock %}
 {% block body %}
     <div class="filter-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#filter" aria-controls="filter" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="btn btn-primary">filtrer les sorties</span>
+        <span class="btn btn-primary f-primary">Filtrer les sorties</span>
     </div>
     <div class="container">
         <div class="collapse filter-collapse" id="filter">
@@ -80,7 +80,6 @@
             {% for activity in activities %}
                 {% set regMax = activity.maxRegistration %}
                 {% set regNumber = activity.registrations|length %}
-{#                <tr class="align-middle" onclick="location.href='{{ path("activity_details",{'id': activity.id})}}'" style="cursor:pointer;">#}
                 <tr class="align-middle tr-pointer" onclick="trLink(event,{{ activity.id }})">
 
                     <td class="">{{ activity.activityName }}</td>
@@ -89,16 +88,22 @@
 
                     <td class="d-none d-md-table-cell" >
                         {{ activity.registrations|length  }} / {{ activity.maxRegistration }}
-                        {% if regNumber == regMax %}
-                            <span class="badge bg-danger">Complet</span >
+                    </td>
+
+                    <td class="d-none d-lg-table-cell" >
+                        {% if activity.state.id == 6  %}
+                            <span class="badge cancel-badge">Annulée</span >
+                        {% elseif regNumber == regMax %}
+                            <span class="badge complete-badge">Complet</span >
+                        {% else %}
+                            <span>{{ activity.state.label }}</span >
                         {% endif %}
                     </td>
 
-                    <td class="d-none d-lg-table-cell" >{{ activity.state.label }}</td>
                     <td class="d-none d-md-table-cell" >
                         {% for registration in activity.registrations %}
                             {% if registration.participant.id == app.user.id %}
-                                x
+                                <span class="material-symbols-outlined fc-check {{activity.state.id == 6?"fc-red":"fc-check" }}">check</span>
                             {% endif %}
                         {% endfor %}
                     </td>
