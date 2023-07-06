@@ -29,6 +29,11 @@ class AdminController extends AbstractController
         return $this->render('admin/index.html.twig');
     }
 
+    #[Route('/presentation', name: 'presentation')]
+    public function presentation(): Response{
+        return $this->render('admin/presentation.html.twig');
+    }
+
     #[Route('/site/create', name: 'site_create')]
     public function create(EntityManagerInterface $entityManager,Request $request): Response
     {

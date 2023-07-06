@@ -17,13 +17,12 @@ class Location
 
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank(message: "Le nom du lieu ne peut pas être vide.")]
-    #[Assert\Length(min :5,max: 30,minMessage:"Le nom de lieu doit être à 5 caractéres minimum.", maxMessage: "Le nom de lieu ne peut pas dépasser 30 caractères.")]
-
+    #[Assert\Length(min :5,max: 30,minMessage:"Le nom de lieu doit être à {{ limit }} caractéres minimum.", maxMessage: "Le nom de lieu ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $locationName = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\NotBlank(message: "La rue ne doit pas être vide.")]
-    #[Assert\Length(min :10,max: 30,minMessage:"La rue doit être à 10 caractéres minimum.", maxMessage: "La rue ne peut pas dépasser {{ limit }} caractères.")]
+    #[Assert\Length(min :10,max: 100,minMessage:"La rue doit être à {{ limit }} caractères minimum.", maxMessage: "La rue ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $street = null;
 
     #[ORM\Column(nullable: true)]
