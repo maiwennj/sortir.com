@@ -5,12 +5,10 @@
 
 
 {% block body %}
-
-
     {{ form_start(form) }}
         <div class="row align-items-top justify-content-between b-test">
-            <div class="d-none d-md-table-cell col-2 mt-4 b-test"></div>
-            <div  class="col mt-4 b-test">
+            <div class="d-none d-lg-block col col-lg-1 mt-4 b-test"></div>
+            <div  class="col mt-4  b-test">
                 <div class="d-flex justify-content-between mt-1">
                     <div class="w-50 b-test">
                         <span class="fw-semibold">{{ form_label(form.activityName) }}</span>
@@ -92,7 +90,7 @@
                         <span class="fw-semibold">{{ form_label(form.location) }}</span>
                     </div>
                     <div class="w-100 b-test d-flex justify-content-between">
-                        {{ form_widget(form.location,{'attr': {'id': 'select-location','onchange': 'locationDetails()'} }) }}
+                        {{ form_widget(form.location,{'attr': {'id': 'select-location','onchange': 'locationDetails()', 'class':'location-select'} }) }}
                         {{ form_errors(form.location) }}
                         <div class="">
                             <a href="{{ path("activity_location_create")}}" class="btn btn-primary loc-creat">
@@ -110,13 +108,13 @@
                     {#            <p id="location-longitude"></p>#}
                 </div>
             </div>
-            <div class="d-none d-md-table-cell  col-2 mt-4 b-test"></div>
+            <div class="d-none d-lg-block  col col-lg-1 mt-4 b-test"></div>
         </div>
 
-        <div class="mt-4 b-test">
+        <div class="mt-4 b-test  text-md-center">
             <button type="submit" class="btn btn-success my-1" name="btnActivity" value="add">Publier</button>
             <button type="submit" class="btn btn-info my-1" name="btnActivity" value="save">Enregistrer le brouillon</button>
-            <a href="{{ path("activity_list") }}" class="btn btn-warning my-1">Annuler</a>
+            <a href="{{ path("activity_list") }}" class="btn btn-secondary my-1">Annuler</a>
             {% if activity.state is not null and activity.state.id == 1  %}
                 <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
             {% endif %}
