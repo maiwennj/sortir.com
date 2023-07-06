@@ -305,9 +305,6 @@ class ActivityController extends AbstractController
             }else{
                 $this->addFlash('danger',"L'état de cette activité ne lui permet pas d'être annulée");
             }
-
-
-
         } else {
 
             $this->addFlash('danger', "Vous n'êtes pas autorisé à annuler cette activité.");
@@ -321,7 +318,7 @@ class ActivityController extends AbstractController
     {
         $activity = $entityManager->getRepository(Activity::class)->find($id);
         $currentState = $activity->getState()->getId();
-
+        $referer = $request->headers->get('referer');
         //check if current activity state is 'open'
         if ($currentState === 2) {
             $regMax = $activity->getMaxRegistration();
@@ -345,7 +342,7 @@ class ActivityController extends AbstractController
                     $entityManager->flush();
 
                     $this->addFlash('success', "Vous avez été inscrit à cette activité avec succès.");
-                    return $this->redirectToRoute('activity_list');
+                    return $this->redirect($referer);
 
                 } catch (\Exception $exception) {
                     $this->addFlash('danger', "Nous n'avons pas pu vous inscrire à cette activité.");
@@ -362,7 +359,8 @@ class ActivityController extends AbstractController
 
     #[Route('/quit/{id}',name:'quit')]
     public function quit(EntityManagerInterface $entityManager,ActivityRepository $activityRepository,RegistrationRepository $registrationRepository,
-                         StateRepository $stateRepository,int $id): Response{
+                         StateRepository $stateRepository,int $id,Request $request): Response{
+        $referer = $request->headers->get('referer');
         try {
             // getting the activity, the user and a registration, if it exists for this user in this activity
             $activity = $activityRepository->find($id);
@@ -397,7 +395,7 @@ class ActivityController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('danger', "Nous n'avons pas pu vous désinscrire de cette activité : " . $exception->getMessage());
         }
-        return $this->redirectToRoute('activity_list');
+        return $this->redirect($referer);
     }
 }
 
