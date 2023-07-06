@@ -9,13 +9,15 @@
                     <img src="{{ asset('assets/img/userImg/'~user.userProfile.pictureUrl) }}" class="user-img">
                 </div>
             {% endif %}
-            <div class="col col-md-6 col-lg mx-4 my-4">
-                <p>Pseudo : {{ user.username }}</p>
-                <p>Prénom : {{ user.userProfile.firstName }}</p>
-                <p>Nom : {{user.userProfile.lastName }}</p>
-                <p>Téléphone : {{ user.userProfile.phoneNumber }}</p>
-                <p>Adresse email : {{ user.userProfile.emailAdress }}</p>
-                <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
+            <div class="col col-md col-lg mx-4 my-4 b-test bg-user-info align-items-center d-flex justify-content-center">
+                <div class="d-flex flex-column p-auto">
+                    <p>Pseudo : {{ user.username }}</p>
+                    <p>Prénom : {{ user.userProfile.firstName }}</p>
+                    <p>Nom : {{user.userProfile.lastName }}</p>
+                    <p>Téléphone : {{ user.userProfile.phoneNumber }}</p>
+                    <p>Adresse email : {{ user.userProfile.emailAdress }}</p>
+                    <p>Site de rattachement : {{ user.userProfile.site.siteName}}</p>
+                </div>
             </div>
         </div>
         <div class="text-center mb-4">
