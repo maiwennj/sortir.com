@@ -40,7 +40,7 @@ class Activity
 
     #[ORM\Column]
     #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
-    #[Assert\GreaterThanOrEqual(1,message: "Le nombre d'inscriptions doit être d'au moins ")]
+    #[Assert\GreaterThanOrEqual(1,message: "Le nombre d'inscriptions doit être d'au moins 1.")]
     private ?int $maxRegistration = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
