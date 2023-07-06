@@ -1,3 +1,9 @@
+/* TEST BOX */
+.b-test{
+  //border: solid red 1px;
+}
+
+
 /*      VARIABLES   */
 :root{
   --bs-primary : #776c64;
@@ -146,12 +152,21 @@ body{
 }
 .nav-link{
   color: var(--bs-secondary-color);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-transform: uppercase;
 }
+
+@media (min-width: 768px){
+  .nav-link{
+    font-size: 1.2rem;
+  }
+}
+
 .nav-link:hover{
   color: var(--bs-tertiary-color);
 }
+
+
 /*  MAIN */
 main{
   margin-bottom: 50px;
@@ -177,7 +192,13 @@ p{
 }
 
 /*     FORM    */
+.cancel-field{
+  width: 100%;
+}
 
+.f-primary{
+  color:var(--bs-secondary-color);
+}
 
 form[name="filter"] input{
   border-radius: 10px;
@@ -215,7 +236,7 @@ input[type=checkbox]:checked{
 
 /* -----------  utils  ------------------ */
 
-//tablz pointer
+//table pointer
 .tr-pointer{
   cursor:pointer;
 }
@@ -229,7 +250,7 @@ input[type=checkbox]:checked{
 //hover animation
 .hover-rotate:hover{
   transform: rotate(10deg);
-  cursor:wait;
+  //cursor:wait;
 }
 
 //complete badge
@@ -239,14 +260,11 @@ input[type=checkbox]:checked{
 }
 
 
-/* TEST BOX */
-.b-test{
-  //border: solid red 1px;
-}
+
 
 //btn
 .btn-width{
-  width: 120px;
+  min-width: 120px;
 }
 .btn-height{
   height: 50px;
@@ -275,12 +293,43 @@ input[type=checkbox]:checked{
   }
 }
 
-//user details
-.bg-user-card{
-  background-color: var(--bs-primary);
-  border-radius:  200px 200px 0 0;
+//admin
+.admin-btn{
+  width: 20vh;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
 }
+@media (min-width: 992px) {
+  .mw-activity-details {
+    max-width: 40vw;
+  }
+}
+
 .bg-user-info{
-  background-color: #eaeaea;
+  background-color: var(--bs-secondary-color);
+}
+
+.bg-user-info p{
+  font-size: 1.2em;
+}
+
+@media (min-width: 768px){
+  .bg-user-card{
+    border-radius:  300px 0 0 300px ;
+    justify-content: space-between;
+    padding: 0;
+  }
+  .bg-user-img{
+
+  }
+
+}
+
+.p-auto{
+  padding: 0;
 }
 

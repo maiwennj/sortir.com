@@ -14,9 +14,9 @@ class LocationFormType extends AbstractType
         $builder
             ->add('locationName',null,['label' => "Nom du lieu : ",'required' => true])
             ->add('street',null,['label' => "Ville : ",'required' => true])
-            ->add('latitude',null,['label' => "Rue : ",'required' => true])
-            ->add('longitude',null,['label' => "Latitude : ",'required' => true])
-            ->add('city',null,['label' => "Longitude : ",'required' => true])
+            ->add('latitude',null,['label' => "Latitude : ",'required' => true])
+            ->add('longitude',null,['label' => "Longitude : ",'required' => true])
+            ->add('city',null,['label' => "Rue : ",'required' => true])
         ;
     }
 

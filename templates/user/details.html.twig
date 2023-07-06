@@ -5,16 +5,18 @@
 {% block body %}
     <div class="row b-test bg-user-card">
         {% if user.userProfile.pictureUrl is not null %}
-            <div class="col-12 col-md-6 col-lg-4 text-center b-test bg-user-img">
+            <div class="col-12 col-md-6 col-lg-4 text-center text-md-start b-test bg-user-img">
                 <img src="{{ asset('assets/img/userImg/'~user.userProfile.pictureUrl) }}" class="user-img user-img-lg">
             </div>
         {% endif %}
-        <div class="col col-md col-lg mx-4 my-4 b-test bg-user-info align-middle">
-            <p><span class="fw-semibold">Prénom : </span>{{ user.userProfile.firstName }}</p>
-            <p><span class="fw-semibold">Nom : </span>{{user.userProfile.lastName }}</p>
-            <p><span class="fw-semibold">Téléphone : </span>{{ user.userProfile.phoneNumber }}</p>
-            <p><span class="fw-semibold">Email : </span>{{ user.userProfile.emailAdress }}</p>
-            <p><span class="fw-semibold">Campus : </span>{{ user.userProfile.site.siteName}}</p>
+        <div class="col col-md col-lg mx-4 my-4 b-test bg-user-info align-items-center d-flex justify-content-center">
+            <div class="d-flex flex-column p-auto">
+                <p><span class="fw-semibold">Prénom : </span>{{ user.userProfile.firstName }}</p>
+                <p><span class="fw-semibold">Nom : </span>{{user.userProfile.lastName }}</p>
+                <p><span class="fw-semibold">Téléphone : </span>{{ user.userProfile.phoneNumber }}</p>
+                <p><span class="fw-semibold">Email : </span>{{ user.userProfile.emailAdress }}</p>
+                <p><span class="fw-semibold">Campus : </span>{{ user.userProfile.site.siteName}}</p>
+            </div>
         </div>
     </div>
 {% endblock %}
