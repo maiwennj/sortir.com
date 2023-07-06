@@ -31,6 +31,8 @@ class ActivityType extends AbstractType{
 
     public function buildForm(FormBuilderInterface $builder, array $options): void{
 
+        $entity = $options['data'];
+
         if ($options['cancel_mode'] === true) {
             $builder->add('cancellationReason', TextareaType::class, [
                 'label' => "Motif d'annulation",
@@ -86,30 +88,66 @@ class ActivityType extends AbstractType{
                     ])
                 ->add('description', null, [
                     'label' => 'Description et infos :'])
-                ->add('city', EntityType::class, [
-                    'label' => 'Ville :',
-                    'class' => City::class,
-                    'choice_label' => 'cityName',
-                    'required' => false,
-                    'mapped' => false])
-                ->add('location', EntityType::class, [
-                    'label' => 'Lieu :',
-                    'class' => Location::class,
-                    'choice_label' => 'locationName',
-                    'placeholder' => 'Choisir un lieu',
-                    'required' => 'false',
-                ])
+
+//                ->add('city', EntityType::class, [
+//                    'label' => 'Ville :',
+//                    'class' => City::class,
+//                    'choice_label' => 'cityName',
+//                    'required' => false,
+//                    'mapped' => false])
+
                 ->add('site', EntityType::class, [
                     'label' => 'Campus :',
                     'class' => Site::class,
-                    'choice_label' => 'siteName'])
-                ->add('city', EntityType::class, [
+                    'choice_label' => 'siteName']);
+
+            if ($entity->getLocation() == null){
+                $builder->add('city', EntityType::class, [
                     'label' => 'Ville :',
                     'class' => City::class,
                     'choice_label' => 'cityName',
                     'required' => 'false',
                     'placeholder' => 'Choisir une ville',
-                    'mapped' => false]);
+                    'mapped' => false,
+
+                ])
+
+                    ->add('location', EntityType::class, [
+                        'label' => 'Lieu :',
+                        'class' => Location::class,
+                        'choice_label' => 'locationName',
+                        'placeholder' => 'Choisir un lieu',
+                        'required' => 'false',
+
+                    ]);
+            }
+            if ($entity->getLocation() != null){
+                $builder->add('city', EntityType::class, [
+                    'label' => 'Ville :',
+                    'class' => City::class,
+                    'choice_label' => 'cityName',
+                    'required' => 'false',
+                    'placeholder' => 'Choisir une ville',
+                    'mapped' => false,
+                    'data'=>$entity->getLocation()->getCity()
+                ])
+
+                    ->add('location', EntityType::class, [
+                        'label' => 'Lieu :',
+                        'class' => Location::class,
+                        'choice_label' => 'locationName',
+                        'placeholder' => 'Choisir un lieu',
+                        'required' => 'false',
+                        'data'=>$entity->getLocation()
+                    ]);
+            }
+
+
+
+
+
+
+                ;
 
 
          }
