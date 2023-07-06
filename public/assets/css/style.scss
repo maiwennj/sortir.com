@@ -254,9 +254,12 @@ input[type=checkbox]:checked{
 
 //table
 .tbl-height{
-  height: 450px;
+  //height: 450px;
+  height: 60vh;
   overflow: auto;
 }
+
+
 
 //userImg
 .user-img{
@@ -264,11 +267,20 @@ input[type=checkbox]:checked{
   height: 100px;
   border-radius: 100px;
 }
-@media (min-width: 992px){
+@media (min-width: 768px){
   .user-img{
     width: 300px;
     height: 300px;
     border-radius: 300px;
   }
+}
+
+//user details
+.bg-user-card{
+  background-color: var(--bs-primary);
+  border-radius:  200px 200px 0 0;
+}
+.bg-user-info{
+  background-color: #eaeaea;
 }
 
