@@ -1,4 +1,12 @@
-/*      VARIABLES   */
+/*--------- TEST BOX -------*/
+//**********uncomment next lines to see the red boxes for the position helper's*******
+//.b-test{
+//  border: solid red 1px;
+//}
+/*--------------------------------------------------------------*/
+
+
+/*--------- VARIABLES-------*/
 :root{
   --bs-primary : #776c64;
   --bs-primary-hover : #534d46;
@@ -21,12 +29,11 @@
 
   --bs-info: #459a74;
   --bs-info-hover : #246f50;
-
-
 }
+/*--------------------------------------------------------------*/
 
-/*      BUTTONS REDEFINED   */
 
+/*--------- BUTTONS REDEFINED-------*/
 .btn-primary {
   --bs-btn-color: #fff;
   --bs-btn-bg: var(--bs-primary);
@@ -110,34 +117,26 @@
   --bs-btn-active-border-color: var(--bs-info);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-
-/*      TABLE REDEFINED   */
-.table-primary{
-  //--bs-table-color:#fff;
-  --bs-table-color:var(--bs-secondary-color);
-  --bs-table-bg:var(--bs-primary) ;
-}
-.user-link{
-  list-style-type: none;
-  text-decoration: none;
-  color:var(--bs-tertiary-color);
-  //font-weight: bold;
-}
-.user-link:hover{
-  //text-decoration-line: underline;
-  border-bottom: solid 2px var(--bs-tertiary-color);
-}
+/*--------------------------------------------------------------*/
 
 
-/**************************** ELEMENTS **************************************/
-/*    BODY      */
+/*--------- ELEMENT -------*/
 body{
   min-height: 100vh;
   position: relative;
 }
+main{
+  margin-bottom: 50px;
+}
 
-/*      HEADER   */
+p{
+  margin-bottom: 0px;
+}
 
+/*--------------------------------------------------------------*/
+
+
+/*--------- HEADER -------*/
 .navbar{
   background-color: var(--bs-primary);
 }
@@ -146,24 +145,27 @@ body{
 }
 .nav-link{
   color: var(--bs-secondary-color);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-transform: uppercase;
 }
+
+@media (min-width: 768px){
+  .nav-link{
+    font-size: 1.2rem;
+  }
+}
+
 .nav-link:hover{
   color: var(--bs-tertiary-color);
 }
-/*  MAIN */
-main{
-  margin-bottom: 50px;
-}
-
-/* p */
-p{
-  margin-bottom: 0px;
+//logo hover annimation
+.hover-rotate:hover{
+  transform: rotate(10deg);
 }
 
 
-/* FOOTER */
+
+/*--------- FOOTER -------*/
 .footer{
   background-color: var(--bs-primary);
   height: 30px;
@@ -175,23 +177,72 @@ p{
   position: absolute;
   width: 100%;
 }
+/*--------------------------------------------------------------*/
 
-/*     FORM    */
 
+/*--------- TABLE -------*/
+.table-primary{
+  --bs-table-color:var(--bs-secondary-color);
+  --bs-table-bg:var(--bs-primary) ;
+}
+
+.tbl-height{
+  height: 60vh;
+  overflow: auto;
+}
+
+.user-link{
+  list-style-type: none;
+  text-decoration: none;
+  color:var(--bs-tertiary-color);
+}
+.user-link:hover{
+  border-bottom: solid 2px var(--bs-tertiary-color);
+}
+
+//table pointer
+.tr-pointer{
+  cursor:pointer;
+}
+@media (min-width: 992px){
+  .tr-pointer{
+    cursor:default;
+  }
+}
+
+//table check
+.fc-check{
+  color:var(--bs-success);
+}
+.fc-red{
+  color:var(--bs-danger);
+}
+
+//btn
+.btn-width{
+  min-width: 120px;
+}
+/*--------------------------------------------------------------*/
+
+
+/*--------- FORM -------*/
+//cancellation information input
+.cancel-field{
+  width: 100%;
+}
+.f-primary{
+  color:var(--bs-secondary-color);
+}
 
 form[name="filter"] input{
   border-radius: 10px;
 }
 
 form[name="filter"] input:focus{
-  //outline: 0 none;
-  //outline: 2px solid var(--bs-tertiary-color);
   outline: 2px solid var(--bs-tertiary-color);
 }
 
-
 input[type=checkbox]:checked{
-  //accent-color:var(--bs-tertiary-color);
   accent-color:var(--bs-tertiary-color);
 }
 
@@ -199,7 +250,7 @@ input[type=checkbox]:checked{
   width: 250px;
 }
 
-/*        CREATE              */
+//creat location input
 .loc-creat{
   width: 50px;
   height: 28px;
@@ -210,65 +261,84 @@ input[type=checkbox]:checked{
   vertical-align: middle;
 
 }
-
-
-
-/* -----------  utils  ------------------ */
-
-//tablz pointer
-.tr-pointer{
-  cursor:pointer;
-}
-@media (min-width: 992px){
-  .tr-pointer{
-    cursor:default;
-  }
+//activity details -> cancellation information
+.cancellation-bg{
+  border-radius: 40px;
+  border: 2px solid  var(--bs-danger);
+  font-size: 1.1em;
 }
 
-
-//hover animation
-.hover-rotate:hover{
-  transform: rotate(10deg);
-  cursor:wait;
+//activity details -> location ico
+.location-ico{
+  color: var(--bs-tertiary-color);
+  font-size: 1em;
 }
+.location-ico:hover{
+  color: var(--bs-danger);
+  //color: var(--bs-tertiary-color-hover);
+  transform: scale(1.5) rotate(20deg);
+}
+/*--------------------------------------------------------------*/
 
-//complete badge
+
+/*--------- BADGE -------*/
 .complete-badge{
+  font-size: small;
+  background-color: var(--bs-warning)!important;
+}
+.cancel-badge{
   font-size: small;
   background-color: var(--bs-danger)!important;
 }
+/*--------------------------------------------------------------*/
 
 
-/* TEST BOX */
-.b-test{
-  //border: solid red 1px;
-}
-
-//btn
-.btn-width{
-  width: 120px;
-}
-.btn-height{
-  height: 50px;
-}
-
-//table
-.tbl-height{
-  height: 450px;
-  overflow: auto;
-}
-
-//userImg
+/*--------- USER -------*/
 .user-img{
   width: 100px;
   height: 100px;
   border-radius: 100px;
 }
-@media (min-width: 992px){
+@media (min-width: 768px){
   .user-img{
     width: 300px;
     height: 300px;
     border-radius: 300px;
   }
 }
+.bg-user-info{
+  background-color: var(--bs-secondary-color);
+}
+.bg-user-info p{
+  font-size: 1.2em;
+}
+@media (min-width: 768px){
+  .bg-user-card{
+    border-radius:  300px 0 0 300px ;
+    justify-content: space-between;
+    padding: 0;
+  }
+}
+/*--------------------------------------------------------------*/
+
+
+/*--------- ADMIN -------*/
+.admin-btn{
+  width: 20vh;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+@media (min-width: 992px) {
+  .mw-activity-details {
+    max-width: 40vw;
+  }
+}
+/*--------------------------------------------------------------*/
+
+
+
 

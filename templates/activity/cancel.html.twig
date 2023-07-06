@@ -4,16 +4,23 @@
 {% block h2 %}Annuler la sortie : <p>{{ activity.activityName }}</p>{% endblock %}
 
 {% block body %}
-
- {{ form_start(form) }}
-
-<div>
-    {{ form_label(form.cancellationReason) }}
-    {{ form_widget(form.cancellationReason) }}
-    {{ form_errors(form.cancellationReason) }}
-</div>
-    <button type="submit" class="btn btn-info "> Enregistrer </button>
-    <a href="{{ referer }}" class="btn btn-secondary">Annuler</a>
+    {{ form_start(form) }}
+        <div class="row align-items-top justify-content-between b-test mt-4">
+            <div class="d-none d-md-block col b-test"></div>
+            <div class="col-12 col-md-10 col-lg-6 d-flex justify-content-between">
+                <div class="w-50 b-test">
+                    <span class="fw-semibold">{{ form_label(form.cancellationReason) }}</span>
+                </div>
+                <div class="w-100 b-test">
+                    {{ form_widget(form.cancellationReason,{'attr': {'class': 'cancel-field'} }) }}<br>
+                    {{ form_errors(form.cancellationReason) }}
+                </div>
+            </div>
+            <div class="d-none d-md-block col b-test"></div>
+        </div>
+        <div class="text-md-center my-4">
+            <button type="submit" class="btn btn-info "> Enregistrer </button>
+            <a href="{{ referer }}" class="btn btn-secondary">Annuler</a>
+        </div>
     {{ form_end(form) }}
-
 {% endblock %}

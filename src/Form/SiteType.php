@@ -12,7 +12,7 @@ class SiteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('siteName')
+            ->add('siteName', null, [ 'label'=>'Campus : '])
         ;
     }
 

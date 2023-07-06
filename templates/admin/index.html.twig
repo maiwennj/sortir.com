@@ -4,9 +4,12 @@
 {% block h2 %}Administration{% endblock %}
 
 {% block body %}
-    <a href="{{ path('admin_site_create') }}" class="btn btn-primary">Créer un site</a>
-    <a href="{{ path('admin_user_create') }}" class="btn btn-primary">Créer un user</a>
-    <a href="{{ path('admin_user_import') }}" class="btn btn-primary">Importer un fichier .csv</a>
-    <a href="{{ path('admin_presentation') }}" class="btn btn-secondary">Carnet de bord du projet</a>
+
+    <div class="d-flex flex-column align-items-center my-5">
+        <a href="{{ path('admin_site_create') }}" class="btn btn-primary admin-btn">Créer un site</a>
+        <a href="{{ path('admin_user_create') }}" class="btn btn-primary admin-btn">Créer un user</a>
+        <a href="{{ path('admin_user_import') }}" class="btn btn-primary admin-btn">Importer un fichier .csv</a>
+        <a href="{{ path('admin_presentation') }}" class="btn btn-secondary admin-btn">Carnet de bord du projet</a>
+    </div>
 
 {% endblock %}
