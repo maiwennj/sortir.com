@@ -33,7 +33,7 @@
         {% if activity.state.id == 6 %}
             <div class=" col p-4 m-2 cancellation-bg">
                 <p><span class="fw-semibold">Raison de l'annulation</span></p>
-                <p>{{ activity.cancellationReason }}</p>
+                <p>{{ activity.cancellationReason?activity.cancellationReason:"Pas de raison donnée." }}</p>
             </div>
         {% endif %}
         <div class="d-none d-lg-block col col-lg-1 mt-4 b-test"></div>
@@ -48,7 +48,8 @@
             {% if activity.state is not null and activity.state.id == 1  %}
                 <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
             {% endif %}
-            {% if activity.state is not null and activity.state.id == 2 %}
+            {% if activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 )%}
+
                 {% set isRegistered = false %}
                 {% for registration in activity.registrations %}
                     {% if registration.participant == app.user.userProfile %}
@@ -59,24 +60,17 @@
                 {# check if there are still places for this activity #}
                 {% set regMax = activity.maxRegistration %}
                 {% set regNumber = activity.registrations|length %}
+
+                {% if isRegistered and activity.startDate > date('now')%}
+                    <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
+                {% endif %}
+
                 {% if regNumber < regMax %}
-                    {% if isRegistered and activity.startDate > date('now') %}
-                        <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning">Se désister</a>
-                    {% elseif not isRegistered %}
+                    {% if not isRegistered and activity.state.id == 2 %}
                         <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success">S'inscrire</a>
                     {% endif %}
-                    {% if activity.state is not null and activity.state.id == 1  %}
-                        <a href="{{ path("activity_delete",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger">Supprimer</a>
-                    {% endif %}
-                    {% if activity.state is not null and activity.state.id == 2 %}
-                        {% set isRegistered = false %}
-                        {% for registration in activity.registrations %}
-                            {% if registration.participant == app.user.userProfile %}
-                                {% set isRegistered = true %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
                 {% endif %}
+
             {% endif %}
         </div>
 
