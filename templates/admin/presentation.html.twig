@@ -1,35 +1,92 @@
-{#{% extends 'base.html.twig' %}#}
+<head>
+    <style>
+        .navigation:hover{
+            transform: scale(2,2)
+        }
+    </style>
+</head>
 
-{#{% block title %}Présentation{% endblock %}#}
-{#{% block h2 %}{% endblock %}#}
-{#{% block body %}#}
-    <div style="text-align: center">
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation_projet1.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation2.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation3.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation4.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation5.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation6.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-{#        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation7.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>#}
-        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation8.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
-{#        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation9.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>#}
-{#        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation10.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>#}
-{#        <div style="height: 80vh; background-image: url('{{ asset('assets/img/presentation11.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>#}
-            <aside class="pres-aside" style="position: fixed;bottom: 5vh;right:25vw;background-image: url('{{ asset('assets/img/fond_bas.png') }}');height: 10vh;width: 50vw;background-size: contain;background-repeat: no-repeat;background-position: center">
-                <ul style="list-style: none;">
-                    <img  src="{{ asset('assets/img/etape1.png') }}" alt="">
-                    <img style="height: 10vh" src="{{ asset('assets/img/etape1.png') }}" alt="">
-                    <img style="height: 10vh" src="{{ asset('assets/img/etape1.png') }}" alt="">
-                    <img style="height: 10vh" src="{{ asset('assets/img/etape1.png') }}" alt="">
-                    <img style="height: 10vh" src="{{ asset('assets/img/etape1.png') }}" alt="">
-                    <img style="height: 10vh" src="{{ asset('assets/img/etape1.png') }}" alt="">
-                    <img style="height: 10vh" src="{{ asset('assets/img/etape1.png') }}" alt="">
-                </ul>
+<body style="background-color: #eaeaea">
 
 
-            </aside>
+<div class="pres" style="text-align: center;">
+    <div id="page" style="height: 80vh; background-image: url('{{ asset('assets/img/presentation1.png') }}');background-repeat: no-repeat;background-size: contain;background-position-x: center"></div>
+    <aside class="pres-aside" style="position: fixed;bottom: 5vh;right:25vw;background-image: url('{{ asset('assets/img/fond_bas.png') }}');height: 10vh;width: 50vw;background-size: contain;background-repeat: no-repeat;background-position: center">
+        <ul style="list-style: none;display: flex;justify-content: space-around;padding: 0 5vh">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape1.png') }}" alt="1" id="1">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape2.png') }}" alt="2" id="2">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape3.png') }}" alt="3" id="3">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape4.png') }}" alt="4" id="4">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape5.png') }}" alt="5" id="5">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape6.png') }}" alt="6" id="6">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape7.png') }}" alt="7" id="7">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape8.png') }}" alt="8" id="8">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape9.png') }}" alt="9" id="9">
+            <img class="navigation" style="max-width: 5vh" src="{{ asset('assets/img/etape10.png') }}" alt="10" id="10">
+        </ul>
 
-    </div>
 
+    </aside>
 
-{#{% endblock %}#}
+</div>
+
+<script>
+    window.onload = init;
+
+    function init(){
+        document.getElementById('1').addEventListener('click',changeImg1);
+        document.getElementById('2').addEventListener('click',changeImg2);
+        document.getElementById('3').addEventListener('click',changeImg3);
+        document.getElementById('4').addEventListener('click',changeImg4);
+        document.getElementById('5').addEventListener('click',changeImg5);
+        document.getElementById('6').addEventListener('click',changeImg6);
+        document.getElementById('7').addEventListener('click',changeImg7);
+        document.getElementById('8').addEventListener('click',changeImg8);
+        document.getElementById('9').addEventListener('click',changeImg9);
+        document.getElementById('10').addEventListener('click',changeImg10);
+    }
+
+    function changeImg1(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation1.png') }}')"
+    }
+    function changeImg2(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation2.png') }}')"
+    }
+    function changeImg3(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation3.png') }}')"
+    }
+    function changeImg4(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation4.png') }}')"
+    }
+    function changeImg5(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation5.png') }}')"
+    }
+    function changeImg6(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation6.png') }}')"
+    }
+    function changeImg7(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation7.png') }}')"
+    }
+    function changeImg8(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation8.png') }}')"
+    }
+    function changeImg9(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation9.png') }}')"
+    }
+    function changeImg10(){
+        let divPage = document.getElementById('page');
+        divPage.style.backgroundImage="url('{{ asset('assets/img/presentation10.png') }}')"
+    }
+
+</script>
+
+</body>
