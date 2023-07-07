@@ -3,6 +3,7 @@
 {% block title %}Importer des utilisateurs{% endblock %}
 {% block h2 %}Importer des utilisateurs{% endblock %}
 {% block body %}
+    {{ form_start(form) }}
     <div class="row align-items-top justify-content-between b-test mt-4">
         <div class="d-none d-md-block col b-test"></div>
         <div class="col-12 col-md-10 col-lg-10 col-xl-8">
@@ -26,4 +27,5 @@
     <div class="text-md-center">
         <button type="submit" class="btn btn-success my-4 ">Ajouter</button>
     </div>
+    {{ form_end(form) }}
 {% endblock %}
