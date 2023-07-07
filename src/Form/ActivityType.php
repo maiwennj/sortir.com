@@ -117,7 +117,7 @@ class ActivityType extends AbstractType{
                         'class' => Location::class,
                         'choice_label' => 'locationName',
                         'placeholder' => 'Choisir un lieu',
-                        'required' => 'false',
+                        'required' => false,
 
                     ]);
             }
@@ -126,7 +126,7 @@ class ActivityType extends AbstractType{
                     'label' => 'Ville :',
                     'class' => City::class,
                     'choice_label' => 'cityName',
-                    'required' => 'false',
+                    'required' => false,
                     'placeholder' => 'Choisir une ville',
                     'mapped' => false,
                     'data'=>$entity->getLocation()->getCity()
@@ -137,7 +137,7 @@ class ActivityType extends AbstractType{
                         'class' => Location::class,
                         'choice_label' => 'locationName',
                         'placeholder' => 'Choisir un lieu',
-                        'required' => 'false',
+                        'required' => false,
                         'data'=>$entity->getLocation()
                     ]);
             }

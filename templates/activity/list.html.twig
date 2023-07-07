@@ -115,10 +115,10 @@
                         {% else %}
                             <a href="{{ path("activity_details",{'id': activity.id})}}" class="btn btn-primary btn-width">Afficher</a>
                         {% endif %}
-                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 or activity.state.id == 1))%}
-                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" onclick="deleteEvent(event)" class="btn btn-danger btn-width">Annuler la sortie</a>
+                        {% if activity.organiser.user == app.user and (activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 ))%}
+                            <a href="{{ path("activity_cancel",{'id': activity.id}) }}" class="btn btn-danger btn-width">Annuler la sortie</a>
                         {% endif %}
-                        {% if activity.state is not null and activity.state.id == 2 %}
+                        {% if activity.state is not null and (activity.state.id == 2 or activity.state.id == 3 ) %}
                             {% set isRegistered = false %}
                             {% for registration in activity.registrations %}
                                 {% if registration.participant == app.user.userProfile %}
@@ -126,11 +126,12 @@
                                 {% endif %}
                             {% endfor %}
 
+
                             {# check if there are still places for this activity #}
                             {% if regNumber < regMax %}
                                 {% if isRegistered and activity.startDate > date('now') %}
                                     <a href="{{ path("activity_quit",{'id': activity.id})}}" class="btn btn-warning btn-width">Se désister</a>
-                                {% elseif not isRegistered %}
+                                {% elseif not isRegistered and activity.state.id == 2 %}
                                     <a href="{{ path("activity_participate",{'id': activity.id})}}" class="btn btn-success btn-width">S'inscrire</a>
                                 {% endif %}
                             {% else %}

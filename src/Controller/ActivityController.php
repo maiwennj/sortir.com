@@ -281,8 +281,7 @@ class ActivityController extends AbstractController
                 $activityForm = $this->createForm(ActivityType::class, $activity, ['cancel_mode' => true]);
                 $activityForm->handleRequest($request);
 
-                if ($activityForm->isSubmitted() && $activityForm->isValid()) {
-
+                if ($activityForm->isSubmitted()) {
                     try {
                         $cancelStateId = 6;
                         $cancelState = $stateRepository->find($cancelStateId);
